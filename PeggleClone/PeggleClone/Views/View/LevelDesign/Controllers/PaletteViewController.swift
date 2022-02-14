@@ -35,7 +35,6 @@ class PaletteViewController: UIViewController {
 
         let buttons = viewModel.palettePegViewModels.map { palettePegViewModel in
             PalettePegButton(
-                frame: palettePegViewModel.frame,
                 viewModel: palettePegViewModel
             )
         }

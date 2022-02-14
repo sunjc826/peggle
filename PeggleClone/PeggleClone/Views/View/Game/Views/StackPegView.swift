@@ -1,31 +1,19 @@
 import UIKit
-import Combine
 
-/// Encapsulates a peg in the palette.
-class PalettePegButton: UIButton {
-    var viewModel: PalettePegViewModel
-    private var subscriptions: Set<AnyCancellable> = []
+/// Encapsulates a peg in a stack view.
+class StackPegView: UIView {
+    var viewModel: StackPegViewModel
 
-    init(viewModel: PalettePegViewModel) {
+    init(viewModel: StackPegViewModel) {
         self.viewModel = viewModel
         super.init(frame: CGRect.zero)
-        addTarget(self, action: #selector(self.paletteButtonOnTap), for: .touchUpInside)
         translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = UIColor.clear
-        setupBindings()
     }
 
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-
-    private func setupBindings() {
-        viewModel.$alpha
-            .sink { [weak self] _ in
-                self?.setNeedsDisplay()
-            }
-            .store(in: &subscriptions)
     }
 
     func configure(with drawable: ShapeDrawable) {
@@ -49,15 +37,11 @@ class PalettePegButton: UIButton {
     }
 
     private func drawCircularPeg(in rect: CGRect) {
-        drawCircleToFill(rect, withAlpha: viewModel.alpha)
+        drawCircleToFill(rect)
     }
 
     private func drawPolygonalPeg(in rect: CGRect) {
         let vertices = viewModel.getDrawableVerticesToFill(rect: rect)
-        drawPolygonalPath(vertices, withAlpha: viewModel.alpha)
-    }
-
-    @IBAction private func paletteButtonOnTap() {
-        viewModel.toggleSelectInPalette()
+        drawPolygonalPath(vertices)
     }
 }

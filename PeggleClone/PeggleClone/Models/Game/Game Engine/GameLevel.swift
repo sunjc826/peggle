@@ -17,10 +17,11 @@ final class GameLevel {
     let playArea: PlayArea
     let cannon: Cannon
     private var balls: [Ball] = []
-    private let pegs: AnyContainer<Peg>
+    let pegs: PegContainer
 
-    var numBalls = GameLevel.startingBalls
+    @Published var numBalls: Int = GameLevel.startingBalls
     var gamePhase: GamePhase = .disabled
+    @Published var score: Int = 0
 
     private var didAddBallCallbacks: [CallbackUnaryFunction<Ball>] = []
     private var didUpdateBallCallbacks: [CallbackBinaryFunction<Ball>] = []
@@ -33,7 +34,7 @@ final class GameLevel {
     init<T: Container>(coordinateMapper: PhysicsCoordinateMapper, pegs: T) where T.Element == Peg {
         self.coordinateMapper = coordinateMapper
         self.playArea = coordinateMapper.getPlayArea()
-        self.pegs = AnyContainer(container: pegs)
+        self.pegs = PegContainer(pegs: pegs)
         let cannonPosition = CGPoint(x: playArea.boundingBox.center.x, y: 0)
         self.cannon = Cannon(position: cannonPosition)
         let rigidBodies = SetObject<RigidBodyObject>()

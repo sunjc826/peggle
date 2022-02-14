@@ -4,20 +4,20 @@ import CoreGraphics
 /// Represents a destructible object.
 final class Peg: EditableGameEntity, Hashable {
     var isConcrete = true
-    let isCompulsory: Bool
+    let pegType: PegType
     let isDestructible = true
     let isOverlayable = false
     let shape: TransformableShape
     var hasCollided = false
 
-    init(shape: TransformableShape, isCompulsory: Bool, isConcrete: Bool) {
+    init(shape: TransformableShape, pegType: PegType, isConcrete: Bool) {
         self.shape = shape
-        self.isCompulsory = isCompulsory
+        self.pegType = pegType
         self.isConcrete = isConcrete
     }
 
     init(instance: Peg) {
-        isCompulsory = instance.isCompulsory
+        pegType = instance.pegType
         isConcrete = instance.isConcrete
         switch instance.shape {
         case let circle as CircleObject:
@@ -89,10 +89,10 @@ extension Peg {
             fatalError(shapeCastingMessage)
         }
 
-        return PersistablePeg(shape: shapeCopy, isCompulsory: isCompulsory)
+        return PersistablePeg(shape: shapeCopy, pegType: pegType)
     }
 
     static func fromPersistable(persistablePeg: PersistablePeg) -> Peg {
-        Peg(shape: persistablePeg.shape, isCompulsory: persistablePeg.isCompulsory, isConcrete: true)
+        Peg(shape: persistablePeg.shape, pegType: persistablePeg.pegType, isConcrete: true)
     }
 }

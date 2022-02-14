@@ -1,19 +1,21 @@
 import Foundation
 import CoreGraphics
 
+// Convention: Rotation clockwise is positive
+
 private let defaultAngleLimit = Double.pi / 2 - 0.1
 
 class Cannon {
-    let cannonHeight: Double = 0.05
+    var cannonBarrelLength: Double = 0.05
     var angleRange: ClosedRange<Double>
-    var angle: Double = 0.0
+    @Published var angle: Double = 0.0
     var ejectionSpeed: Double
-    var position: CGPoint
+    @Published var position: CGPoint
     var rotationRate: Double = 0.0
     var headPosition: CGPoint {
         position.translate(
-            dx: cannonHeight * sin(angle),
-            dy: cannonHeight * cos(angle)
+            dx: cannonBarrelLength * sin(-angle),
+            dy: cannonBarrelLength * cos(angle)
         )
     }
     var ejectionVelocity: CGVector {
@@ -32,6 +34,10 @@ class Cannon {
     }
 
     func updateAngle(time dt: Double) {
+        guard rotationRate != 0 else {
+            return
+        }
+
         let deltaAngle = rotationRate * dt
         let newAngle = angleRange.restrictToRange(
             angle + deltaAngle

@@ -84,7 +84,7 @@ class GameViewModel {
         )
 
         let targetAngleOfCannon = atan2(
-            targetDirectionOfCannon.dx, targetDirectionOfCannon.dy
+            -targetDirectionOfCannon.dx, targetDirectionOfCannon.dy
         )
 
         let angleDifference = targetAngleOfCannon - cannon.angle

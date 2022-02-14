@@ -20,7 +20,7 @@ class GameViewController: UIViewController, Storyboardable {
             fatalError("should not be nil")
         }
 
-        vGame.viewModel = viewModel.getGameplayAreaViewModel()
+        vGame.setup(viewModel: viewModel.getGameplayAreaViewModel())
         viewModel.startNewGame()
     }
 

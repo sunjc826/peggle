@@ -112,6 +112,18 @@
 		E57ACFDE27A57C4300EDAE6B /* CGVectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57ACFDD27A57C4300EDAE6B /* CGVectorTests.swift */; };
 		E57ACFE027A57C5400EDAE6B /* DoubleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57ACFDF27A57C5400EDAE6B /* DoubleTests.swift */; };
 		E57ACFE227A5831300EDAE6B /* TestConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57ACFE127A5831300EDAE6B /* TestConstants.swift */; };
+		E57B6C7C27BA327700522F3F /* UIImage+Rotate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57B6C7B27BA327700522F3F /* UIImage+Rotate.swift */; };
+		E57B6C7E27BA343D00522F3F /* UIView+Transform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57B6C7D27BA343D00522F3F /* UIView+Transform.swift */; };
+		E57B6C8027BA536100522F3F /* ScoreboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57B6C7F27BA536100522F3F /* ScoreboardView.swift */; };
+		E57B6C8227BA53AA00522F3F /* PegStatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57B6C8127BA53AA00522F3F /* PegStatView.swift */; };
+		E57B6C8427BA53C500522F3F /* GenericStatView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57B6C8327BA53C500522F3F /* GenericStatView.swift */; };
+		E57B6C8627BA54DC00522F3F /* GenericStatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57B6C8527BA54DC00522F3F /* GenericStatViewModel.swift */; };
+		E57B6C8827BA5E4000522F3F /* PegStatViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57B6C8727BA5E4000522F3F /* PegStatViewModel.swift */; };
+		E57B6C8A27BA617000522F3F /* FillablePegViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57B6C8927BA617000522F3F /* FillablePegViewModel.swift */; };
+		E57B6C8C27BA66A100522F3F /* StackPegView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57B6C8B27BA66A100522F3F /* StackPegView.swift */; };
+		E57B6C8E27BA66EE00522F3F /* StackPegViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57B6C8D27BA66EE00522F3F /* StackPegViewModel.swift */; };
+		E57B6C9027BA686100522F3F /* PegType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57B6C8F27BA686100522F3F /* PegType.swift */; };
+		E57B6C9227BA6DD000522F3F /* PegContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57B6C9127BA6DD000522F3F /* PegContainer.swift */; };
 		E57E831D27AFB7DB006C3401 /* GamePegViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57E831C27AFB7DB006C3401 /* GamePegViewModel.swift */; };
 		E57E831F27AFBE7E006C3401 /* UIView+GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57E831E27AFBE7E006C3401 /* UIView+GradientView.swift */; };
 		E57E832127AFCC02006C3401 /* UIView+Animate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57E832027AFCC02006C3401 /* UIView+Animate.swift */; };
@@ -273,6 +285,18 @@
 		E57ACFDD27A57C4300EDAE6B /* CGVectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CGVectorTests.swift; sourceTree = "<group>"; };
 		E57ACFDF27A57C5400EDAE6B /* DoubleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoubleTests.swift; sourceTree = "<group>"; };
 		E57ACFE127A5831300EDAE6B /* TestConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestConstants.swift; sourceTree = "<group>"; };
+		E57B6C7B27BA327700522F3F /* UIImage+Rotate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Rotate.swift"; sourceTree = "<group>"; };
+		E57B6C7D27BA343D00522F3F /* UIView+Transform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Transform.swift"; sourceTree = "<group>"; };
+		E57B6C7F27BA536100522F3F /* ScoreboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreboardView.swift; sourceTree = "<group>"; };
+		E57B6C8127BA53AA00522F3F /* PegStatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PegStatView.swift; sourceTree = "<group>"; };
+		E57B6C8327BA53C500522F3F /* GenericStatView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericStatView.swift; sourceTree = "<group>"; };
+		E57B6C8527BA54DC00522F3F /* GenericStatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenericStatViewModel.swift; sourceTree = "<group>"; };
+		E57B6C8727BA5E4000522F3F /* PegStatViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PegStatViewModel.swift; sourceTree = "<group>"; };
+		E57B6C8927BA617000522F3F /* FillablePegViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FillablePegViewModel.swift; sourceTree = "<group>"; };
+		E57B6C8B27BA66A100522F3F /* StackPegView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackPegView.swift; sourceTree = "<group>"; };
+		E57B6C8D27BA66EE00522F3F /* StackPegViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StackPegViewModel.swift; sourceTree = "<group>"; };
+		E57B6C8F27BA686100522F3F /* PegType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PegType.swift; sourceTree = "<group>"; };
+		E57B6C9127BA6DD000522F3F /* PegContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PegContainer.swift; sourceTree = "<group>"; };
 		E57E831C27AFB7DB006C3401 /* GamePegViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamePegViewModel.swift; sourceTree = "<group>"; };
 		E57E831E27AFBE7E006C3401 /* UIView+GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+GradientView.swift"; sourceTree = "<group>"; };
 		E57E832027AFCC02006C3401 /* UIView+Animate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Animate.swift"; sourceTree = "<group>"; };
@@ -490,6 +514,7 @@
 				E569732D27A37F270000BF18 /* Obstacle.swift */,
 				E5FB39D027AA6174008CE4D2 /* Ball.swift */,
 				E569732F27A37F4B0000BF18 /* Peg.swift */,
+				E57B6C8F27BA686100522F3F /* PegType.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -526,6 +551,9 @@
 				E57E831C27AFB7DB006C3401 /* GamePegViewModel.swift */,
 				E5773CB327B50F42009F5793 /* GameplayAreaViewModel.swift */,
 				E572B91327B7AFF2008E72A6 /* GameViewModel.swift */,
+				E57B6C8527BA54DC00522F3F /* GenericStatViewModel.swift */,
+				E57B6C8727BA5E4000522F3F /* PegStatViewModel.swift */,
+				E57B6C8D27BA66EE00522F3F /* StackPegViewModel.swift */,
 			);
 			path = "View Models";
 			sourceTree = "<group>";
@@ -544,6 +572,10 @@
 				E545750C27A980A200F11F43 /* GameplayAreaView.swift */,
 				E578EEE927AAD85800A121F3 /* BallView.swift */,
 				E582E26727AADBA700BBA471 /* GamePegView.swift */,
+				E57B6C7F27BA536100522F3F /* ScoreboardView.swift */,
+				E57B6C8327BA53C500522F3F /* GenericStatView.swift */,
+				E57B6C8127BA53AA00522F3F /* PegStatView.swift */,
+				E57B6C8B27BA66A100522F3F /* StackPegView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -636,6 +668,8 @@
 				E571C08827AE7540009459CE /* UIView+DrawPaths.swift */,
 				E57E831E27AFBE7E006C3401 /* UIView+GradientView.swift */,
 				E57E832027AFCC02006C3401 /* UIView+Animate.swift */,
+				E57B6C7B27BA327700522F3F /* UIImage+Rotate.swift */,
+				E57B6C7D27BA343D00522F3F /* UIView+Transform.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -789,6 +823,7 @@
 			children = (
 				E5DC46F127B7DBF900851C51 /* Views */,
 				E571C09527AEC7A7009459CE /* AbstractPegViewModel.swift */,
+				E57B6C8927BA617000522F3F /* FillablePegViewModel.swift */,
 				E571C08327AE710B009459CE /* CoordinateMappablePegViewModel.swift */,
 				E572B91527B7B9F2008E72A6 /* CoordinateMappable.swift */,
 			);
@@ -890,6 +925,7 @@
 				E569731F27A374CC0000BF18 /* PolarCoordinate.swift */,
 				E55837F6279D21A5006F4B1F /* PlayArea.swift */,
 				E572B91127B789D6008E72A6 /* CoordinateMapper.swift */,
+				E57B6C9127BA6DD000522F3F /* PegContainer.swift */,
 			);
 			path = "Utility Classes";
 			sourceTree = "<group>";
@@ -1111,11 +1147,14 @@
 				E569732527A376110000BF18 /* CGVector.swift in Sources */,
 				E572B91827B7BD80008E72A6 /* PhysicsCoordinateMapper.swift in Sources */,
 				E580667C27A7D64E00F73DAA /* RigidBody.swift in Sources */,
+				E57B6C9227BA6DD000522F3F /* PegContainer.swift in Sources */,
 				E5636DDA279C137F006428E8 /* LevelSelectViewController.swift in Sources */,
 				E56FF53F27AF62D800FB4D02 /* StorageViewModel.swift in Sources */,
+				E57B6C8627BA54DC00522F3F /* GenericStatViewModel.swift in Sources */,
 				E578EEC327AAA46C00A121F3 /* TransformablePolygon.swift in Sources */,
 				E572B91227B789D6008E72A6 /* CoordinateMapper.swift in Sources */,
 				E569731827A371DE0000BF18 /* RegularShape.swift in Sources */,
+				E57B6C7E27BA343D00522F3F /* UIView+Transform.swift in Sources */,
 				E571C08E27AEB703009459CE /* PaletteViewModel.swift in Sources */,
 				E5773CB427B50F42009F5793 /* GameplayAreaViewModel.swift in Sources */,
 				E569732E27A37F270000BF18 /* Obstacle.swift in Sources */,
@@ -1123,6 +1162,7 @@
 				E586262527AD870D009964BF /* Collision+Detection.swift in Sources */,
 				E5354E39279A89A900ADF354 /* PalettePegButton.swift in Sources */,
 				E569732727A376440000BF18 /* CGRect.swift in Sources */,
+				E57B6C8827BA5E4000522F3F /* PegStatViewModel.swift in Sources */,
 				E571C09027AEB712009459CE /* DesignerMainViewModel.swift in Sources */,
 				E569732927A3766F0000BF18 /* CGAffineTransform.swift in Sources */,
 				E567195E279C628300D841DC /* LevelSelectCell.swift in Sources */,
@@ -1142,6 +1182,7 @@
 				E571C09227AEBC6C009459CE /* DesignerViewModel.swift in Sources */,
 				E545750D27A980A200F11F43 /* GameplayAreaView.swift in Sources */,
 				E5FB39D127AA6174008CE4D2 /* Ball.swift in Sources */,
+				E57B6C8C27BA66A100522F3F /* StackPegView.swift in Sources */,
 				E572B91027B76EDC008E72A6 /* PersistablePlayArea.swift in Sources */,
 				E57F03F027A62332002662DD /* String.swift in Sources */,
 				E578EED227AAADD900A121F3 /* TransformablePolygonObject.swift in Sources */,
@@ -1151,6 +1192,7 @@
 				E554880C27A22EEC009B862C /* CollisionDetector.swift in Sources */,
 				E578EEDC27AAB0B500A121F3 /* Shape.swift in Sources */,
 				E569733227A37F6F0000BF18 /* GameEntity.swift in Sources */,
+				E57B6C8E27BA66EE00522F3F /* StackPegViewModel.swift in Sources */,
 				E571C08627AE711C009459CE /* BallViewModel.swift in Sources */,
 				E578EEC527AAA4CA00A121F3 /* CenteredPolygon.swift in Sources */,
 				E572B91627B7B9F2008E72A6 /* CoordinateMappable.swift in Sources */,
@@ -1169,6 +1211,7 @@
 				E57E832127AFCC02006C3401 /* UIView+Animate.swift in Sources */,
 				E5DC46F827B7EC8000851C51 /* Settings.swift in Sources */,
 				E55837F9279D21E4006F4B1F /* BoundingBox.swift in Sources */,
+				E57B6C7C27BA327700522F3F /* UIImage+Rotate.swift in Sources */,
 				E569731427A3717F0000BF18 /* Circle.swift in Sources */,
 				E578EEC727AAA5B700A121F3 /* RegularPolygon.swift in Sources */,
 				E578EED627AAAEF100A121F3 /* RectangleObject.swift in Sources */,
@@ -1180,13 +1223,17 @@
 				E571C09627AEC7A7009459CE /* AbstractPegViewModel.swift in Sources */,
 				E569733A27A3EB050000BF18 /* PaletteViewController.swift in Sources */,
 				E5DC46F327B7DC1A00851C51 /* LetterBoxView.swift in Sources */,
+				E57B6C8A27BA617000522F3F /* FillablePegViewModel.swift in Sources */,
 				E55837F7279D21A5006F4B1F /* PlayArea.swift in Sources */,
 				E57E831D27AFB7DB006C3401 /* GamePegViewModel.swift in Sources */,
+				E57B6C8027BA536100522F3F /* ScoreboardView.swift in Sources */,
 				E578EEE527AAC42000A121F3 /* ErrorMessages.swift in Sources */,
 				E572B91427B7AFF2008E72A6 /* GameViewModel.swift in Sources */,
 				E519D56D2798009600BCE59D /* SceneDelegate.swift in Sources */,
 				E5773CB227B50934009F5793 /* PhysicsEngine+Prediction.swift in Sources */,
 				E5AAA5A9279989AC0092EE3D /* LinkedList.swift in Sources */,
+				E57B6C8427BA53C500522F3F /* GenericStatView.swift in Sources */,
+				E57B6C8227BA53AA00522F3F /* PegStatView.swift in Sources */,
 				E573A02D27B163E2004B03EC /* PhysicsEngine+CollisionResolution.swift in Sources */,
 				E573EDA627B5749F00C3BACC /* Storyboardable.swift in Sources */,
 				E578EED427AAAEC200A121F3 /* PolygonObject.swift in Sources */,
@@ -1201,6 +1248,7 @@
 				E569731627A371C00000BF18 /* Polygon.swift in Sources */,
 				E578EED827AAAF1700A121F3 /* CircleObject.swift in Sources */,
 				E5636DD7279C07CF006428E8 /* Storage.swift in Sources */,
+				E57B6C9027BA686100522F3F /* PegType.swift in Sources */,
 				E569732327A375F00000BF18 /* CGPoint.swift in Sources */,
 				E5710F6E27B344E3004ACED4 /* LevelSelectViewModel.swift in Sources */,
 				E571C08227AE346B009459CE /* CenteredPolygonObject.swift in Sources */,

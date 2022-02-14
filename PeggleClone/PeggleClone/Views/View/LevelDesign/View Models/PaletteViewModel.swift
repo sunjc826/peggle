@@ -12,19 +12,19 @@ private let palettePegs: [Peg] = {
         ).getTransformablePolygon()
         arr.append(shape)
     }
-    let compulsoryPegs = arr.map { Peg(shape: $0, isCompulsory: true, isConcrete: false) }
-    let optionalPegs = arr.map { Peg(shape: $0, isCompulsory: false, isConcrete: false) }
+    let compulsoryPegs = arr.map { Peg(shape: $0, pegType: .compulsory, isConcrete: false) }
+    let optionalPegs = arr.map { Peg(shape: $0, pegType: .optional, isConcrete: false) }
     let merged = compulsoryPegs + optionalPegs
     return merged
 }()
 
 class PaletteViewModel {
+    private var subscriptions: Set<AnyCancellable> = []
+
     var palettePegViewModels: [PalettePegViewModel] = []
 
     @Published var selectedPegInPalette: Peg?
     @Published var isDeleting = false
-
-    private var subscriptions: Set<AnyCancellable> = []
 
     init() {
         setupChildViewModels()
