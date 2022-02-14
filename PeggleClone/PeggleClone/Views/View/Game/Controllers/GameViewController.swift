@@ -1,9 +1,17 @@
 import UIKit
+import Combine
+
+private let segueGameEnd = "segueGameEnd"
 
 class GameViewController: UIViewController, Storyboardable {
     @IBOutlet private var vGame: GameplayAreaView!
+    @IBOutlet private var cvGameEnd: UIView!
+    private var vcGameEnd: GameEndViewController?
+
+    var didBackToLevelSelect: (() -> Void)?
 
     var viewModel: GameViewModel?
+    private var subscriptions: Set<AnyCancellable> = []
 
     var ballToViewMap: [Ball: BallView] = [:]
     var pegToViewMap: [Peg: GamePegView] = [:]
@@ -14,7 +22,9 @@ class GameViewController: UIViewController, Storyboardable {
         super.viewDidLoad()
         setupModels()
         registerEventHandlers()
+        setupViews()
         createDisplayLink()
+        setupBindings()
 
         guard let viewModel = viewModel else {
             fatalError("should not be nil")
@@ -24,11 +34,35 @@ class GameViewController: UIViewController, Storyboardable {
         viewModel.startNewGame()
     }
 
-    func createDisplayLink() {
+    private func createDisplayLink() {
         let displaylink = CADisplayLink(target: self,
                                         selector: #selector(gameLoop))
         displaylink.preferredFramesPerSecond = GameLevel.targetFps
         displaylink.add(to: .current, forMode: .default)
+    }
+
+    private func setupBindings() {
+        guard let viewModel = viewModel else {
+            fatalError("should not be nil")
+        }
+
+        guard let gameEndViewModelPublisher = viewModel.gameEndViewModelPublisher else {
+            fatalError("should not be nil")
+        }
+
+        gameEndViewModelPublisher.sink { [weak self] vmGameEnd in
+            guard let self = self else {
+                return
+            }
+
+            guard let vcGameEnd = self.vcGameEnd else {
+                fatalError("should not be nil")
+            }
+
+            vcGameEnd.viewModel = vmGameEnd
+            self.cvGameEnd.isHidden = false
+        }
+        .store(in: &subscriptions)
     }
 
     @objc func gameLoop(displaylink: CADisplayLink) {
@@ -45,7 +79,7 @@ class GameViewController: UIViewController, Storyboardable {
         render()
     }
 
-    func setupModels() {
+    private func setupModels() {
         guard let viewModel = viewModel else {
             fatalError("should not be nil")
         }
@@ -66,7 +100,7 @@ class GameViewController: UIViewController, Storyboardable {
         viewModel.hydrate()
     }
 
-    func registerEventHandlers() {
+    private func registerEventHandlers() {
         let longPressGestureRecognizer = UILongPressGestureRecognizer(
             target: self,
             action: #selector(self.onLongPress(_:))
@@ -78,6 +112,10 @@ class GameViewController: UIViewController, Storyboardable {
         )
         tapGestureRecognizer.shouldRequireFailure(of: longPressGestureRecognizer)
         vGame.addGestureRecognizer(tapGestureRecognizer)
+    }
+
+    private func setupViews() {
+        cvGameEnd.isHidden = true
     }
 
     @objc func onTap(_ sender: UITapGestureRecognizer) {
@@ -108,6 +146,16 @@ class GameViewController: UIViewController, Storyboardable {
 
     func render() {
         vGame.setNeedsDisplay()
+    }
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        switch segue.identifier {
+        case segueGameEnd:
+            vcGameEnd = segue.destination as? GameEndViewController
+            vcGameEnd!.delegate = self
+        default:
+            return
+        }
     }
 }
 
@@ -177,5 +225,20 @@ extension GameViewController {
             }
         }
         pegToViewMap[peg] = nil
+    }
+}
+
+extension GameViewController: GameEndViewControllerDelegate {
+    func restartGame() {
+        guard let viewModel = viewModel else {
+            fatalError("should not be nil")
+        }
+        cvGameEnd.isHidden = true
+        viewModel.hydrate()
+        viewModel.startNewGame()
+    }
+
+    func backToLevelSelect() {
+        didBackToLevelSelect?()
     }
 }

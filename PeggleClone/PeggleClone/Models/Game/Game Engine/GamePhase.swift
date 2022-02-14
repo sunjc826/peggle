@@ -6,5 +6,8 @@ enum GamePhase {
     case ongoing // Ball has been shot.
     case stuck // Ball is stuck.
     case cleanup // Cleaning up pegs that have been hit.
+    case gameEnd(stats: GameRoundStats) // Player has either won or lost.
     case disabled // Game is disabled and does not respond to external input.
 }
+
+extension GamePhase: Equatable {}

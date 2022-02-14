@@ -5,7 +5,13 @@ private let rotationRateSecondsTillTarget = 1.5
 private let physicalScale: Double = 100.0
 
 class GameViewModel {
-    var gameLevel: GameLevel?
+    private var subscriptions: Set<AnyCancellable> = []
+    var gameEndViewModelPublisher: AnyPublisher<GameEndViewModel, Never>?
+    var gameLevel: GameLevel? {
+        didSet {
+            setupBindings()
+        }
+    }
     var backingDesignerGameLevel: PersistableDesignerGameLevel?
     var coordinateMapper: PhysicsCoordinateMapper? {
         gameLevel?.coordinateMapper
@@ -13,6 +19,29 @@ class GameViewModel {
 
     var cannon: Cannon? {
         gameLevel?.cannon
+    }
+
+    private func setupBindings() {
+        guard let gameLevel = gameLevel else {
+            fatalError("should not be nil")
+        }
+
+        gameEndViewModelPublisher = gameLevel.$gamePhase
+            .map { [weak self] gamePhase -> GameEndViewModel? in
+                guard let self = self else {
+                    return nil
+                }
+
+                guard case .gameEnd(stats: let stats) = gamePhase else {
+                    return nil
+                }
+
+                let vmGameEnd = self.getGameEndViewModel(stats: stats)
+
+                return vmGameEnd
+            }
+            .compactMap { $0 }
+            .eraseToAnyPublisher()
     }
 
     func setDimensions(width: Double, height: Double) {
@@ -114,6 +143,11 @@ extension GameViewModel {
         let vmGamePeg = GamePegViewModel(peg: peg)
         vmGamePeg.delegate = self
         return vmGamePeg
+    }
+
+    func getGameEndViewModel(stats: GameRoundStats) -> GameEndViewModel {
+        let vmGameEnd = GameEndViewModel(stats: stats)
+        return vmGameEnd
     }
 }
 

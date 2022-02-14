@@ -40,7 +40,7 @@ class GameplayAreaViewModel {
         self.gameLevel = gameLevel
         setupBindings()
         pegStatViewModels = pegs.map { peg in
-            let pegCountPublisher = gameLevel.pegs.$pegCount.compactMap { pegCount in
+            let pegCountPublisher = gameLevel.pegs.$pegCounts.compactMap { pegCount in
                 pegCount[peg.pegType]
             }.eraseToAnyPublisher()
             return PegStatViewModel(peg: peg, count: pegCountPublisher)

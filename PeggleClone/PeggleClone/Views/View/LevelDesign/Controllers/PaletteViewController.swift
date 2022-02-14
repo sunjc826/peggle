@@ -52,12 +52,12 @@ class PaletteViewController: UIViewController {
     }
 
     private func setupConstraints(button: PalettePegButton) {
-        let midYConstraint = button.centerYAnchor.constraint(equalTo: button.superview!.centerYAnchor)
-        let heightConstraint = button.heightAnchor.constraint(equalTo: button.superview!.heightAnchor)
-        let widthConstraint = button.widthAnchor.constraint(equalTo: button.superview!.heightAnchor)
-        midYConstraint.isActive = true
-        heightConstraint.isActive = true
-        widthConstraint.isActive = true
+        let constraints = [
+            button.centerYAnchor.constraint(equalTo: button.superview!.centerYAnchor),
+            button.heightAnchor.constraint(equalTo: button.superview!.heightAnchor),
+            button.widthAnchor.constraint(equalTo: button.superview!.heightAnchor)
+        ]
+        constraints.forEach { $0.isActive = true }
     }
 
     private func registerEventHandlers() {

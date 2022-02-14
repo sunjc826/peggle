@@ -20,7 +20,7 @@ extension AbstractPegViewModel {
             return optionalColor
         case .special:
             return specialColor
-        case .scoreMultiplier:
+        case .valuable:
             return scoreMultiplierColor
         }
     }

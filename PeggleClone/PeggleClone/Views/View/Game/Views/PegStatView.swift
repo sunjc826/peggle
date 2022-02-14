@@ -27,12 +27,13 @@ class PegStatView: UIStackView {
 
 extension PegStatView {
     private func setupViews() {
-        let midYConstraint = vPeg.centerYAnchor.constraint(equalTo: vPeg.superview!.centerYAnchor)
-        let heightConstraint = vPeg.heightAnchor.constraint(equalTo: vPeg.superview!.heightAnchor)
-        let widthConstraint = vPeg.widthAnchor.constraint(equalTo: vPeg.superview!.heightAnchor)
-        midYConstraint.isActive = true
-        heightConstraint.isActive = true
-        widthConstraint.isActive = true
+        let constraints = [
+            heightAnchor.constraint(greaterThanOrEqualToConstant: 30),
+            vPeg.centerYAnchor.constraint(equalTo: vPeg.superview!.centerYAnchor),
+            vPeg.heightAnchor.constraint(equalTo: vPeg.superview!.heightAnchor),
+            vPeg.widthAnchor.constraint(equalTo: vPeg.superview!.heightAnchor)
+        ]
+        constraints.forEach { $0.isActive = true }
 
         setNeedsLayout()
         setNeedsDisplay()

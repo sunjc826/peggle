@@ -4,15 +4,30 @@ enum PegType {
     case compulsory
     case optional
     case special
-    case scoreMultiplier(multipler: Int)
+    case valuable(score: Int = 100)
 }
 
 extension PegType: Codable {}
 
 extension PegType: CaseIterable {
     static var allCases: [PegType] {
-        [.compulsory, .optional, .special, .scoreMultiplier(multipler: 2)]
+        [.compulsory, .optional, .special, .valuable(score: 100)]
     }
 }
 
 extension PegType: Hashable {}
+
+extension PegType {
+    var score: Int {
+        switch self {
+        case .compulsory:
+            return 25
+        case .optional:
+            return 10
+        case .special:
+            return 10
+        case .valuable(score: let score):
+            return score
+        }
+    }
+}

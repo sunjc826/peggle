@@ -114,6 +114,22 @@ class AppCoordinator {
         let vmGame = GameViewModel()
         vmGame.backingDesignerGameLevel = backingDesignerGameLevel
         vcGame.viewModel = vmGame
+
+        vcGame.didBackToLevelSelect = { [weak self] in
+            guard let self = self else {
+                return
+            }
+            let vcLevelSelect: LevelSelectViewController? = self.navigationController
+                .viewControllers
+                .first { $0 is LevelSelectViewController }
+                as? LevelSelectViewController
+            if let vcLevelSelect = vcLevelSelect {
+                self.navigationController.popToViewController(vcLevelSelect, animated: true)
+            } else {
+                self.showLevelSelect()
+            }
+        }
+
         navigationController.pushViewController(vcGame, animated: true)
     }
 }
