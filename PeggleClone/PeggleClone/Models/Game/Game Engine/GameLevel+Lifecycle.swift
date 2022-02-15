@@ -126,10 +126,19 @@ extension GameLevel {
             optionalPegsHit: pegs.pegHits[.optional]!,
             specialPegsHit: pegs.pegHits[.special]!
         )
-
+        clearAll()
         gamePhase = .gameEnd(stats: endOfGameStatistics)
         for callback in gameDidEndCallbacks {
             callback(isWon)
+        }
+    }
+
+    func clearAll() {
+        for ball in balls {
+            removeBall(ball: ball)
+        }
+        for peg in pegs {
+            removePeg(peg: peg)
         }
     }
 }

@@ -5,7 +5,7 @@ import CoreGraphics
 final class Peg: EditableGameEntity, Hashable {
     weak var rigidBody: RigidBodyObject?
     var isConcrete = true
-    let pegType: PegType
+    var pegType: PegType
     let isDestructible = true
     let isOverlayable = false
     let shape: TransformableShape
@@ -73,6 +73,12 @@ extension Peg {
     func withHasCollided(hasCollided: Bool) -> Peg {
         let copy = Peg(instance: self)
         copy.hasCollided = hasCollided
+        return copy
+    }
+
+    func withPegType(pegType: PegType) -> Peg {
+        let copy = Peg(instance: self)
+        copy.pegType = pegType
         return copy
     }
 }

@@ -31,4 +31,8 @@ class PalettePegViewModel: FillablePegViewModel {
     func toggleSelectInPalette() {
         delegate?.toggleSelectInPalette(peg: peg)
     }
+
+    func setPegType(pegType: PegType) {
+        peg = peg.withPegType(pegType: pegType)
+    }
 }

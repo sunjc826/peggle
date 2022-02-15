@@ -8,7 +8,7 @@ class AppCoordinator {
     var rootViewController: UIViewController {
         navigationController
     }
-    
+
     var subscriptions: Set<AnyCancellable> = []
 
     var loadLevelURL: URL?
@@ -115,7 +115,7 @@ class AppCoordinator {
         let vcPeggleMaster = PeggleMasterCollectionViewController.instantiate()
         let vmPeggleMaster = PeggleMasterViewModel(selectedPeggleMaster: selectedPeggleMaster)
         vcPeggleMaster.viewModel = vmPeggleMaster
-        
+
         vmPeggleMaster.$selectedPeggleMaster
             .assign(to: \.selectedPeggleMaster, on: self)
             .store(in: &subscriptions)

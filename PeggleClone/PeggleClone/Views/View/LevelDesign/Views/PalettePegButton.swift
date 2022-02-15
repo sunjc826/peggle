@@ -9,7 +9,7 @@ class PalettePegButton: UIButton {
     init(viewModel: PalettePegViewModel) {
         self.viewModel = viewModel
         super.init(frame: CGRect.zero)
-        addTarget(self, action: #selector(self.paletteButtonOnTap), for: .touchUpInside)
+        addTarget(self, action: #selector(self.onTap), for: .touchUpInside)
         translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = UIColor.clear
         setupBindings()
@@ -22,6 +22,11 @@ class PalettePegButton: UIButton {
 
     private func setupBindings() {
         viewModel.$alpha
+            .sink { [weak self] _ in
+                self?.setNeedsDisplay()
+            }
+            .store(in: &subscriptions)
+        viewModel.$peg
             .sink { [weak self] _ in
                 self?.setNeedsDisplay()
             }
@@ -57,7 +62,7 @@ class PalettePegButton: UIButton {
         drawPolygonalPath(vertices, withAlpha: viewModel.alpha)
     }
 
-    @IBAction private func paletteButtonOnTap() {
+    @IBAction private func onTap() {
         viewModel.toggleSelectInPalette()
     }
 }

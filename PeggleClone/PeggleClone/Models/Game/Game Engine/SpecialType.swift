@@ -6,7 +6,7 @@ enum SpecialType {
     case explosive
     case moonTourist
     case multiball
-    case cheater
+    case author
 }
 
 extension SpecialType: Equatable {}

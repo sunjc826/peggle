@@ -5,6 +5,7 @@ import Combine
 class PaletteViewController: UIViewController {
     @IBOutlet private var svPalette: UIStackView!
     @IBOutlet private var btnDelete: UIButton!
+    @IBOutlet private var svColor: UIStackView!
 
     var viewModel: PaletteViewModel?
 
@@ -33,25 +34,36 @@ class PaletteViewController: UIViewController {
             fatalError("should not be nil")
         }
 
-        let buttons = viewModel.palettePegViewModels.map { palettePegViewModel in
-            PalettePegButton(
-                viewModel: palettePegViewModel
-            )
+        let palettePegButtons = viewModel.palettePegViewModels.map { palettePegViewModel in
+            PalettePegButton(viewModel: palettePegViewModel)
         }
-        buttons.forEach { button in
+        palettePegButtons.forEach { button in
             svPalette.addArrangedSubview(button)
             resizeButton(button: button)
-            setupConstraints(button: button)
+            setupConstraints(for: button)
         }
+
+        let pegTypeButtons = viewModel.pegTypeViewModels.map { pegTypeViewModel in
+            PegTypeButton(viewModel: pegTypeViewModel)
+        }
+
+        pegTypeButtons.forEach { button in
+            svColor.addArrangedSubview(button)
+            resizeButton(button: button)
+            setupConstraints(for: button)
+        }
+
         svPalette.setNeedsLayout()
         svPalette.setNeedsDisplay()
+        svColor.setNeedsLayout()
+        svColor.setNeedsDisplay()
     }
 
-    private func resizeButton(button: PalettePegButton) {
+    private func resizeButton(button: UIButton) {
         button.transform = CGAffineTransform(uniformScale: 0.7)
     }
 
-    private func setupConstraints(button: PalettePegButton) {
+    private func setupConstraints(for button: UIButton) {
         let constraints = [
             button.centerYAnchor.constraint(equalTo: button.superview!.centerYAnchor),
             button.heightAnchor.constraint(equalTo: button.superview!.heightAnchor),

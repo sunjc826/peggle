@@ -46,11 +46,13 @@ class GameplayAreaView: UIView {
 // MARK: Setup
 extension GameplayAreaView {
     private func setupViews() {
-        baseCannonTransform = ivCannon.transform
+        baseCannonTransform = baseCannonTransform ?? ivCannon.transform
 
         guard let viewModel = viewModel else {
             fatalError("should not be nil")
         }
+
+        svInfo.arrangedSubviews.forEach { $0.removeFromSuperview() }
 
         guard let ballsLeft = viewModel.ballsLeft else {
             fatalError("should not be nil")

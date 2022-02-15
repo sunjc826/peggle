@@ -131,6 +131,12 @@ class GameViewModel {
         cannon.rotationRate = angleDifference / rotationRateSecondsTillTarget
     }
 
+//    func restartGame() {
+//        gameLevel?.reset()
+//        hydrate()
+//        startNewGame()
+//    }
+
 }
 
 // MARK: View model factories

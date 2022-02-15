@@ -1,4 +1,5 @@
-import Foundation
+import UIKit
+
 // This file consists of constants, hence deep levels of nesting are accepted.
 // swiftlint:disable nesting
 struct Settings {
@@ -27,6 +28,14 @@ struct Settings {
 
     struct Cannon {
         static let defaultEjectionSpeed: Double = 0.20
+    }
+
+    struct PegColor {
+        static let compulsory = UIColor.orange
+        static let optional = UIColor.blue
+        static let special = UIColor.green
+        static let scoreMultiplier = UIColor.purple
+        static let pegBorder = UIColor.black
     }
 }
 // swiftlint:enable nesting

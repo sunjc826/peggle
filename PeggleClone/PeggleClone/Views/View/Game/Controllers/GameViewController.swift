@@ -7,6 +7,7 @@ class GameViewController: UIViewController, Storyboardable {
     @IBOutlet private var vGame: GameplayAreaView!
     @IBOutlet private var cvGameEnd: UIView!
     private var vcGameEnd: GameEndViewController?
+    private var displayLink: CADisplayLink?
 
     var didBackToLevelSelect: (() -> Void)?
 
@@ -16,14 +17,15 @@ class GameViewController: UIViewController, Storyboardable {
     var ballToViewMap: [Ball: BallView] = [:]
     var pegToViewMap: [Peg: GamePegView] = [:]
 
-    var lag = 0.0
-
     override func viewDidLoad() {
         super.viewDidLoad()
+        setup()
+    }
+
+    private func setup() {
         setupModels()
         registerEventHandlers()
         setupViews()
-        createDisplayLink()
         setupBindings()
 
         guard let viewModel = viewModel else {
@@ -32,13 +34,17 @@ class GameViewController: UIViewController, Storyboardable {
 
         vGame.setup(viewModel: viewModel.getGameplayAreaViewModel())
         viewModel.startNewGame()
+        startTimer()
     }
 
-    private func createDisplayLink() {
-        let displaylink = CADisplayLink(target: self,
-                                        selector: #selector(gameLoop))
-        displaylink.preferredFramesPerSecond = GameLevel.targetFps
-        displaylink.add(to: .current, forMode: .default)
+    private func startTimer() {
+        displayLink = CADisplayLink(target: self, selector: #selector(gameLoop))
+        guard let displayLink = displayLink else {
+            fatalError("should not be nil")
+        }
+
+        displayLink.preferredFramesPerSecond = GameLevel.targetFps
+        displayLink.add(to: .current, forMode: .default)
     }
 
     private func setupBindings() {
@@ -59,6 +65,8 @@ class GameViewController: UIViewController, Storyboardable {
                 fatalError("should not be nil")
             }
 
+            self.displayLink?.invalidate()
+            self.displayLink = nil
             vcGameEnd.viewModel = vmGameEnd
             self.cvGameEnd.isHidden = false
         }
@@ -66,17 +74,8 @@ class GameViewController: UIViewController, Storyboardable {
     }
 
     @objc func gameLoop(displaylink: CADisplayLink) {
-        guard let viewModel = viewModel else {
-            fatalError("should not be nil")
-        }
-
-        lag += displaylink.duration
-        while lag >= GameLevel.targetSecondsPerFrame {
-            viewModel.update()
-            lag -= GameLevel.targetSecondsPerFrame
-        }
-
-        render()
+        viewModel?.update()
+        vGame.setNeedsDisplay()
     }
 
     private func setupModels() {
@@ -142,10 +141,6 @@ class GameViewController: UIViewController, Storyboardable {
         default:
             break
         }
-    }
-
-    func render() {
-        vGame.setNeedsDisplay()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -230,12 +225,8 @@ extension GameViewController {
 
 extension GameViewController: GameEndViewControllerDelegate {
     func restartGame() {
-        guard let viewModel = viewModel else {
-            fatalError("should not be nil")
-        }
+        setup()
         cvGameEnd.isHidden = true
-        viewModel.hydrate()
-        viewModel.startNewGame()
     }
 
     func backToLevelSelect() {

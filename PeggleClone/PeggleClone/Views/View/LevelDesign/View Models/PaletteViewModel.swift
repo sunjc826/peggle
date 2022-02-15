@@ -22,7 +22,9 @@ class PaletteViewModel {
     private var subscriptions: Set<AnyCancellable> = []
 
     var palettePegViewModels: [PalettePegViewModel] = []
+    var pegTypeViewModels: [PegTypeButtonViewModel] = []
 
+    @Published var selectedPegType = PegType.compulsory
     @Published var selectedPegInPalette: Peg?
     @Published var isDeleting = false
 
@@ -34,6 +36,8 @@ class PaletteViewModel {
     private func setupChildViewModels() {
         palettePegViewModels = palettePegs.map { PalettePegViewModel(peg: $0) }
         palettePegViewModels.forEach { $0.delegate = self }
+        pegTypeViewModels = PegType.allCases.map { PegTypeButtonViewModel(pegType: $0) }
+        pegTypeViewModels.forEach { $0.delegate = self }
     }
 
     private func setupBindings() {
@@ -54,6 +58,23 @@ class PaletteViewModel {
             }
         }
         .store(in: &subscriptions)
+
+        $selectedPegType.sink { [weak self] selectedPegType in
+            guard let self = self else {
+                return
+            }
+
+            self.selectedPegInPalette = nil
+
+            for model in self.pegTypeViewModels {
+                model.isSelected = model.pegType == selectedPegType
+            }
+
+            for model in self.palettePegViewModels {
+                model.setPegType(pegType: selectedPegType)
+            }
+        }
+        .store(in: &subscriptions)
     }
 }
 
@@ -68,6 +89,13 @@ extension PaletteViewModel: PalettePegViewModelDelegate {
         } else {
             selectedPegInPalette = nil
         }
+    }
+}
 
+extension PaletteViewModel: PegTypeButtonViewModelDelegate {
+    func selectPegType(pegType: PegType) {
+        if selectedPegType != pegType {
+            selectedPegType = pegType
+        }
     }
 }

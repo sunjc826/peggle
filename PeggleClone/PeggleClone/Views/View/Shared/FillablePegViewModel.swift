@@ -2,7 +2,7 @@ import UIKit
 
 /// Represents a peg that fills its outer container, regardless of the underlying dimensions of the peg model.
 class FillablePegViewModel: AbstractPegViewModel {
-    var peg: Peg
+    @Published var peg: Peg
 
     var frame: CGRect {
         CGRect(rectangle: peg.boundingBox)

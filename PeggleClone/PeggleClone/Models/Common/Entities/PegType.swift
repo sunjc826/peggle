@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 
 enum PegType {
     case compulsory
@@ -28,6 +28,21 @@ extension PegType {
             return 10
         case .valuable(score: let score):
             return score
+        }
+    }
+}
+
+extension PegType {
+    var color: UIColor {
+        switch self {
+        case .compulsory:
+            return Settings.PegColor.compulsory
+        case .optional:
+            return Settings.PegColor.optional
+        case .special:
+            return Settings.PegColor.special
+        case .valuable:
+            return Settings.PegColor.scoreMultiplier
         }
     }
 }

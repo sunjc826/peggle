@@ -21,14 +21,17 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Im4-tK-bPa" userLabel="DesignerContainerView">
-                                <rect key="frame" x="0.0" y="20" width="810" height="940"/>
+                                <rect key="frame" x="0.0" y="20" width="810" height="920"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <connections>
                                     <segue destination="tH6-W8-oKT" kind="embed" identifier="segueDesigner" id="ZNj-O5-2lb"/>
                                 </connections>
                             </containerView>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="SOy-uT-RcF" userLabel="PaletteContainerView">
-                                <rect key="frame" x="0.0" y="960" width="810" height="80"/>
+                                <rect key="frame" x="0.0" y="940" width="810" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="100" id="Cgx-OY-Y2x"/>
+                                </constraints>
                                 <connections>
                                     <segue destination="HZU-Ka-9tn" kind="embed" identifier="seguePalette" id="UvU-Tj-ivY"/>
                                 </connections>
@@ -51,7 +54,6 @@
                             <constraint firstItem="ZWO-3z-TaX" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="OzY-jU-zA5"/>
                             <constraint firstAttribute="bottom" secondItem="SOy-uT-RcF" secondAttribute="bottom" constant="40" id="S5K-v9-sxy"/>
                             <constraint firstItem="Im4-tK-bPa" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="V8Z-1G-jHI"/>
-                            <constraint firstItem="SOy-uT-RcF" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" constant="960" id="Y5P-pK-W40"/>
                             <constraint firstItem="Im4-tK-bPa" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="YFW-Hc-DKp"/>
                             <constraint firstItem="ZWO-3z-TaX" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="dFN-Rt-I6s"/>
                             <constraint firstItem="SOy-uT-RcF" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="hDo-Th-umq"/>
@@ -256,7 +258,7 @@
             <objects>
                 <viewController storyboardIdentifier="DesignerViewController" id="tH6-W8-oKT" userLabel="DesignerViewController" customClass="DesignerViewController" customModule="PeggleClone" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="RNI-eH-CpF">
-                        <rect key="frame" x="0.0" y="0.0" width="810" height="940"/>
+                        <rect key="frame" x="0.0" y="0.0" width="810" height="920"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="background" translatesAutoresizingMaskIntoConstraints="NO" id="tu2-EW-2Dj">
@@ -286,7 +288,7 @@
                                 <buttonConfiguration key="configuration" style="filled" title="Remove Inconsistencies"/>
                             </button>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="C0K-rn-oU5" userLabel="Shape Transform View">
-                                <rect key="frame" x="0.0" y="20" width="810" height="137"/>
+                                <rect key="frame" x="0.0" y="20" width="810" height="117"/>
                                 <connections>
                                     <segue destination="xk1-pS-GGO" kind="embed" identifier="segueShapeTransform" id="K72-yS-gnZ"/>
                                 </connections>
@@ -328,30 +330,37 @@
             <objects>
                 <viewController storyboardIdentifier="PaletteViewController" id="HZU-Ka-9tn" userLabel="PaletteViewController" customClass="PaletteViewController" customModule="PeggleClone" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="C3i-8F-UqJ">
-                        <rect key="frame" x="0.0" y="0.0" width="810" height="80"/>
+                        <rect key="frame" x="0.0" y="0.0" width="810" height="100"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WUq-V5-lzR">
+                                <rect key="frame" x="0.0" y="0.0" width="710" height="40"/>
+                            </stackView>
                             <scrollView autoresizesSubviews="NO" clipsSubviews="YES" contentMode="scaleToFill" semanticContentAttribute="forceLeftToRight" directionalLockEnabled="YES" showsVerticalScrollIndicator="NO" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FGz-0M-mF9">
-                                <rect key="frame" x="0.0" y="0.0" width="710" height="80"/>
+                                <rect key="frame" x="0.0" y="40" width="710" height="60"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="zcP-vV-QLd" userLabel="Peg Palette">
-                                        <rect key="frame" x="10" y="0.0" width="690" height="80"/>
+                                        <rect key="frame" x="10" y="0.0" width="690" height="60"/>
                                     </stackView>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstItem="zcP-vV-QLd" firstAttribute="centerX" secondItem="FGz-0M-mF9" secondAttribute="centerX" placeholder="YES" id="7As-P7-X3H"/>
+                                    <constraint firstItem="zcP-vV-QLd" firstAttribute="bottom" secondItem="ex4-Zg-9Np" secondAttribute="bottom" id="Ul6-OW-jII"/>
                                     <constraint firstItem="zcP-vV-QLd" firstAttribute="top" secondItem="FGz-0M-mF9" secondAttribute="top" id="ZwQ-og-21h"/>
-                                    <constraint firstItem="zcP-vV-QLd" firstAttribute="height" secondItem="FGz-0M-mF9" secondAttribute="height" id="jUe-Fa-nH7"/>
+                                    <constraint firstItem="zcP-vV-QLd" firstAttribute="centerX" secondItem="FGz-0M-mF9" secondAttribute="centerX" id="gc5-qG-BWB"/>
                                     <constraint firstItem="zcP-vV-QLd" firstAttribute="leading" secondItem="FGz-0M-mF9" secondAttribute="leading" constant="10" id="lyX-Z0-TlG"/>
                                     <constraint firstAttribute="bottom" secondItem="zcP-vV-QLd" secondAttribute="bottom" id="oJR-47-I8c"/>
                                     <constraint firstAttribute="trailing" secondItem="zcP-vV-QLd" secondAttribute="trailing" constant="10" id="oZP-1Y-xEP"/>
+                                    <constraint firstAttribute="height" constant="60" id="ysW-ai-A04"/>
                                 </constraints>
                                 <viewLayoutGuide key="contentLayoutGuide" id="WUt-ky-meM"/>
                                 <viewLayoutGuide key="frameLayoutGuide" id="ex4-Zg-9Np"/>
                             </scrollView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hgW-JH-47I">
-                                <rect key="frame" x="710" y="0.0" width="100" height="80"/>
+                                <rect key="frame" x="710" y="0.0" width="100" height="100"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="nzE-7a-TUH"/>
+                                </constraints>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" title="DEL">
                                     <color key="titleColor" systemColor="labelColor"/>
@@ -365,15 +374,18 @@
                             <constraint firstAttribute="bottom" secondItem="hgW-JH-47I" secondAttribute="bottom" id="0Yn-ct-fWj"/>
                             <constraint firstItem="hgW-JH-47I" firstAttribute="leading" secondItem="FGz-0M-mF9" secondAttribute="trailing" id="2ts-DX-xwM"/>
                             <constraint firstAttribute="trailing" secondItem="hgW-JH-47I" secondAttribute="trailing" id="481-XB-0K9"/>
-                            <constraint firstAttribute="trailing" secondItem="FGz-0M-mF9" secondAttribute="trailing" constant="100" id="6ac-Ck-TYU"/>
-                            <constraint firstItem="FGz-0M-mF9" firstAttribute="leading" secondItem="C3i-8F-UqJ" secondAttribute="leading" id="W6U-TF-5Gk"/>
-                            <constraint firstAttribute="bottom" secondItem="FGz-0M-mF9" secondAttribute="bottom" id="dxu-OZ-MYr"/>
-                            <constraint firstItem="FGz-0M-mF9" firstAttribute="top" secondItem="C3i-8F-UqJ" secondAttribute="top" id="jQ0-Bu-aUi"/>
+                            <constraint firstItem="WUq-V5-lzR" firstAttribute="top" secondItem="C3i-8F-UqJ" secondAttribute="top" id="AiQ-OJ-vie"/>
+                            <constraint firstItem="FGz-0M-mF9" firstAttribute="top" secondItem="WUq-V5-lzR" secondAttribute="bottom" id="TlT-hU-wuA"/>
+                            <constraint firstItem="FGz-0M-mF9" firstAttribute="bottom" secondItem="C3i-8F-UqJ" secondAttribute="bottom" id="VAX-eh-d6N"/>
+                            <constraint firstItem="FGz-0M-mF9" firstAttribute="leading" secondItem="ArY-fh-EaM" secondAttribute="leading" id="VZU-a1-Pxj"/>
                             <constraint firstItem="hgW-JH-47I" firstAttribute="top" secondItem="C3i-8F-UqJ" secondAttribute="top" id="nYy-X2-KF8"/>
+                            <constraint firstItem="hgW-JH-47I" firstAttribute="leading" secondItem="WUq-V5-lzR" secondAttribute="trailing" id="qYw-dA-oFA"/>
+                            <constraint firstItem="WUq-V5-lzR" firstAttribute="leading" secondItem="ArY-fh-EaM" secondAttribute="leading" id="seI-9j-dQO"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="btnDelete" destination="hgW-JH-47I" id="MUF-7l-vSr"/>
+                        <outlet property="svColor" destination="WUq-V5-lzR" id="ia3-ov-ikt"/>
                         <outlet property="svPalette" destination="zcP-vV-QLd" id="PHT-DP-djT"/>
                     </connections>
                 </viewController>
@@ -566,29 +578,29 @@
             <objects>
                 <viewController id="xk1-pS-GGO" customClass="ShapeTransformViewController" customModule="PeggleClone" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="73K-Iq-f2U">
-                        <rect key="frame" x="0.0" y="0.0" width="810" height="137"/>
+                        <rect key="frame" x="0.0" y="0.0" width="810" height="117"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minValue="0.10000000000000001" maxValue="10" translatesAutoresizingMaskIntoConstraints="NO" id="cHv-rg-xKQ" userLabel="Scale Slider">
-                                <rect key="frame" x="58" y="63.5" width="118" height="31"/>
+                                <rect key="frame" x="58" y="53.5" width="118" height="31"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="114" id="l8Z-Pw-Fdc"/>
                                 </constraints>
                             </slider>
                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="6.2800000000000002" translatesAutoresizingMaskIntoConstraints="NO" id="6v4-o6-YdA" userLabel="Rotation Slider">
-                                <rect key="frame" x="634" y="63.5" width="118" height="31"/>
+                                <rect key="frame" x="634" y="53.5" width="118" height="31"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="114" id="OZu-gc-ZYt"/>
                                 </constraints>
                             </slider>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Scale" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="epm-gH-w9d">
-                                <rect key="frame" x="96" y="23" width="42" height="20.5"/>
+                                <rect key="frame" x="96" y="13" width="42" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rotation" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H7Z-We-VDu">
-                                <rect key="frame" x="650" y="23" width="86" height="20.5"/>
+                                <rect key="frame" x="650" y="13" width="86" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>

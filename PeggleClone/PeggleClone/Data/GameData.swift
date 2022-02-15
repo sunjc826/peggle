@@ -9,7 +9,7 @@ struct GameData {
             age: 100,
             title: "The Endless Witch",
             description: "",
-            special: .spooky(activeCount: 1)
+            special: .spooky()
         ),
         "battler": PeggleMaster(
             id: "battler",
@@ -17,7 +17,7 @@ struct GameData {
             age: 18,
             title: "The Endless Sorcerer",
             description: "",
-            special: .normal
+            special: .spooky()
         ),
         "maria": PeggleMaster(
             id: "maria",
@@ -41,8 +41,7 @@ struct GameData {
             age: 10_000,
             title: "The Witch of Theatergoing",
             description: "",
-            special: .cheater
+            special: .author
         )
     ]
-
 }

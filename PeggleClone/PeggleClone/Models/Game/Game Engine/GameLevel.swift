@@ -71,12 +71,30 @@ final class GameLevel {
     }
 
     func update() {
-        doBeginning()
-        doShootBallWhenReady()
-        doOngoing()
-        doStuck()
-        doCleanUp()
-        physicsEngine.simulateAll(time: GameLevel.targetSecondsPerFrame)
+        switch gamePhase {
+        case .beginning:
+            doBeginning()
+        case .shootBallWhenReady:
+            doShootBallWhenReady()
+        case .ongoing:
+            doOngoing()
+        case .stuck:
+            doStuck()
+        case .cleanup:
+            doCleanUp()
+        case .gameEnd(stats: _):
+            return
+        case .disabled:
+            return
+        }
+
+        switch gamePhase {
+        case .beginning, .shootBallWhenReady, .ongoing, .stuck, .cleanup:
+            physicsEngine.simulateAll(time: GameLevel.targetSecondsPerFrame)
+        case .gameEnd(stats: _), .disabled:
+            return
+        }
+
     }
 }
 

@@ -165,6 +165,8 @@
 		E5EBE2EC27A05AF1006E9D1E /* ArrayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EBE2EB27A05AF1006E9D1E /* ArrayTests.swift */; };
 		E5EBE2EE27A05B01006E9D1E /* CollisionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EBE2ED27A05B01006E9D1E /* CollisionTests.swift */; };
 		E5EBE2F027A05B18006E9D1E /* BoundingBoxTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EBE2EF27A05B18006E9D1E /* BoundingBoxTests.swift */; };
+		E5FACBDA27BBC6B90013B53E /* PegTypeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FACBD927BBC6B90013B53E /* PegTypeButton.swift */; };
+		E5FACBDC27BBC6DA0013B53E /* PegTypeButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FACBDB27BBC6DA0013B53E /* PegTypeButtonViewModel.swift */; };
 		E5FB39C927AA16E4008CE4D2 /* UIViewController+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FB39C827AA16E4008CE4D2 /* UIViewController+Preview.swift */; };
 		E5FB39CB27AA27A0008CE4D2 /* ClosedRange.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FB39CA27AA27A0008CE4D2 /* ClosedRange.swift */; };
 		E5FB39CD27AA414A008CE4D2 /* UIView+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FB39CC27AA414A008CE4D2 /* UIView+Preview.swift */; };
@@ -353,6 +355,8 @@
 		E5EBE2EB27A05AF1006E9D1E /* ArrayTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayTests.swift; sourceTree = "<group>"; };
 		E5EBE2ED27A05B01006E9D1E /* CollisionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollisionTests.swift; sourceTree = "<group>"; };
 		E5EBE2EF27A05B18006E9D1E /* BoundingBoxTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoundingBoxTests.swift; sourceTree = "<group>"; };
+		E5FACBD927BBC6B90013B53E /* PegTypeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PegTypeButton.swift; sourceTree = "<group>"; };
+		E5FACBDB27BBC6DA0013B53E /* PegTypeButtonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PegTypeButtonViewModel.swift; sourceTree = "<group>"; };
 		E5FB39C827AA16E4008CE4D2 /* UIViewController+Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Preview.swift"; sourceTree = "<group>"; };
 		E5FB39CA27AA27A0008CE4D2 /* ClosedRange.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosedRange.swift; sourceTree = "<group>"; };
 		E5FB39CC27AA414A008CE4D2 /* UIView+Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Preview.swift"; sourceTree = "<group>"; };
@@ -579,6 +583,7 @@
 				E56FF53E27AF62D800FB4D02 /* StorageViewModel.swift */,
 				E56FF54027AF62EA00FB4D02 /* ShapeTransformViewModel.swift */,
 				E5DCBC0C27B1128300D92638 /* DesignerPegViewModel.swift */,
+				E5FACBDB27BBC6DA0013B53E /* PegTypeButtonViewModel.swift */,
 			);
 			path = "View Models";
 			sourceTree = "<group>";
@@ -863,6 +868,7 @@
 			children = (
 				E5354E38279A89A900ADF354 /* PalettePegButton.swift */,
 				E5354E3A279A89EC00ADF354 /* DesignerPegButton.swift */,
+				E5FACBD927BBC6B90013B53E /* PegTypeButton.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1218,6 +1224,7 @@
 				E586262527AD870D009964BF /* Collision+Detection.swift in Sources */,
 				E5354E39279A89A900ADF354 /* PalettePegButton.swift in Sources */,
 				E569732727A376440000BF18 /* CGRect.swift in Sources */,
+				E5FACBDA27BBC6B90013B53E /* PegTypeButton.swift in Sources */,
 				E57B6C8827BA5E4000522F3F /* PegStatViewModel.swift in Sources */,
 				E571C09027AEB712009459CE /* DesignerMainViewModel.swift in Sources */,
 				E569732927A3766F0000BF18 /* CGAffineTransform.swift in Sources */,
@@ -1226,6 +1233,7 @@
 				E554880827A21B68009B862C /* NeighborFinder.swift in Sources */,
 				E572B8F127B74D3A008E72A6 /* PersistableDesignerGameLevel.swift in Sources */,
 				E571C08C27AE75AD009459CE /* ShapeDrawable.swift in Sources */,
+				E5FACBDC27BBC6DA0013B53E /* PegTypeButtonViewModel.swift in Sources */,
 				E56B868827A4495200D475BF /* ShapeTransformViewController.swift in Sources */,
 				E519D56F2798009600BCE59D /* DesignerMainViewController.swift in Sources */,
 				E57B6CA227BA905300522F3F /* GameRoundStats.swift in Sources */,
