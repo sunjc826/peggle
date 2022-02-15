@@ -31,7 +31,11 @@ final class GameLevel {
     var didRemovePegCallbacks: [CallbackUnaryFunction<Peg>] = []
     var gameDidEndCallbacks: [CallbackUnaryFunction<Bool>] = []
 
-    init<T: Container>(coordinateMapper: PhysicsCoordinateMapper, pegs: T, special: SpecialType) where T.Element == Peg {
+    init<T: Container>(
+        coordinateMapper: PhysicsCoordinateMapper,
+        pegs: T,
+        special: SpecialType
+    ) where T.Element == Peg {
         self.coordinateMapper = coordinateMapper
         self.playArea = coordinateMapper.getPlayArea()
         self.pegs = PegContainer(pegs: pegs)

@@ -106,9 +106,9 @@ final class RigidBodyObject: RigidBody, HasBoundingBox, Equatable, Hashable {
     var hasCollidedMostRecently = false
 
     var consecutiveCollisionCount: Int = 0
-    
+
     var hasWrappedAroundMostRecently = false
-    
+
     var wrapAroundCount: Int = 0
 
     init(
@@ -223,7 +223,7 @@ extension RigidBodyObject {
         rigidBodyCopy.consecutiveCollisionCount = count
         return rigidBodyCopy
     }
-    
+
     func withWrapAroundCount(count: Int) -> RigidBodyObject {
         let rigidBodyCopy = RigidBodyObject(instance: self)
         rigidBodyCopy.wrapAroundCount = count

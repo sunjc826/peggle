@@ -6,6 +6,9 @@ private let physicalScale: Double = 100.0
 
 class GameViewModel {
     private var subscriptions: Set<AnyCancellable> = []
+
+    var peggleMaster: PeggleMaster
+
     var gameEndViewModelPublisher: AnyPublisher<GameEndViewModel, Never>?
     var gameLevel: GameLevel? {
         didSet {
@@ -19,6 +22,10 @@ class GameViewModel {
 
     var cannon: Cannon? {
         gameLevel?.cannon
+    }
+
+    init(peggleMaster: PeggleMaster?) {
+        self.peggleMaster = peggleMaster ?? GameData.defaultPeggleMaster
     }
 
     private func setupBindings() {
@@ -56,7 +63,11 @@ class GameViewModel {
             physicalScale: physicalScale
         )
 
-        gameLevel = GameLevel(coordinateMapper: coordinateMapper, pegs: SetObject<Peg>())
+        gameLevel = GameLevel(
+            coordinateMapper: coordinateMapper,
+            pegs: SetObject<Peg>(),
+            special: peggleMaster.special
+        )
     }
 
     func hydrate() {

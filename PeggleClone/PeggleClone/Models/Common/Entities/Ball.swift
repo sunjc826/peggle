@@ -3,9 +3,9 @@ import CoreGraphics
 
 private let defaultBallRadius = 0.01
 
-class Ball: GameEntity, Circle, Equatable, Hashable {    
+class Ball: GameEntity, Circle, Equatable, Hashable {
     weak var rigidBody: RigidBodyObject?
-    
+
     var isDestructible = false
 
     var isOverlayable = false

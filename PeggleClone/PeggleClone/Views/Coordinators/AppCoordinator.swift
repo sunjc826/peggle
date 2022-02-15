@@ -1,4 +1,5 @@
 import UIKit
+import Combine
 
 // reference: cocoacasts
 class AppCoordinator {
@@ -7,8 +8,11 @@ class AppCoordinator {
     var rootViewController: UIViewController {
         navigationController
     }
+    
+    var subscriptions: Set<AnyCancellable> = []
 
     var loadLevelURL: URL?
+    var selectedPeggleMaster: PeggleMaster?
 
     func start() {
         showMenu()
@@ -105,10 +109,19 @@ class AppCoordinator {
             }
             self.showGame(with: gameLevel)
         }
-        
-        let vcPeggleMaster = PeggleMasterCollectionViewController()
-        let vmPeggleMaster = PeggleMasterViewModel()
+
+        vcLevelSelect.tabBarItem = UITabBarItem(title: "Levels", image: nil, tag: 0)
+
+        let vcPeggleMaster = PeggleMasterCollectionViewController.instantiate()
+        let vmPeggleMaster = PeggleMasterViewModel(selectedPeggleMaster: selectedPeggleMaster)
         vcPeggleMaster.viewModel = vmPeggleMaster
+        
+        vmPeggleMaster.$selectedPeggleMaster
+            .assign(to: \.selectedPeggleMaster, on: self)
+            .store(in: &subscriptions)
+
+        vcPeggleMaster.tabBarItem = UITabBarItem(title: "Players", image: nil, tag: 1)
+
         let tabBarController = UITabBarController()
         tabBarController.setViewControllers([vcLevelSelect, vcPeggleMaster], animated: true)
 
@@ -117,7 +130,7 @@ class AppCoordinator {
 
     private func showGame(with backingDesignerGameLevel: PersistableDesignerGameLevel) {
         let vcGame = GameViewController.instantiate()
-        let vmGame = GameViewModel()
+        let vmGame = GameViewModel(peggleMaster: selectedPeggleMaster)
         vmGame.backingDesignerGameLevel = backingDesignerGameLevel
         vcGame.viewModel = vmGame
 

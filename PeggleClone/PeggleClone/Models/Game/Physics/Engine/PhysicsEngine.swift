@@ -82,7 +82,7 @@ extension PhysicsEngine {
             var updatedRigidBody = rigidBody.hasCollidedMostRecently ?
             rigidBody.withConsecutiveCollisionCount(count: rigidBody.consecutiveCollisionCount + 1) :
             rigidBody.withConsecutiveCollisionCount(count: 0)
-            
+
             if rigidBody.hasWrappedAroundMostRecently {
                 updatedRigidBody = updatedRigidBody.withWrapAroundCount(count: rigidBody.wrapAroundCount + 1)
             }
@@ -114,7 +114,7 @@ extension PhysicsEngine {
         }
         resolveRigidBodyCollisions(rigidBody: rigidBody)
     }
-    
+
     func runCallbacksAfterAllUpdates() {
         for callback in didFinishAllUpdatesCallbacks {
             callback()
@@ -208,7 +208,7 @@ extension PhysicsEngine {
     func registerDidRemoveCallback(callback: @escaping CallbackUnaryFunction<RigidBodyObject>) {
         didRemoveCallbacks.append(callback)
     }
-    
+
     func registerDidFinishAllUpdatesCallback(callback: @escaping CallbackRunnable, temp: Bool) {
         if temp {
             didFinishAllUpdatesTempCallbacks.append(callback)

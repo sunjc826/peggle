@@ -13,7 +13,7 @@ extension GameLevel {
             if updatedRigidBody.consecutiveCollisionCount > GameLevel.consecutiveCollisionThreshold {
                 gamePhase = .stuck
             }
-            
+
             if updatedRigidBody.hasWrappedAroundMostRecently {
                 guard case .spooky(activeCount: let activeCount) = special else {
                     fatalError("should be spooky")
@@ -22,7 +22,7 @@ extension GameLevel {
                     updatedRigidBody.bottomWallBehavior = .fallThrough
                 }
             }
-            
+
             let updatedBall = ball
                 .withCenter(center: updatedPosition) // ball does not need to rotate
             updatedRigidBody.associatedEntity = updatedBall
@@ -35,20 +35,20 @@ extension GameLevel {
             if hasCollidedInLastUpdate {
                 updatedPeg = updatedPeg.withHasCollided(hasCollided: true)
             }
-            
+
             if peg.pegType == .special && !peg.hasCollided {
                 physicsEngine.registerDidFinishAllUpdatesCallback(callback: handleHitSpecialPeg, temp: true)
             }
-            
+
             updatedRigidBody.associatedEntity = updatedPeg
             updatedPeg.rigidBody = updatedRigidBody
-            
+
             updatePeg(oldPeg: peg, with: updatedPeg)
         default:
             break
         }
     }
-    
+
     func handleHitSpecialPeg() {
         switch special {
         case .normal:
@@ -65,6 +65,8 @@ extension GameLevel {
             special = .spooky(activeCount: activeCount + 1)
             return
         case .moonTourist:
+            return
+        default:
             return
         }
     }

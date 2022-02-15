@@ -33,7 +33,7 @@ extension LevelSelectCell {
         guard let viewModel = viewModel else {
             fatalError("should not be nil")
         }
-        
+
         viewModel.$text
             .assign(to: \.text, on: lblLevelName)
             .store(in: &subscriptions)
