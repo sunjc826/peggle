@@ -35,13 +35,21 @@ struct GameData {
             description: "",
             special: .moonTourist
         ),
-        "feather": PeggleMaster(
+        "featherine": PeggleMaster(
             id: "featherine",
             name: "Featherine Augustus Aurora",
             age: 10_000,
             title: "The Witch of Theatergoing",
             description: "",
             special: .author
+        ),
+        "lambdadelta": PeggleMaster(
+            id: "lambdadelta",
+            name: "Lambdadelta",
+            age: 1000,
+            title: "The Witch of Certainty",
+            description: "",
+            special: .smallBombs
         )
     ]
 }

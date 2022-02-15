@@ -3,10 +3,10 @@ import Foundation
 enum SpecialType {
     case normal
     case spooky(activeCount: Int = 0)
-    case explosive
-    case moonTourist
+    case smallBombs
+    case moonTourist // lower gravity for the same ball
     case multiball
-    case author
+    case author // hax
 }
 
 extension SpecialType: Equatable {}

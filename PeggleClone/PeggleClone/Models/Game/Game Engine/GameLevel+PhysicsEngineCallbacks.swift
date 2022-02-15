@@ -59,7 +59,7 @@ extension GameLevel {
         switch special {
         case .normal:
             return
-        case .explosive:
+        case .smallBombs:
             return
         case .spooky(activeCount: let activeCount):
             assert(balls.count == 1)
