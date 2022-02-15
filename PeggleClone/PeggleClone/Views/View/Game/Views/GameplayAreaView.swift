@@ -61,11 +61,11 @@ extension GameplayAreaView {
 
         svInfo.addArrangedSubview(svBalls)
 
-        guard let score = viewModel.score else {
+        guard let totalScore = viewModel.totalScore else {
             fatalError("should not be nil")
         }
 
-        let vmScore = GenericStatViewModel(key: "Score", value: score)
+        let vmScore = GenericStatViewModel(key: "Score", value: totalScore)
         let svScore = GenericStatView(viewModel: vmScore)
 
         svInfo.addArrangedSubview(svScore)

@@ -29,7 +29,7 @@ class GameplayAreaViewModel {
     var cannonAngle: AnyPublisher<Double, Never>?
     var cannonPosition: AnyPublisher<CGPoint, Never>?
     var ballsLeft: AnyPublisher<Int, Never>?
-    var score: AnyPublisher<Int, Never>?
+    var totalScore: AnyPublisher<Int, Never>?
     var pegStatViewModels: [PegStatViewModel] = []
 
     var shouldDrawPrediction: Bool {
@@ -61,6 +61,6 @@ class GameplayAreaViewModel {
 
         ballsLeft = gameLevel.$numBalls.eraseToAnyPublisher()
 
-        score = gameLevel.$score.eraseToAnyPublisher()
+        totalScore = gameLevel.totalScore
     }
 }

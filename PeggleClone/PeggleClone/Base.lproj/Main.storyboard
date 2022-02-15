@@ -557,6 +557,7 @@
                                 <buttonConfiguration key="configuration" style="filled" title="Restart"/>
                             </button>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="ljz-7N-Rft"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="l19-ru-fNr" firstAttribute="centerY" secondItem="GDy-7f-j4B" secondAttribute="centerY" id="7F4-NG-cHh"/>

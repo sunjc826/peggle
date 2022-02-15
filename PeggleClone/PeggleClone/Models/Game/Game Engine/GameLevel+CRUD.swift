@@ -7,6 +7,7 @@ extension GameLevel {
         let rigidBody = ball.toRigidBody(
             logicalEjectionVelocity: ejectionVelocity
         )
+        ball.rigidBody = rigidBody
         physicsEngine.add(rigidBody: rigidBody)
         for callback in didAddBallCallbacks {
             callback(ball)
@@ -30,15 +31,16 @@ extension GameLevel {
 
     func addPeg(peg: Peg) {
         pegs.insert(peg)
-        physicsEngine.add(rigidBody: peg.toRigidBody())
+        let rigidBody = peg.toRigidBody()
+        peg.rigidBody = rigidBody
+        physicsEngine.add(rigidBody: rigidBody)
         for callback in didAddPegCallbacks {
             callback(peg)
         }
     }
 
     func updatePeg(oldPeg: Peg, with newPeg: Peg) {
-        pegs.remove(oldPeg)
-        pegs.insert(newPeg)
+        pegs.update(oldPeg: oldPeg, with: newPeg)
         for callback in didUpdatePegCallbacks {
             callback(oldPeg, newPeg)
         }

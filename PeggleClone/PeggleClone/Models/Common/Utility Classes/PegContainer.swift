@@ -1,12 +1,13 @@
 import Foundation
+import Combine
 
 class PegContainer: Container {
     typealias Element = Peg
 
     private var pegs: AnyContainer<Peg>
     @Published var pegCounts: [PegType: Int] = [:]
-    var pegHits: [PegType: Int] = [:]
-    var pegScores: [PegType: Int] = [:]
+    @Published var pegHits: [PegType: Int] = [:]
+    @Published var pegScores: [PegType: Int] = [:]
 
     var compulsoryPegCount: Int {
         guard let count = pegCounts[.compulsory] else {
@@ -53,8 +54,13 @@ class PegContainer: Container {
         pegs.makeIterator()
     }
 
+    func update(oldPeg: Peg, with newPeg: Peg) {
+        pegs.remove(oldPeg)
+        pegs.insert(newPeg)
+    }
+
     func remove(_ entity: Peg) {
-        guard !pegs.contains(entity) else {
+        guard pegs.contains(entity) else {
             return
         }
 

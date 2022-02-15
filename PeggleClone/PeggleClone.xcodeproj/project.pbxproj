@@ -51,6 +51,7 @@
 		E569733A27A3EB050000BF18 /* PaletteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E569733927A3EB050000BF18 /* PaletteViewController.swift */; };
 		E56B868627A430FC00D475BF /* StorageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56B868527A430FC00D475BF /* StorageViewController.swift */; };
 		E56B868827A4495200D475BF /* ShapeTransformViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56B868727A4495200D475BF /* ShapeTransformViewController.swift */; };
+		E56E5A1A27BB408100723D6F /* SpecialType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56E5A1927BB408100723D6F /* SpecialType.swift */; };
 		E56FF53F27AF62D800FB4D02 /* StorageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56FF53E27AF62D800FB4D02 /* StorageViewModel.swift */; };
 		E56FF54127AF62EA00FB4D02 /* ShapeTransformViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56FF54027AF62EA00FB4D02 /* ShapeTransformViewModel.swift */; };
 		E5710F6B27B341E2004ACED4 /* LevelSelectCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5710F6A27B341E2004ACED4 /* LevelSelectCellViewModel.swift */; };
@@ -231,6 +232,7 @@
 		E569733927A3EB050000BF18 /* PaletteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaletteViewController.swift; sourceTree = "<group>"; };
 		E56B868527A430FC00D475BF /* StorageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageViewController.swift; sourceTree = "<group>"; };
 		E56B868727A4495200D475BF /* ShapeTransformViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShapeTransformViewController.swift; sourceTree = "<group>"; };
+		E56E5A1927BB408100723D6F /* SpecialType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecialType.swift; sourceTree = "<group>"; };
 		E56FF53E27AF62D800FB4D02 /* StorageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageViewModel.swift; sourceTree = "<group>"; };
 		E56FF54027AF62EA00FB4D02 /* ShapeTransformViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShapeTransformViewModel.swift; sourceTree = "<group>"; };
 		E5710F6A27B341E2004ACED4 /* LevelSelectCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelSelectCellViewModel.swift; sourceTree = "<group>"; };
@@ -713,11 +715,12 @@
 			isa = PBXGroup;
 			children = (
 				E5BA4E3027A9322B00C4A576 /* GameLevel.swift */,
-				E572B90827B76DC4008E72A6 /* GamePhase.swift */,
 				E57B6C9527BA7F5900522F3F /* GameLevel+Callbacks.swift */,
 				E57B6C9727BA7F9800522F3F /* GameLevel+CRUD.swift */,
 				E57B6C9927BA7FE700522F3F /* GameLevel+Lifecycle.swift */,
 				E57B6C9B27BA807600522F3F /* GameLevel+PhysicsEngineCallbacks.swift */,
+				E572B90827B76DC4008E72A6 /* GamePhase.swift */,
+				E56E5A1927BB408100723D6F /* SpecialType.swift */,
 			);
 			path = "Game Engine";
 			sourceTree = "<group>";
@@ -1174,6 +1177,7 @@
 				E57B6C8627BA54DC00522F3F /* GenericStatViewModel.swift in Sources */,
 				E578EEC327AAA46C00A121F3 /* TransformablePolygon.swift in Sources */,
 				E572B91227B789D6008E72A6 /* CoordinateMapper.swift in Sources */,
+				E56E5A1A27BB408100723D6F /* SpecialType.swift in Sources */,
 				E569731827A371DE0000BF18 /* RegularShape.swift in Sources */,
 				E57B6C7E27BA343D00522F3F /* UIView+Transform.swift in Sources */,
 				E571C08E27AEB703009459CE /* PaletteViewModel.swift in Sources */,

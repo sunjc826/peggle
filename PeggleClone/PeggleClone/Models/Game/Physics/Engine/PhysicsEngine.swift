@@ -18,6 +18,8 @@ class PhysicsEngine: AbstractPhysicsEngine {
 
     var didUpdateCallbacks: [CallbackBinaryFunction<RigidBodyObject>] = []
     var didRemoveCallbacks: [CallbackUnaryFunction<RigidBodyObject>] = []
+    var didFinishAllUpdatesCallbacks: [CallbackRunnable] = []
+    var didFinishAllUpdatesTempCallbacks: [CallbackRunnable] = []
 
     var globalAcceleration: [CGVector] = []
 
@@ -55,6 +57,7 @@ class PhysicsEngine: AbstractPhysicsEngine {
         calculateWithoutApplyingResults()
         cleanup()
         applyResults(time: dt)
+        runCallbacksAfterAllUpdates()
     }
 }
 
@@ -79,6 +82,10 @@ extension PhysicsEngine {
             var updatedRigidBody = rigidBody.hasCollidedMostRecently ?
             rigidBody.withConsecutiveCollisionCount(count: rigidBody.consecutiveCollisionCount + 1) :
             rigidBody.withConsecutiveCollisionCount(count: 0)
+            
+            if rigidBody.hasWrappedAroundMostRecently {
+                updatedRigidBody = updatedRigidBody.withWrapAroundCount(count: rigidBody.wrapAroundCount + 1)
+            }
 
             if rigidBody.canTranslate {
                 let (newPosition, newLinearVelocity) = rigidBody.getUpdatedLinearData(time: dt)
@@ -95,7 +102,6 @@ extension PhysicsEngine {
                 )
             }
 
-            assert(rigidBody !== updatedRigidBody)
             update(oldRigidBody: rigidBody, with: updatedRigidBody)
         }
         bodiesMarkedForCalculationUpdates.removeAll()
@@ -107,6 +113,16 @@ extension PhysicsEngine {
             resolveBoundaryCollisions(rigidBody: rigidBody)
         }
         resolveRigidBodyCollisions(rigidBody: rigidBody)
+    }
+    
+    func runCallbacksAfterAllUpdates() {
+        for callback in didFinishAllUpdatesCallbacks {
+            callback()
+        }
+        for callback in didFinishAllUpdatesTempCallbacks {
+            callback()
+        }
+        didFinishAllUpdatesTempCallbacks.removeAll()
     }
 }
 
@@ -191,6 +207,14 @@ extension PhysicsEngine {
 
     func registerDidRemoveCallback(callback: @escaping CallbackUnaryFunction<RigidBodyObject>) {
         didRemoveCallbacks.append(callback)
+    }
+    
+    func registerDidFinishAllUpdatesCallback(callback: @escaping CallbackRunnable, temp: Bool) {
+        if temp {
+            didFinishAllUpdatesTempCallbacks.append(callback)
+        } else {
+            didFinishAllUpdatesCallbacks.append(callback)
+        }
     }
 }
 

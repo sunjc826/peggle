@@ -3,6 +3,7 @@ import CoreGraphics
 
 /// Represents a destructible object.
 final class Peg: EditableGameEntity, Hashable {
+    weak var rigidBody: RigidBodyObject?
     var isConcrete = true
     let pegType: PegType
     let isDestructible = true

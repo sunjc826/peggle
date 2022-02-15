@@ -1,5 +1,7 @@
 import Foundation
 protocol GameEntity: AnyObject {
+    var rigidBody: RigidBodyObject? { get }
+    
     /// Whether the object can be destroyed by the ball during a game.
     var isDestructible: Bool { get }
 

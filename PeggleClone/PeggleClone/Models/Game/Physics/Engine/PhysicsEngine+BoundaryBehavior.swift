@@ -25,6 +25,7 @@ extension PhysicsEngine {
             }
         case .wrapAround:
             if rigidBody.boundingBox.right <= boundary.left {
+                rigidBody.hasWrappedAroundMostRecently = true
                 rigidBody.nextTeleportLocation = CGPoint(x: boundary.right, y: rigidBody.center.x)
                 bodiesMarkedForCalculationUpdates.insert(rigidBody)
             }
@@ -47,6 +48,7 @@ extension PhysicsEngine {
             }
         case .wrapAround:
             if rigidBody.boundingBox.left >= boundary.right {
+                rigidBody.hasWrappedAroundMostRecently = true
                 rigidBody.nextTeleportLocation = CGPoint(x: boundary.left, y: rigidBody.center.x)
                 bodiesMarkedForCalculationUpdates.insert(rigidBody)
             }
@@ -69,6 +71,7 @@ extension PhysicsEngine {
             }
         case .wrapAround:
             if rigidBody.boundingBox.bottom <= boundary.top {
+                rigidBody.hasWrappedAroundMostRecently = true
                 rigidBody.nextTeleportLocation = CGPoint(x: rigidBody.center.x, y: boundary.bottom)
                 bodiesMarkedForCalculationUpdates.insert(rigidBody)
             }
@@ -91,6 +94,7 @@ extension PhysicsEngine {
             }
         case .wrapAround:
             if rigidBody.boundingBox.top >= boundary.bottom {
+                rigidBody.hasWrappedAroundMostRecently = true
                 rigidBody.nextTeleportLocation = CGPoint(x: rigidBody.center.x, y: boundary.top)
                 bodiesMarkedForCalculationUpdates.insert(rigidBody)
             }

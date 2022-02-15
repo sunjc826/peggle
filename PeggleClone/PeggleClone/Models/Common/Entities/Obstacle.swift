@@ -5,6 +5,7 @@ import Foundation
 
 /// Represents an indestructible object.
 final class Obstacle: EditableGameEntity {
+    weak var rigidBody: RigidBodyObject?
     let isDestructible = false
     var isOverlayable: Bool
     var isConcrete = true

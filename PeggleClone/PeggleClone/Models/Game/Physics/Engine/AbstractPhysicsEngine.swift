@@ -11,4 +11,5 @@ protocol AbstractPhysicsEngine {
     func remove(rigidBody: RigidBodyObject)
     func registerDidUpdateCallback(callback: @escaping CallbackBinaryFunction<RigidBodyObject>)
     func registerDidRemoveCallback(callback: @escaping CallbackUnaryFunction<RigidBodyObject>)
+    func registerDidFinishAllUpdatesCallback(callback: @escaping CallbackRunnable, temp: Bool)
 }

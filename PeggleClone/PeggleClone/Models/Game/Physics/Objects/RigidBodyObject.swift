@@ -106,6 +106,10 @@ final class RigidBodyObject: RigidBody, HasBoundingBox, Equatable, Hashable {
     var hasCollidedMostRecently = false
 
     var consecutiveCollisionCount: Int = 0
+    
+    var hasWrappedAroundMostRecently = false
+    
+    var wrapAroundCount: Int = 0
 
     init(
         backingShape: TransformableShape,
@@ -120,7 +124,8 @@ final class RigidBodyObject: RigidBody, HasBoundingBox, Equatable, Hashable {
         uniformDensity: Double = 1,
         elasticity: Double = 0.9,
         initialVelocity: CGVector = CGVector.zero,
-        consecutiveCollisionCount: Int = 0
+        consecutiveCollisionCount: Int = 0,
+        wrapAroundCount: Int = 0
     ) {
         assert(uniformDensity > 0)
         self.backingShape = backingShape
@@ -142,6 +147,7 @@ final class RigidBodyObject: RigidBody, HasBoundingBox, Equatable, Hashable {
         self.elasticity = elasticity
         self.linearVelocity = initialVelocity
         self.consecutiveCollisionCount = consecutiveCollisionCount
+        self.wrapAroundCount = wrapAroundCount
     }
 
     /// Copies some properties of a given rigid body.
@@ -162,7 +168,8 @@ final class RigidBodyObject: RigidBody, HasBoundingBox, Equatable, Hashable {
                 bottomWallBehavior: instance.bottomWallBehavior,
                 uniformDensity: instance.uniformDensity,
                 elasticity: instance.elasticity,
-                consecutiveCollisionCount: instance.consecutiveCollisionCount
+                consecutiveCollisionCount: instance.consecutiveCollisionCount,
+                wrapAroundCount: instance.wrapAroundCount
             )
         case let polygon as TransformablePolygonObject:
             self.init(
@@ -177,7 +184,8 @@ final class RigidBodyObject: RigidBody, HasBoundingBox, Equatable, Hashable {
                 bottomWallBehavior: instance.bottomWallBehavior,
                 uniformDensity: instance.uniformDensity,
                 elasticity: instance.elasticity,
-                consecutiveCollisionCount: instance.consecutiveCollisionCount
+                consecutiveCollisionCount: instance.consecutiveCollisionCount,
+                wrapAroundCount: instance.wrapAroundCount
             )
         default:
             fatalError("Cases should be covered")
@@ -213,6 +221,12 @@ extension RigidBodyObject {
     func withConsecutiveCollisionCount(count: Int) -> RigidBodyObject {
         let rigidBodyCopy = RigidBodyObject(instance: self)
         rigidBodyCopy.consecutiveCollisionCount = count
+        return rigidBodyCopy
+    }
+    
+    func withWrapAroundCount(count: Int) -> RigidBodyObject {
+        let rigidBodyCopy = RigidBodyObject(instance: self)
+        rigidBodyCopy.wrapAroundCount = count
         return rigidBodyCopy
     }
 }

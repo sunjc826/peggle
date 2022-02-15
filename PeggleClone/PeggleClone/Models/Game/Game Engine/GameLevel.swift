@@ -1,5 +1,6 @@
 import Foundation
 import CoreGraphics
+import Combine
 
 final class GameLevel {
     static let targetFps = 60
@@ -16,10 +17,11 @@ final class GameLevel {
     let cannon: Cannon
     var balls: [Ball] = []
     let pegs: PegContainer
+    var special: SpecialType
 
     @Published var numBalls: Int = GameLevel.startingBalls
     @Published var gamePhase: GamePhase = .disabled
-    @Published var score: Int = 0
+    var totalScore: AnyPublisher<Int, Never>?
 
     var didAddBallCallbacks: [CallbackUnaryFunction<Ball>] = []
     var didUpdateBallCallbacks: [CallbackBinaryFunction<Ball>] = []
@@ -29,7 +31,7 @@ final class GameLevel {
     var didRemovePegCallbacks: [CallbackUnaryFunction<Peg>] = []
     var gameDidEndCallbacks: [CallbackUnaryFunction<Bool>] = []
 
-    init<T: Container>(coordinateMapper: PhysicsCoordinateMapper, pegs: T) where T.Element == Peg {
+    init<T: Container>(coordinateMapper: PhysicsCoordinateMapper, pegs: T, special: SpecialType) where T.Element == Peg {
         self.coordinateMapper = coordinateMapper
         self.playArea = coordinateMapper.getPlayArea()
         self.pegs = PegContainer(pegs: pegs)
@@ -47,6 +49,8 @@ final class GameLevel {
             neighborFinder: QuadTree(bounds: playArea.boundingBox),
             collisionResolver: Collision()
         )
+        self.special = special
+        setupBindings()
         setupCallbacks()
     }
 
@@ -77,5 +81,11 @@ extension GameLevel {
     private func setupCallbacks() {
         physicsEngine.registerDidUpdateCallback(callback: physicsEngineDidUpdate)
         physicsEngine.registerDidRemoveCallback(callback: physicsEngineDidRemove)
+    }
+
+    private func setupBindings() {
+        totalScore = pegs.$pegScores
+            .map { $0.values.reduce(0, +) }
+            .eraseToAnyPublisher()
     }
 }

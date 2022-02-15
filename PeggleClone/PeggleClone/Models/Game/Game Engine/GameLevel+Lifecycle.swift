@@ -49,6 +49,7 @@ extension GameLevel {
         } else if numBalls == 0 {
             handleGameOver(isWon: false)
         } else {
+            gamePhase = .disabled
             countdownToNewRound()
         }
     }
@@ -120,7 +121,7 @@ extension GameLevel {
     func handleGameOver(isWon: Bool) {
         let endOfGameStatistics = GameRoundStats(
             isWon: isWon,
-            score: score,
+            score: pegs.pegScores.values.reduce(0, +),
             compulsoryPegsHit: pegs.pegHits[.compulsory]!,
             optionalPegsHit: pegs.pegHits[.optional]!,
             specialPegsHit: pegs.pegHits[.special]!
