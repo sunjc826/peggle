@@ -3,7 +3,6 @@ import Combine
 
 private let reuseIdentifier = "LevelSelectCell"
 private let unwindIdentifier = "segueUnwind"
-private let numOfSections = 1
 private let itemsPerRow = 3
 private let sectionInsets = UIEdgeInsets(
   top: 50.0,
@@ -13,7 +12,7 @@ private let sectionInsets = UIEdgeInsets(
 )
 
 /// Controls the level select screen.
-class LevelSelectViewController: UICollectionViewController, Storyboardable {
+class LevelSelectCollectionViewController: UICollectionViewController, Storyboardable {
     var viewModel: LevelSelectViewModel?
     private var subscriptions: Set<AnyCancellable> = []
 
@@ -37,15 +36,11 @@ class LevelSelectViewController: UICollectionViewController, Storyboardable {
     // MARK: UICollectionViewDataSource
 
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        numOfSections
+        viewModel?.numberOfSections ?? 0
     }
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let viewModel = viewModel else {
-            fatalError("should not be nil")
-        }
-
-        return viewModel.count
+        viewModel?.count ?? 0
     }
 
     override func collectionView(_ collectionView: UICollectionView,
@@ -112,7 +107,7 @@ class LevelSelectViewController: UICollectionViewController, Storyboardable {
 // Reference: https://www.raywenderlich.com/18895088-uicollectionview-tutorial-getting-started
 
 // MARK: - Collection View Flow Layout Delegate
-extension LevelSelectViewController: UICollectionViewDelegateFlowLayout {
+extension LevelSelectCollectionViewController: UICollectionViewDelegateFlowLayout {
   func collectionView(
     _ collectionView: UICollectionView,
     layout collectionViewLayout: UICollectionViewLayout,
@@ -142,7 +137,7 @@ extension LevelSelectViewController: UICollectionViewDelegateFlowLayout {
   }
 }
 
-extension LevelSelectViewController: LevelSelectCellDelegate {
+extension LevelSelectCollectionViewController: LevelSelectCellDelegate {
     func onLoadLevel(levelURL: URL) {
         didLoadLevel?(levelURL)
     }
@@ -153,7 +148,7 @@ extension LevelSelectViewController: LevelSelectCellDelegate {
 }
 
 // MARK: Setup
-extension LevelSelectViewController {
+extension LevelSelectCollectionViewController {
     func setupBindings() {
         viewModel?.$shouldReload
             .sink { [weak self] shouldReload in

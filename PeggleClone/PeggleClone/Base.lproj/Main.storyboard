@@ -65,10 +65,10 @@
             </objects>
             <point key="canvasLocation" x="539" y="45"/>
         </scene>
-        <!--LevelSelectViewController-->
+        <!--LevelSelectCollectionViewController-->
         <scene sceneID="YuQ-pF-pVl">
             <objects>
-                <collectionViewController storyboardIdentifier="LevelSelectViewController" id="Uwx-kG-Ich" userLabel="LevelSelectViewController" customClass="LevelSelectViewController" customModule="PeggleClone" customModuleProvider="target" sceneMemberID="viewController">
+                <collectionViewController storyboardIdentifier="LevelSelectCollectionViewController" id="Uwx-kG-Ich" userLabel="LevelSelectCollectionViewController" customClass="LevelSelectCollectionViewController" customModule="PeggleClone" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="ZFt-qX-dfV">
                         <rect key="frame" x="0.0" y="0.0" width="810" height="1080"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -161,6 +161,65 @@
                 <exit id="gcE-Rn-Er1" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="2090" y="26"/>
+        </scene>
+        <!--PeggleMasterCollectionViewController-->
+        <scene sceneID="NPh-Cu-xao">
+            <objects>
+                <collectionViewController storyboardIdentifier="PeggleMasterCollectionViewController" id="kdQ-Ma-3UZ" userLabel="PeggleMasterCollectionViewController" customClass="PeggleMasterCollectionViewController" customModule="PeggleClone" customModuleProvider="target" sceneMemberID="viewController">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="dzm-MU-AgZ">
+                        <rect key="frame" x="0.0" y="0.0" width="810" height="1080"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="mwE-ST-aIf">
+                            <size key="itemSize" width="300" height="357"/>
+                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        </collectionViewFlowLayout>
+                        <cells>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="PeggleMasterCell" id="VTg-Gl-Doy" customClass="PeggleMasterCell" customModule="PeggleClone" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="0.0" width="300" height="357"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="WTy-PT-MNX">
+                                    <rect key="frame" x="0.0" y="0.0" width="300" height="357"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Q4v-hT-Wkn">
+                                            <rect key="frame" x="30" y="21" width="240" height="128"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pXC-yj-rZX">
+                                            <rect key="frame" x="30" y="184" width="42" height="21"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6GA-ld-XUF">
+                                            <rect key="frame" x="118" y="252" width="65" height="31"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <state key="normal" title="Button"/>
+                                            <buttonConfiguration key="configuration" style="filled" title="Select"/>
+                                        </button>
+                                    </subviews>
+                                </collectionViewCellContentView>
+                                <size key="customSize" width="300" height="357"/>
+                                <connections>
+                                    <outlet property="btnSelect" destination="6GA-ld-XUF" id="1Gj-kg-pQE"/>
+                                    <outlet property="ivPicture" destination="Q4v-hT-Wkn" id="shn-rT-q7R"/>
+                                    <outlet property="lblDescription" destination="pXC-yj-rZX" id="gSJ-lm-91n"/>
+                                </connections>
+                            </collectionViewCell>
+                        </cells>
+                        <connections>
+                            <outlet property="dataSource" destination="kdQ-Ma-3UZ" id="RQK-Ld-E8M"/>
+                            <outlet property="delegate" destination="kdQ-Ma-3UZ" id="F4y-Xv-RHy"/>
+                        </connections>
+                    </collectionView>
+                </collectionViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="G1B-YL-Cg0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2765.1851851851852" y="25.555555555555554"/>
         </scene>
         <!--DesignerViewController-->
         <scene sceneID="Xcy-g9-aIa">

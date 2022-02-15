@@ -1,9 +1,11 @@
 import Foundation
 import Combine
-class LevelSelectViewModel {
+class LevelSelectViewModel: CollectionViewModel {
     let jsonStorage = JSONStorage()
     let pngStorage = Storage(fileExtension: "png")
-
+    
+    let numberOfSections: Int = 1
+    
     var count: Int {
         let (urls, _) = jsonStorage.getAllFiles()
         return urls.count

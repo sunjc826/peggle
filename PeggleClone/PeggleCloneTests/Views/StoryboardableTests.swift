@@ -15,7 +15,7 @@ class StoryboardableTests: XCTestCase {
     }
 
     func testLevelSelectViewControllerInstantiate() {
-        _ = LevelSelectViewController.instantiate()
+        _ = LevelSelectCollectionViewController.instantiate()
     }
 
     func testGameViewControllerInstantiate() {

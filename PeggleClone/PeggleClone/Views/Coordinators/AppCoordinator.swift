@@ -74,7 +74,7 @@ class AppCoordinator {
 
     private func showLevelSelect() {
         loadLevelURL = nil
-        let vcLevelSelect = LevelSelectViewController.instantiate()
+        let vcLevelSelect = LevelSelectCollectionViewController.instantiate()
         let vmLevelSelect = LevelSelectViewModel()
         vcLevelSelect.viewModel = vmLevelSelect
 
@@ -105,8 +105,14 @@ class AppCoordinator {
             }
             self.showGame(with: gameLevel)
         }
+        
+        let vcPeggleMaster = PeggleMasterCollectionViewController()
+        let vmPeggleMaster = PeggleMasterViewModel()
+        vcPeggleMaster.viewModel = vmPeggleMaster
+        let tabBarController = UITabBarController()
+        tabBarController.setViewControllers([vcLevelSelect, vcPeggleMaster], animated: true)
 
-        navigationController.pushViewController(vcLevelSelect, animated: true)
+        navigationController.pushViewController(tabBarController, animated: true)
     }
 
     private func showGame(with backingDesignerGameLevel: PersistableDesignerGameLevel) {
@@ -119,10 +125,10 @@ class AppCoordinator {
             guard let self = self else {
                 return
             }
-            let vcLevelSelect: LevelSelectViewController? = self.navigationController
+            let vcLevelSelect: LevelSelectCollectionViewController? = self.navigationController
                 .viewControllers
-                .first { $0 is LevelSelectViewController }
-                as? LevelSelectViewController
+                .first { $0 is LevelSelectCollectionViewController }
+                as? LevelSelectCollectionViewController
             if let vcLevelSelect = vcLevelSelect {
                 self.navigationController.popToViewController(vcLevelSelect, animated: true)
             } else {

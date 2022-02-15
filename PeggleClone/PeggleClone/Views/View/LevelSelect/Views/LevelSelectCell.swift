@@ -30,19 +30,17 @@ class LevelSelectCell: UICollectionViewCell {
 // MARK: Setup
 extension LevelSelectCell {
     private func setupBindings() {
-        viewModel?.$text
-            .sink { [weak self] text in
-                self?.lblLevelName.text = text
-            }
+        guard let viewModel = viewModel else {
+            fatalError("should not be nil")
+        }
+        
+        viewModel.$text
+            .assign(to: \.text, on: lblLevelName)
             .store(in: &subscriptions)
 
-        viewModel?.$backgroundImage
-            .sink { [weak self] image in
-                guard let image = image else {
-                    return
-                }
-                self?.ivLevelImage.image = image
-            }
+        viewModel.$backgroundImage
+            .compactMap { $0 }
+            .assign(to: \.image, on: ivLevelImage)
             .store(in: &subscriptions)
     }
 

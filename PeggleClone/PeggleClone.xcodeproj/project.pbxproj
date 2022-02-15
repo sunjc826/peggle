@@ -30,7 +30,7 @@
 		E55837F9279D21E4006F4B1F /* BoundingBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55837F8279D21E4006F4B1F /* BoundingBox.swift */; };
 		E5636DD3279BB203006428E8 /* LoggerWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5636DD2279BB203006428E8 /* LoggerWrapper.swift */; };
 		E5636DD7279C07CF006428E8 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5636DD6279C07CF006428E8 /* Storage.swift */; };
-		E5636DDA279C137F006428E8 /* LevelSelectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5636DD9279C137F006428E8 /* LevelSelectViewController.swift */; };
+		E5636DDA279C137F006428E8 /* LevelSelectCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5636DD9279C137F006428E8 /* LevelSelectCollectionViewController.swift */; };
 		E567195E279C628300D841DC /* LevelSelectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E567195D279C628300D841DC /* LevelSelectCell.swift */; };
 		E569731227A3714F0000BF18 /* Rectangle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E569731127A3714F0000BF18 /* Rectangle.swift */; };
 		E569731427A3717F0000BF18 /* Circle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E569731327A3717F0000BF18 /* Circle.swift */; };
@@ -52,6 +52,11 @@
 		E56B868627A430FC00D475BF /* StorageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56B868527A430FC00D475BF /* StorageViewController.swift */; };
 		E56B868827A4495200D475BF /* ShapeTransformViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56B868727A4495200D475BF /* ShapeTransformViewController.swift */; };
 		E56E5A1A27BB408100723D6F /* SpecialType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56E5A1927BB408100723D6F /* SpecialType.swift */; };
+		E56E5A1D27BB58FD00723D6F /* PeggleMasterCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56E5A1C27BB58FD00723D6F /* PeggleMasterCollectionViewController.swift */; };
+		E56E5A1F27BB594600723D6F /* PeggleMasterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56E5A1E27BB594600723D6F /* PeggleMasterViewModel.swift */; };
+		E56E5A2127BB595600723D6F /* PeggleMasterCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56E5A2027BB595600723D6F /* PeggleMasterCellViewModel.swift */; };
+		E56E5A2327BB597D00723D6F /* PeggleMasterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56E5A2227BB597D00723D6F /* PeggleMasterCell.swift */; };
+		E56E5A2527BB5C0B00723D6F /* CollectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56E5A2427BB5C0B00723D6F /* CollectionViewModel.swift */; };
 		E56FF53F27AF62D800FB4D02 /* StorageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56FF53E27AF62D800FB4D02 /* StorageViewModel.swift */; };
 		E56FF54127AF62EA00FB4D02 /* ShapeTransformViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56FF54027AF62EA00FB4D02 /* ShapeTransformViewModel.swift */; };
 		E5710F6B27B341E2004ACED4 /* LevelSelectCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5710F6A27B341E2004ACED4 /* LevelSelectCellViewModel.swift */; };
@@ -211,7 +216,7 @@
 		E55837F8279D21E4006F4B1F /* BoundingBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoundingBox.swift; sourceTree = "<group>"; };
 		E5636DD2279BB203006428E8 /* LoggerWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggerWrapper.swift; sourceTree = "<group>"; };
 		E5636DD6279C07CF006428E8 /* Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storage.swift; sourceTree = "<group>"; };
-		E5636DD9279C137F006428E8 /* LevelSelectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelSelectViewController.swift; sourceTree = "<group>"; };
+		E5636DD9279C137F006428E8 /* LevelSelectCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelSelectCollectionViewController.swift; sourceTree = "<group>"; };
 		E567195D279C628300D841DC /* LevelSelectCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelSelectCell.swift; sourceTree = "<group>"; };
 		E569731127A3714F0000BF18 /* Rectangle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rectangle.swift; sourceTree = "<group>"; };
 		E569731327A3717F0000BF18 /* Circle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Circle.swift; sourceTree = "<group>"; };
@@ -233,6 +238,11 @@
 		E56B868527A430FC00D475BF /* StorageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageViewController.swift; sourceTree = "<group>"; };
 		E56B868727A4495200D475BF /* ShapeTransformViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShapeTransformViewController.swift; sourceTree = "<group>"; };
 		E56E5A1927BB408100723D6F /* SpecialType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecialType.swift; sourceTree = "<group>"; };
+		E56E5A1C27BB58FD00723D6F /* PeggleMasterCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeggleMasterCollectionViewController.swift; sourceTree = "<group>"; };
+		E56E5A1E27BB594600723D6F /* PeggleMasterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeggleMasterViewModel.swift; sourceTree = "<group>"; };
+		E56E5A2027BB595600723D6F /* PeggleMasterCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeggleMasterCellViewModel.swift; sourceTree = "<group>"; };
+		E56E5A2227BB597D00723D6F /* PeggleMasterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeggleMasterCell.swift; sourceTree = "<group>"; };
+		E56E5A2427BB5C0B00723D6F /* CollectionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewModel.swift; sourceTree = "<group>"; };
 		E56FF53E27AF62D800FB4D02 /* StorageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageViewModel.swift; sourceTree = "<group>"; };
 		E56FF54027AF62EA00FB4D02 /* ShapeTransformViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShapeTransformViewModel.swift; sourceTree = "<group>"; };
 		E5710F6A27B341E2004ACED4 /* LevelSelectCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelSelectCellViewModel.swift; sourceTree = "<group>"; };
@@ -546,6 +556,15 @@
 			path = "Utility Protocols";
 			sourceTree = "<group>";
 		};
+		E56E5A1B27BB58D200723D6F /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				E5636DD9279C137F006428E8 /* LevelSelectCollectionViewController.swift */,
+				E56E5A1C27BB58FD00723D6F /* PeggleMasterCollectionViewController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
 		E56FF54227AFA73400FB4D02 /* View Models */ = {
 			isa = PBXGroup;
 			children = (
@@ -601,8 +620,10 @@
 		E5710F6927B341C4004ACED4 /* View Models */ = {
 			isa = PBXGroup;
 			children = (
-				E5710F6A27B341E2004ACED4 /* LevelSelectCellViewModel.swift */,
 				E5710F6D27B344E3004ACED4 /* LevelSelectViewModel.swift */,
+				E5710F6A27B341E2004ACED4 /* LevelSelectCellViewModel.swift */,
+				E56E5A1E27BB594600723D6F /* PeggleMasterViewModel.swift */,
+				E56E5A2027BB595600723D6F /* PeggleMasterCellViewModel.swift */,
 			);
 			path = "View Models";
 			sourceTree = "<group>";
@@ -611,6 +632,7 @@
 			isa = PBXGroup;
 			children = (
 				E567195D279C628300D841DC /* LevelSelectCell.swift */,
+				E56E5A2227BB597D00723D6F /* PeggleMasterCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -849,6 +871,7 @@
 				E57B6C8927BA617000522F3F /* FillablePegViewModel.swift */,
 				E571C08327AE710B009459CE /* CoordinateMappablePegViewModel.swift */,
 				E572B91527B7B9F2008E72A6 /* CoordinateMappable.swift */,
+				E56E5A2427BB5C0B00723D6F /* CollectionViewModel.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -883,9 +906,9 @@
 		E57ECD0127A4D7F800002582 /* LevelSelect */ = {
 			isa = PBXGroup;
 			children = (
+				E56E5A1B27BB58D200723D6F /* Controllers */,
 				E5710F6C27B341EA004ACED4 /* Views */,
 				E5710F6927B341C4004ACED4 /* View Models */,
-				E5636DD9279C137F006428E8 /* LevelSelectViewController.swift */,
 			);
 			path = LevelSelect;
 			sourceTree = "<group>";
@@ -1166,13 +1189,14 @@
 				E569731C27A3721D0000BF18 /* CenteredShape.swift in Sources */,
 				E5CD080E279862160086C8F5 /* Array.swift in Sources */,
 				E572B90C27B76E66008E72A6 /* TransitionError.swift in Sources */,
+				E56E5A1D27BB58FD00723D6F /* PeggleMasterCollectionViewController.swift in Sources */,
 				E56FF54127AF62EA00FB4D02 /* ShapeTransformViewModel.swift in Sources */,
 				E586262227AD85D8009964BF /* CollisionResolver.swift in Sources */,
 				E569732527A376110000BF18 /* CGVector.swift in Sources */,
 				E572B91827B7BD80008E72A6 /* PhysicsCoordinateMapper.swift in Sources */,
 				E580667C27A7D64E00F73DAA /* RigidBody.swift in Sources */,
 				E57B6C9227BA6DD000522F3F /* PegContainer.swift in Sources */,
-				E5636DDA279C137F006428E8 /* LevelSelectViewController.swift in Sources */,
+				E5636DDA279C137F006428E8 /* LevelSelectCollectionViewController.swift in Sources */,
 				E56FF53F27AF62D800FB4D02 /* StorageViewModel.swift in Sources */,
 				E57B6C8627BA54DC00522F3F /* GenericStatViewModel.swift in Sources */,
 				E578EEC327AAA46C00A121F3 /* TransformablePolygon.swift in Sources */,
@@ -1210,6 +1234,7 @@
 				E5FB39D127AA6174008CE4D2 /* Ball.swift in Sources */,
 				E57B6C8C27BA66A100522F3F /* StackPegView.swift in Sources */,
 				E572B91027B76EDC008E72A6 /* PersistablePlayArea.swift in Sources */,
+				E56E5A2127BB595600723D6F /* PeggleMasterCellViewModel.swift in Sources */,
 				E57F03F027A62332002662DD /* String.swift in Sources */,
 				E578EED227AAADD900A121F3 /* TransformablePolygonObject.swift in Sources */,
 				E55837F3279D2124006F4B1F /* DesignerGameLevel.swift in Sources */,
@@ -1228,7 +1253,9 @@
 				E5DCBC0D27B1128300D92638 /* DesignerPegViewModel.swift in Sources */,
 				E57B6C9C27BA807600522F3F /* GameLevel+PhysicsEngineCallbacks.swift in Sources */,
 				E55837EE279D1A8C006F4B1F /* QuadTree.swift in Sources */,
+				E56E5A1F27BB594600723D6F /* PeggleMasterViewModel.swift in Sources */,
 				E5DC46F527B7E51800851C51 /* DesignerViewController+Delegate.swift in Sources */,
+				E56E5A2527BB5C0B00723D6F /* CollectionViewModel.swift in Sources */,
 				E590099627A92E9200E764B5 /* EditableGameEntity.swift in Sources */,
 				E579A28F27B6BDF100D1C805 /* MenuViewController.swift in Sources */,
 				E545750B27A97F1100F11F43 /* GameViewController.swift in Sources */,
@@ -1247,6 +1274,7 @@
 				E57B6C9A27BA7FE700522F3F /* GameLevel+Lifecycle.swift in Sources */,
 				E586262727AD8719009964BF /* Collision+Resolution.swift in Sources */,
 				E57B6C9627BA7F5900522F3F /* GameLevel+Callbacks.swift in Sources */,
+				E56E5A2327BB597D00723D6F /* PeggleMasterCell.swift in Sources */,
 				E5636DD3279BB203006428E8 /* LoggerWrapper.swift in Sources */,
 				E585FD0D27B4C39700748C2E /* AbstractPhysicsEngine.swift in Sources */,
 				E569731A27A371FA0000BF18 /* TransformableShape.swift in Sources */,
