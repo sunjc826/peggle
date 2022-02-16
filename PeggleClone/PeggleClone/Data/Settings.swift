@@ -49,6 +49,14 @@ struct Settings {
         static let scoreMultiplier = UIColor.purple
         static let pegBorder = UIColor.black
     }
+    
+    enum Alpha: Double {
+        case opaque = 1.0
+        case almostOpaque = 0.7
+        case translucent = 0.5
+        case almostTransparent = 0.3
+        case transparent = 0.0
+    }
 
     struct Physics {
         static let signedMagnitudeOfAccelerationDueToGravity = 10.0

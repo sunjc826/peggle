@@ -1,7 +1,7 @@
 import UIKit
 
-extension DesignerViewController: PegEntityButtonDelegate {
-    func pegEntityButtonOnDoubleTap(sender: DesignerPegButton) {
+extension DesignerViewController: DesignerPegButtonDelegate {
+    func btnDesignerPegOnDoubleTap(sender: DesignerPegButton) {
         guard let viewModel = viewModel else {
             fatalError("should not be nil")
         }
@@ -9,7 +9,7 @@ extension DesignerViewController: PegEntityButtonDelegate {
         viewModel.selectToEdit(viewModel: sender.viewModel)
     }
 
-    func pegEntityButtonOnLongPress(sender: UILongPressGestureRecognizer) {
+    func btnDesignerPegOnLongPress(sender: UILongPressGestureRecognizer) {
         guard let viewModel = viewModel else {
             fatalError("should not be nil")
         }
@@ -23,7 +23,7 @@ extension DesignerViewController: PegEntityButtonDelegate {
         }
     }
 
-    func pegEntityButtonOnPan(sender: UIPanGestureRecognizer) {
+    func btnDesignerPegOnPan(sender: UIPanGestureRecognizer) {
         guard let pegEntityButton = sender.view as? DesignerPegButton else {
             fatalError("Gesture Recognizer should be attached to a PegEntityButton")
         }
@@ -38,7 +38,7 @@ extension DesignerViewController: PegEntityButtonDelegate {
         )
     }
 
-    func pegEntityButtonOnTap(sender: DesignerPegButton) {
+    func btnDesignerPegOnTap(sender: DesignerPegButton) {
         guard let viewModel = viewModel else {
             fatalError("should not be nil")
         }

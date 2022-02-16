@@ -1,7 +1,7 @@
 import Foundation
 import CoreGraphics
 
-final class TransformablePolygonObject: TransformablePolygon, Codable {
+class TransformablePolygonObject: TransformablePolygon, Codable {
     var scale: Double
 
     var rotation: Double

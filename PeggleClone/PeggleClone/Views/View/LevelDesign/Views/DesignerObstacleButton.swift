@@ -1,16 +1,16 @@
 import UIKit
 import Combine
 
-protocol DesignerPegButtonDelegate: AnyObject {
-    func btnDesignerPegOnLongPress(sender: UILongPressGestureRecognizer)
-    func btnDesignerPegOnPan(sender: UIPanGestureRecognizer)
-    func btnDesignerPegOnTap(sender: DesignerPegButton)
-    func btnDesignerPegOnDoubleTap(sender: DesignerPegButton)
+protocol DesignerObstacleButtonDelegate: AnyObject {
+    func btnDesignerObstacleOnLongPress(sender: UILongPressGestureRecognizer)
+    func btnDesignerObstacleOnPan(sender: UIPanGestureRecognizer)
+    func btnDesignerObstacleOnTap(sender: DesignerObstacleButton)
+    func btnDesignerObstacleOnDoubleTap(sender: DesignerObstacleButton)
 }
 
 /// Encapsulates an interactive peg placed in the level designer.
-class DesignerPegButton: UIButton {
-    var viewModel: DesignerPegButtonViewModel {
+class DesignerObstacleButton: UIButton {
+    var viewModel: DesignerObstacleButtonViewModel {
         didSet {
             subscriptions.forEach { $0.cancel() }
             setupBindings()
@@ -18,11 +18,11 @@ class DesignerPegButton: UIButton {
             center = viewModel.displayCoords
         }
     }
-    weak var delegate: DesignerPegButtonDelegate?
+    weak var delegate: DesignerObstacleButtonDelegate?
 
     private var subscriptions: Set<AnyCancellable> = []
 
-    init(viewModel: DesignerPegButtonViewModel, delegate: DesignerPegButtonDelegate) {
+    init(viewModel: DesignerObstacleButtonViewModel, delegate: DesignerObstacleButtonDelegate) {
         self.viewModel = viewModel
         self.delegate = delegate
         super.init(frame: viewModel.displayFrame)
@@ -41,12 +41,12 @@ class DesignerPegButton: UIButton {
     override func draw(_ rect: CGRect) {
         super.draw(rect)
         configure(with: viewModel)
-        drawPeg(in: rect)
+        drawObstacle(in: rect)
     }
 }
 
 // MARK: Setup
-extension DesignerPegButton {
+extension DesignerObstacleButton {
     private func registerEventHandlers() {
         addTarget(self, action: #selector(onTap(_:)), for: .touchUpInside)
         addTarget(self, action: #selector(onMultipleTap(_:event:)), for: .touchDownRepeat)
@@ -66,30 +66,16 @@ extension DesignerPegButton {
 }
 
 // MARK: Drawing
-extension DesignerPegButton {
+extension DesignerObstacleButton {
     private func configure(with drawable: ShapeDrawable) {
         drawable.setUpDrawColorConfig()
     }
 
-    private func drawPeg(in rect: CGRect) {
+    private func drawObstacle(in rect: CGRect) {
         if viewModel.isBeingEdited {
             drawSurroundingBox(in: rect)
         }
 
-        if viewModel.shouldDrawCircle {
-            drawCircularPeg(in: rect)
-        } else if viewModel.shouldDrawPolygon {
-            drawPolygonalPeg(in: rect)
-        } else {
-            logger.error("nothing to draw")
-        }
-    }
-
-    private func drawCircularPeg(in rect: CGRect) {
-        drawCircleToFill(rect, withAlpha: viewModel.alpha)
-    }
-
-    private func drawPolygonalPeg(in rect: CGRect) {
         drawPolygonalPath(
             viewModel.drawableVertices,
             withAlpha: viewModel.alpha
@@ -98,13 +84,13 @@ extension DesignerPegButton {
 }
 
 // MARK: Events
-extension DesignerPegButton {
+extension DesignerObstacleButton {
     @objc func onLongPress(_ sender: UILongPressGestureRecognizer) {
         guard let delegate = delegate else {
             fatalError("should not be nil")
         }
 
-        delegate.btnDesignerPegOnLongPress(sender: sender)
+        delegate.btnDesignerObstacleOnLongPress(sender: sender)
     }
 
     @objc func onPan(_ sender: UIPanGestureRecognizer) {
@@ -112,25 +98,25 @@ extension DesignerPegButton {
             fatalError("should not be nil")
         }
 
-        delegate.btnDesignerPegOnPan(sender: sender)
+        delegate.btnDesignerObstacleOnPan(sender: sender)
     }
 
-    @IBAction private func onTap(_ sender: DesignerPegButton) {
+    @IBAction private func onTap(_ sender: DesignerObstacleButton) {
         guard let delegate = delegate else {
             fatalError("should not be nil")
         }
 
-        delegate.btnDesignerPegOnTap(sender: sender)
+        delegate.btnDesignerObstacleOnTap(sender: sender)
     }
 
-    @IBAction private func onMultipleTap(_ sender: DesignerPegButton, event: UIEvent) {
+    @IBAction private func onMultipleTap(_ sender: DesignerObstacleButton, event: UIEvent) {
         guard let delegate = delegate else {
             fatalError("should not be nil")
         }
 
         let touch: UITouch = event.allTouches!.first!
         if touch.tapCount == 2 {
-            delegate.btnDesignerPegOnDoubleTap(sender: sender)
+            delegate.btnDesignerObstacleOnDoubleTap(sender: sender)
         }
     }
 }

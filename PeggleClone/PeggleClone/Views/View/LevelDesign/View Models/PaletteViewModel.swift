@@ -21,7 +21,7 @@ private let palettePegs: [Peg] = {
 class PaletteViewModel {
     private var subscriptions: Set<AnyCancellable> = []
 
-    var palettePegViewModels: [PalettePegViewModel] = []
+    var palettePegViewModels: [PalettePegButtonViewModel] = []
     var pegTypeViewModels: [PegTypeButtonViewModel] = []
 
     @Published var selectedPegType = PegType.compulsory
@@ -34,7 +34,7 @@ class PaletteViewModel {
     }
 
     private func setupChildViewModels() {
-        palettePegViewModels = palettePegs.map { PalettePegViewModel(peg: $0) }
+        palettePegViewModels = palettePegs.map { PalettePegButtonViewModel(peg: $0) }
         palettePegViewModels.forEach { $0.delegate = self }
         pegTypeViewModels = PegType.allCases.map { PegTypeButtonViewModel(pegType: $0) }
         pegTypeViewModels.forEach { $0.delegate = self }

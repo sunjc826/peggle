@@ -1,18 +1,16 @@
 import UIKit
 import Combine
 
-private let opaqueAlpha = 1.0
-private let translucentAlpha = 0.5
 
 protocol PalettePegViewModelDelegate: AnyObject {
     func toggleSelectInPalette(peg: Peg)
 }
 
-class PalettePegViewModel: FillablePegViewModel {
+class PalettePegButtonViewModel: FillablePegViewModel {
     weak var delegate: PalettePegViewModelDelegate?
 
     @Published var isSelected = false
-    @Published var alpha: Double = translucentAlpha
+    @Published var alpha: Double = Settings.Alpha.translucent.rawValue
 
     private var subscriptions: Set<AnyCancellable> = []
 
@@ -23,7 +21,7 @@ class PalettePegViewModel: FillablePegViewModel {
 
     private func setupBindings() {
         $isSelected.sink { [weak self] val in
-            self?.alpha = val ? opaqueAlpha : translucentAlpha
+            self?.alpha = val ? Settings.Alpha.opaque.rawValue : Settings.Alpha.translucent.rawValue
         }
         .store(in: &subscriptions)
     }

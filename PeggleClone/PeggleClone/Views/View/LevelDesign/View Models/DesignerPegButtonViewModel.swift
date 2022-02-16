@@ -1,6 +1,6 @@
 import UIKit
 import Combine
 
-class DesignerPegViewModel: CoordinateMappablePegViewModel {
+class DesignerPegButtonViewModel: CoordinateMappablePegViewModel {
     @Published var isBeingEdited = false
 }

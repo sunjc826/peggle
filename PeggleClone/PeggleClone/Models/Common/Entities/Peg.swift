@@ -2,52 +2,23 @@ import Foundation
 import CoreGraphics
 
 /// Represents a destructible object.
-final class Peg: EditableGameEntity, Hashable {
-    weak var rigidBody: RigidBodyObject?
-    var isConcrete = true
+final class Peg: GameObject {
     var pegType: PegType
-    let isDestructible = true
-    let isOverlayable = false
-    let shape: TransformableShape
     var hasCollided = false
 
     init(shape: TransformableShape, pegType: PegType, isConcrete: Bool) {
-        self.shape = shape
         self.pegType = pegType
-        self.isConcrete = isConcrete
+        super.init(shape: shape, isConcrete: isConcrete)
     }
 
     init(instance: Peg) {
         pegType = instance.pegType
-        isConcrete = instance.isConcrete
-        switch instance.shape {
-        case let circle as CircleObject:
-            shape = CircleObject(instance: circle)
-        case let polygon as TransformablePolygonObject:
-            shape = TransformablePolygonObject(instance: polygon)
-        default:
-            fatalError(shapeCastingMessage)
-        }
         hasCollided = instance.hasCollided
+        super.init(instance: instance)
     }
 
     static func == (lhs: Peg, rhs: Peg) -> Bool {
         lhs === rhs
-    }
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(shape.center)
-    }
-}
-
-extension Peg: HasBoundingBox {
-    var boundingBox: BoundingBox {
-        shape.boundingBox
-    }
-
-    var centerRelativeToBoundingBox: CGPoint {
-        let boundingBox = self.boundingBox
-        return CGPoint(x: boundingBox.leftWidth, y: boundingBox.topHeight)
     }
 }
 

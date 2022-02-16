@@ -1,16 +1,64 @@
 import Foundation
+import CoreGraphics
 
-// Note: obstacles have not been implemented and is anticipated to be relevant in future
-// programming assignments
+/// Represents an indestructible object. It does not interact with any pegs and only interacts with the ball.
+/// Due to being dynamically resizable, to ensure convexity its shape is restricted to that of a triangle.
+final class Obstacle: GameObject {
+    var radiusOfOscillation: Double
+    
+    init(shape: TriangleObject, radiusOfOscillation: Double, isConcrete: Bool) {
+        self.radiusOfOscillation = radiusOfOscillation
+        super.init(shape: shape, isConcrete: isConcrete)
+    }
+    
+    init(instance: Obstacle) {
+        radiusOfOscillation = instance.radiusOfOscillation
+        super.init(instance: instance)
+    }
+}
 
-/// Represents an indestructible object.
-final class Obstacle: EditableGameEntity {
-    weak var rigidBody: RigidBodyObject?
-    let isDestructible = false
-    var isOverlayable: Bool
-    var isConcrete = true
 
-    init(isOverlayable: Bool = false) {
-        self.isOverlayable = isOverlayable
+extension Obstacle {
+    func withCenter(center: CGPoint) -> Obstacle {
+        let copy = Obstacle(instance: self)
+        copy.shape.center = center
+        return copy
+    }
+
+    func withScale(scale: Double) -> Obstacle {
+        let copy = Obstacle(instance: self)
+        copy.shape.scale = scale
+        return copy
+    }
+
+    func withRotation(rotation: Double) -> Obstacle {
+        let copy = Obstacle(instance: self)
+        copy.shape.rotation = rotation
+        return copy
+    }
+    
+    func withRadiusOfOscillation(radiusOfOscillation: Double) -> Obstacle {
+        let copy = Obstacle(instance: self)
+        copy.radiusOfOscillation = radiusOfOscillation
+        return copy
+    }
+}
+
+// MARK: Persistable
+extension Obstacle {
+    func toPersistable() -> PersistableObstacle {
+        guard let triangle = self.shape as? TriangleObject else {
+            fatalError("must be a triangle")
+        }
+        
+        return PersistableObstacle(shape: triangle, radiusOfOscillation: radiusOfOscillation)
+    }
+    
+    static func fromPersistable(persistableObstacle: PersistableObstacle) -> Obstacle {
+        Obstacle(
+            shape: persistableObstacle.shape,
+            radiusOfOscillation: persistableObstacle.radiusOfOscillation,
+            isConcrete: true
+        )
     }
 }

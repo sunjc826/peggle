@@ -183,8 +183,8 @@ class DesignerViewModel {
         shapeTransformViewModel
     }
 
-    func getDesignerPegViewModel(peg: Peg) -> DesignerPegViewModel {
-        let vmDesignerPeg = DesignerPegViewModel(peg: peg)
+    func getDesignerPegViewModel(peg: Peg) -> DesignerPegButtonViewModel {
+        let vmDesignerPeg = DesignerPegButtonViewModel(peg: peg)
         vmDesignerPeg.delegate = self
         return vmDesignerPeg
     }
