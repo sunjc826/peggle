@@ -23,13 +23,13 @@ final class GameLevel {
     @Published var gamePhase: GamePhase = .disabled
     var totalScore: AnyPublisher<Int, Never>?
 
-    var didAddBallCallbacks: [CallbackUnaryFunction<Ball>] = []
-    var didUpdateBallCallbacks: [CallbackBinaryFunction<Ball>] = []
-    var didRemoveBallCallbacks: [CallbackUnaryFunction<Ball>] = []
-    var didAddPegCallbacks: [CallbackUnaryFunction<Peg>] = []
-    var didUpdatePegCallbacks: [CallbackBinaryFunction<Peg>] = []
-    var didRemovePegCallbacks: [CallbackUnaryFunction<Peg>] = []
-    var gameDidEndCallbacks: [CallbackUnaryFunction<Bool>] = []
+    var didAddBallCallbacks: [UnaryFunction<Ball>] = []
+    var didUpdateBallCallbacks: [BinaryFunction<Ball>] = []
+    var didRemoveBallCallbacks: [UnaryFunction<Ball>] = []
+    var didAddPegCallbacks: [UnaryFunction<Peg>] = []
+    var didUpdatePegCallbacks: [BinaryFunction<Peg>] = []
+    var didRemovePegCallbacks: [UnaryFunction<Peg>] = []
+    var gameDidEndCallbacks: [UnaryFunction<Bool>] = []
 
     init<T: Container>(
         coordinateMapper: PhysicsCoordinateMapper,

@@ -130,13 +130,6 @@ class GameViewModel {
         let angleDifference = targetAngleOfCannon - cannon.angle
         cannon.rotationRate = angleDifference / rotationRateSecondsTillTarget
     }
-
-//    func restartGame() {
-//        gameLevel?.reset()
-//        hydrate()
-//        startNewGame()
-//    }
-
 }
 
 // MARK: View model factories
@@ -168,7 +161,7 @@ extension GameViewModel {
     }
 }
 
-extension GameViewModel: CoordinateMappablePegViewModelDelegate,
+extension GameViewModel: CoordinateMappableViewModelDelegate,
                          BallViewModelDelegate,
                          GameplayAreaViewModelDelegate {
     func getDisplayCoords(of logicalCoords: CGPoint) -> CGPoint {

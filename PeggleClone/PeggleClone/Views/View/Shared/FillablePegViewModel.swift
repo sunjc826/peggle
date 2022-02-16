@@ -5,7 +5,7 @@ class FillablePegViewModel: AbstractPegViewModel, AbstractFillableGameObjectView
     var gameObject: GameObject {
         peg
     }
-    
+
     @Published var peg: Peg
 
     init(peg: Peg) {

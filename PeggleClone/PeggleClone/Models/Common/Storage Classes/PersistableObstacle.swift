@@ -4,12 +4,12 @@ import CoreGraphics
 final class PersistableObstacle: Codable {
     let shape: TriangleObject
     var radiusOfOscillation: Double
-    
+
     init(shape: TriangleObject, radiusOfOscillation: Double) {
         self.shape = shape
         self.radiusOfOscillation = radiusOfOscillation
     }
-    
+
     private enum CodingKeys: String, CodingKey {
         case shape
         case radiusOfOscillation

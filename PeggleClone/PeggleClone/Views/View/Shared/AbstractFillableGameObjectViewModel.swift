@@ -29,7 +29,7 @@ extension AbstractFillableGameObjectViewModel {
         }
         return vertices
     }
-    
+
     func getDrawableVerticesToFill(rect: CGRect) -> [CGPoint] {
         guard let polygon = gameObject.shape as? TransformablePolygon else {
             return []

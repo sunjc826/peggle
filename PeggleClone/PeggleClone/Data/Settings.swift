@@ -49,7 +49,7 @@ struct Settings {
         static let scoreMultiplier = UIColor.purple
         static let pegBorder = UIColor.black
     }
-    
+
     enum Alpha: Double {
         case opaque = 1.0
         case almostOpaque = 0.7

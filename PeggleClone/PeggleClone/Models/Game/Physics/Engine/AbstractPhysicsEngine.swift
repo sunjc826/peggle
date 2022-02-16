@@ -9,8 +9,8 @@ protocol AbstractPhysicsEngine {
     func add(rigidBody: RigidBodyObject)
     func update(oldRigidBody: RigidBodyObject, with updatedRigidBody: RigidBodyObject)
     func remove(rigidBody: RigidBodyObject)
-    func registerDidUpdateCallback(callback: @escaping CallbackBinaryFunction<RigidBodyObject>)
-    func registerDidRemoveCallback(callback: @escaping CallbackUnaryFunction<RigidBodyObject>)
-    func registerDidFinishAllUpdatesCallback(callback: @escaping CallbackRunnable, temp: Bool)
+    func registerDidUpdateCallback(callback: @escaping BinaryFunction<RigidBodyObject>)
+    func registerDidRemoveCallback(callback: @escaping UnaryFunction<RigidBodyObject>)
+    func registerDidFinishAllUpdatesCallback(callback: @escaping Runnable, temp: Bool)
     func setGravity(physicalGravitationalAcceleration: Double)
 }

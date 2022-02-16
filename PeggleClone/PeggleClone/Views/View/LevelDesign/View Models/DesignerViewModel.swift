@@ -190,7 +190,7 @@ class DesignerViewModel {
     }
 }
 
-extension DesignerViewModel: CoordinateMappablePegViewModelDelegate {
+extension DesignerViewModel: CoordinateMappableViewModelDelegate {
     func getDisplayCoords(of logicalCoords: CGPoint) -> CGPoint {
         guard let coordinateMapper = coordinateMapper else {
             fatalError("should not be nil")

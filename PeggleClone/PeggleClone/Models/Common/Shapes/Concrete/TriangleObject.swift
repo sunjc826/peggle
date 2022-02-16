@@ -5,7 +5,7 @@ struct TriangleVertices {
     var v1: PolarCoordinate
     var v2: PolarCoordinate
     var v3: PolarCoordinate
-    
+
     var vertices: [PolarCoordinate] {
         [v1, v2, v3]
     }
@@ -26,7 +26,7 @@ class TriangleObject: TransformablePolygonObject {
             rotation: 0
         )
     }
-    
+
     init(
         center: CGPoint,
         polarVerticesRelativeToOwnCenterBeforeTransform: TriangleVertices,
@@ -41,7 +41,7 @@ class TriangleObject: TransformablePolygonObject {
             rotation: rotation
         )
     }
-    
+
     required init(from decoder: Decoder) throws {
         try super.init(from: decoder)
         assert(sides == 3)

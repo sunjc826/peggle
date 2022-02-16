@@ -5,18 +5,17 @@ import CoreGraphics
 /// Due to being dynamically resizable, to ensure convexity its shape is restricted to that of a triangle.
 final class Obstacle: GameObject {
     var radiusOfOscillation: Double
-    
+
     init(shape: TriangleObject, radiusOfOscillation: Double, isConcrete: Bool) {
         self.radiusOfOscillation = radiusOfOscillation
         super.init(shape: shape, isConcrete: isConcrete)
     }
-    
+
     init(instance: Obstacle) {
         radiusOfOscillation = instance.radiusOfOscillation
         super.init(instance: instance)
     }
 }
-
 
 extension Obstacle {
     func withCenter(center: CGPoint) -> Obstacle {
@@ -36,7 +35,7 @@ extension Obstacle {
         copy.shape.rotation = rotation
         return copy
     }
-    
+
     func withRadiusOfOscillation(radiusOfOscillation: Double) -> Obstacle {
         let copy = Obstacle(instance: self)
         copy.radiusOfOscillation = radiusOfOscillation
@@ -50,10 +49,10 @@ extension Obstacle {
         guard let triangle = self.shape as? TriangleObject else {
             fatalError("must be a triangle")
         }
-        
+
         return PersistableObstacle(shape: triangle, radiusOfOscillation: radiusOfOscillation)
     }
-    
+
     static func fromPersistable(persistableObstacle: PersistableObstacle) -> Obstacle {
         Obstacle(
             shape: persistableObstacle.shape,

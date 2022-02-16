@@ -5,12 +5,12 @@ class GameObject: EditableGameEntity, Hashable {
     weak var rigidBody: RigidBodyObject?
     var isConcrete = true
     var shape: TransformableShape
-    
+
     init(shape: TransformableShape, isConcrete: Bool) {
         self.shape = shape
         self.isConcrete = isConcrete
     }
-    
+
     init(instance: GameObject) {
         isConcrete = instance.isConcrete
         switch instance.shape {
@@ -22,11 +22,11 @@ class GameObject: EditableGameEntity, Hashable {
             fatalError(shapeCastingMessage)
         }
     }
-    
+
     static func == (lhs: GameObject, rhs: GameObject) -> Bool {
         lhs === rhs
     }
-    
+
     func hash(into hasher: inout Hasher) {
         hasher.combine(shape.center)
     }

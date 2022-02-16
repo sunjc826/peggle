@@ -5,7 +5,7 @@ private let defaultBallRadius = 0.01
 
 final class Ball: GameEntity, Circle, Equatable, Hashable {
     weak var rigidBody: RigidBodyObject?
-    
+
     var radiusBeforeTransform: Double
 
     var scale: Double = 1.0

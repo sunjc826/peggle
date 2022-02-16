@@ -6,6 +6,7 @@ class PaletteViewController: UIViewController {
     @IBOutlet private var svPalette: UIStackView!
     @IBOutlet private var btnDelete: UIButton!
     @IBOutlet private var svColor: UIStackView!
+    @IBOutlet private var btnObstacle: PaletteObstacleButton!
 
     var viewModel: PaletteViewModel?
 
@@ -23,6 +24,7 @@ class PaletteViewController: UIViewController {
         }
 
         viewModel.$isDeleting
+            .removeDuplicates()
             .sink { [weak self] isDeleting in
                 self?.refreshDeleteButton(isDeleting: isDeleting)
             }
@@ -33,6 +35,8 @@ class PaletteViewController: UIViewController {
         guard let viewModel = viewModel else {
             fatalError("should not be nil")
         }
+
+        svPalette.translatesAutoresizingMaskIntoConstraints = false
 
         let palettePegButtons = viewModel.palettePegViewModels.map { palettePegViewModel in
             PalettePegButton(viewModel: palettePegViewModel)
@@ -52,6 +56,8 @@ class PaletteViewController: UIViewController {
             resizeButton(button: button)
             setupConstraints(for: button)
         }
+
+        btnObstacle.viewModel = viewModel.paletteObstacleViewModel
 
         svPalette.setNeedsLayout()
         svPalette.setNeedsDisplay()
@@ -73,7 +79,7 @@ class PaletteViewController: UIViewController {
     }
 
     private func registerEventHandlers() {
-        btnDelete.addTarget(self, action: #selector(self.deleteOnTap), for: .touchUpInside)
+        btnDelete.addTarget(self, action: #selector(self.btnDeleteOnTap), for: .touchUpInside)
     }
 
     private func refreshDeleteButton(isDeleting: Bool) {
@@ -82,11 +88,11 @@ class PaletteViewController: UIViewController {
             UIColor.white
     }
 
-    @IBAction private func deleteOnTap() {
+    @IBAction private func btnDeleteOnTap() {
         guard let viewModel = viewModel else {
             fatalError("should not be nil")
         }
 
-        viewModel.isDeleting = true
+        viewModel.isDeleting.toggle()
     }
 }

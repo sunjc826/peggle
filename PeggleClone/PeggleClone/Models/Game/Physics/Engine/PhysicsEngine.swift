@@ -15,10 +15,10 @@ class PhysicsEngine: AbstractPhysicsEngine {
     var bodiesMarkedForDeletion: Set<RigidBodyObject> = []
     var bodiesMarkedForCalculationUpdates: Set<RigidBodyObject> = []
 
-    var didUpdateCallbacks: [CallbackBinaryFunction<RigidBodyObject>] = []
-    var didRemoveCallbacks: [CallbackUnaryFunction<RigidBodyObject>] = []
-    var didFinishAllUpdatesCallbacks: [CallbackRunnable] = []
-    var didFinishAllUpdatesTempCallbacks: [CallbackRunnable] = []
+    var didUpdateCallbacks: [BinaryFunction<RigidBodyObject>] = []
+    var didRemoveCallbacks: [UnaryFunction<RigidBodyObject>] = []
+    var didFinishAllUpdatesCallbacks: [Runnable] = []
+    var didFinishAllUpdatesTempCallbacks: [Runnable] = []
 
     var globalAcceleration: [GlobalAcceleration] = []
 

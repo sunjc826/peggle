@@ -1,31 +1,31 @@
 import Foundation
 
 extension GameLevel {
-    func registerDidAddBallCallback(callback: @escaping CallbackUnaryFunction<Ball>) {
+    func registerDidAddBallCallback(callback: @escaping UnaryFunction<Ball>) {
         didAddBallCallbacks.append(callback)
     }
 
-    func registerDidUpdateBallCallback(callback: @escaping CallbackBinaryFunction<Ball>) {
+    func registerDidUpdateBallCallback(callback: @escaping BinaryFunction<Ball>) {
         didUpdateBallCallbacks.append(callback)
     }
 
-    func registerDidRemoveBallCallback(callback: @escaping CallbackUnaryFunction<Ball>) {
+    func registerDidRemoveBallCallback(callback: @escaping UnaryFunction<Ball>) {
         didRemoveBallCallbacks.append(callback)
     }
 
-    func registerDidAddPegCallback(callback: @escaping CallbackUnaryFunction<Peg>) {
+    func registerDidAddPegCallback(callback: @escaping UnaryFunction<Peg>) {
         didAddPegCallbacks.append(callback)
     }
 
-    func registerDidUpdatePegCallback(callback: @escaping CallbackBinaryFunction<Peg>) {
+    func registerDidUpdatePegCallback(callback: @escaping BinaryFunction<Peg>) {
         didUpdatePegCallbacks.append(callback)
     }
 
-    func registerDidRemovePegCallback(callback: @escaping CallbackUnaryFunction<Peg>) {
+    func registerDidRemovePegCallback(callback: @escaping UnaryFunction<Peg>) {
         didRemovePegCallbacks.append(callback)
     }
 
-    func registerGameDidEndCallback(callback: @escaping CallbackUnaryFunction<Bool>) {
+    func registerGameDidEndCallback(callback: @escaping UnaryFunction<Bool>) {
         gameDidEndCallbacks.append(callback)
     }
 }

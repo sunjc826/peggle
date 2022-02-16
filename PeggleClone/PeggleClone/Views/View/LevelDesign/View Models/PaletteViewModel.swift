@@ -12,23 +12,24 @@ private let palettePegs: [Peg] = {
         ).getTransformablePolygon()
         arr.append(shape)
     }
-    let compulsoryPegs = arr.map { Peg(shape: $0, pegType: .compulsory, isConcrete: false) }
-    let optionalPegs = arr.map { Peg(shape: $0, pegType: .optional, isConcrete: false) }
-    let merged = compulsoryPegs + optionalPegs
-    return merged
+    return arr.map { Peg(shape: $0, pegType: .compulsory, isConcrete: false) }
 }()
 
 class PaletteViewModel {
     private var subscriptions: Set<AnyCancellable> = []
 
+    var paletteObstacleViewModel: PaletteObstacleButtonViewModel
     var palettePegViewModels: [PalettePegButtonViewModel] = []
     var pegTypeViewModels: [PegTypeButtonViewModel] = []
 
+    @Published var isObstacleSelected = false
     @Published var selectedPegType = PegType.compulsory
     @Published var selectedPegInPalette: Peg?
     @Published var isDeleting = false
 
     init() {
+        paletteObstacleViewModel = PaletteObstacleButtonViewModel()
+        paletteObstacleViewModel.delegate = self
         setupChildViewModels()
         setupBindings()
     }
@@ -41,25 +42,49 @@ class PaletteViewModel {
     }
 
     private func setupBindings() {
-        $selectedPegInPalette.sink { [weak self] selectedPeg in
+        $isObstacleSelected.removeDuplicates().sink { [weak self] isObstacleSelected in
             guard let self = self else {
                 return
             }
 
-            for model in self.palettePegViewModels {
-                model.isSelected = model.peg === selectedPeg
+            guard isObstacleSelected else {
+                return
             }
+
+            self.selectedPegInPalette = nil
+            self.isDeleting = false
         }
         .store(in: &subscriptions)
 
-        $isDeleting.sink { [weak self] isDeleting in
-            if isDeleting {
-                self?.selectedPegInPalette = nil
+        $selectedPegInPalette.removeDuplicates().sink { [weak self] selectedPegInPalette in
+            guard let self = self else {
+                return
             }
+
+            guard selectedPegInPalette != nil else {
+                return
+            }
+
+            self.isDeleting = false
+            self.isObstacleSelected = false
         }
         .store(in: &subscriptions)
 
-        $selectedPegType.sink { [weak self] selectedPegType in
+        $isDeleting.removeDuplicates().sink { [weak self] isDeleting in
+            guard let self = self else {
+                return
+            }
+
+            guard isDeleting else {
+                return
+            }
+
+            self.selectedPegInPalette = nil
+            self.isObstacleSelected = false
+        }
+        .store(in: &subscriptions)
+
+        $selectedPegType.removeDuplicates().sink { [weak self] selectedPegType in
             guard let self = self else {
                 return
             }
@@ -79,10 +104,12 @@ class PaletteViewModel {
 }
 
 extension PaletteViewModel: PalettePegViewModelDelegate {
+    var selectedPalettePegPublisher: AnyPublisher<Peg?, Never> {
+        $selectedPegInPalette.eraseToAnyPublisher()
+    }
+
     func toggleSelectInPalette(peg: Peg) {
-        if isDeleting {
-            isDeleting = false
-        }
+        isDeleting = false
 
         if selectedPegInPalette == nil || selectedPegInPalette !== peg {
             selectedPegInPalette = peg
@@ -97,5 +124,17 @@ extension PaletteViewModel: PegTypeButtonViewModelDelegate {
         if selectedPegType != pegType {
             selectedPegType = pegType
         }
+    }
+}
+
+extension PaletteViewModel: PaletteObstacleButtonViewModelDelegate {
+    var isObstacleSelectedPublisher: AnyPublisher<Bool, Never> {
+        $isObstacleSelected.eraseToAnyPublisher()
+    }
+
+    func toggleSelectObstacleInPalette() {
+        isDeleting = false
+        selectedPegInPalette = nil
+        isObstacleSelected.toggle()
     }
 }

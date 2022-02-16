@@ -1,27 +1,34 @@
 import UIKit
 import Combine
 
-
 protocol PalettePegViewModelDelegate: AnyObject {
+    var selectedPalettePegPublisher: AnyPublisher<Peg?, Never> { get }
     func toggleSelectInPalette(peg: Peg)
 }
 
 class PalettePegButtonViewModel: FillablePegViewModel {
-    weak var delegate: PalettePegViewModelDelegate?
+    weak var delegate: PalettePegViewModelDelegate? {
+        didSet {
+            setupBindings()
+        }
+    }
 
-    @Published var isSelected = false
     @Published var alpha: Double = Settings.Alpha.translucent.rawValue
 
     private var subscriptions: Set<AnyCancellable> = []
 
-    override init(peg: Peg) {
-        super.init(peg: peg)
-        setupBindings()
-    }
-
     private func setupBindings() {
-        $isSelected.sink { [weak self] val in
-            self?.alpha = val ? Settings.Alpha.opaque.rawValue : Settings.Alpha.translucent.rawValue
+        guard let delegate = delegate else {
+            return
+        }
+
+        delegate.selectedPalettePegPublisher.sink { [weak self] selectedPalettePeg in
+            guard let self = self else {
+                return
+            }
+            self.alpha = selectedPalettePeg === self.peg ?
+                Settings.Alpha.opaque.rawValue :
+                Settings.Alpha.translucent.rawValue
         }
         .store(in: &subscriptions)
     }

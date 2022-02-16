@@ -2,29 +2,40 @@ import UIKit
 import Combine
 
 protocol PaletteObstacleButtonViewModelDelegate: AnyObject {
+    var isObstacleSelectedPublisher: AnyPublisher<Bool, Never> { get }
     func toggleSelectObstacleInPalette()
 }
 class PaletteObstacleButtonViewModel: FillableObstacleViewModel {
-    weak var delegate: PaletteObstacleButtonViewModelDelegate?
-    
-    @Published var isSelected = false
+    weak var delegate: PaletteObstacleButtonViewModelDelegate? {
+        didSet {
+            setupBindings()
+        }
+    }
+
     @Published var alpha: Double = Settings.Alpha.translucent.rawValue
 
     private var subscriptions: Set<AnyCancellable> = []
 
-    override init() {
-        super.init()
-        setupBindings()
-    }
-
     private func setupBindings() {
-        $isSelected.sink { [weak self] val in
-            self?.alpha = val ? Settings.Alpha.opaque.rawValue : Settings.Alpha.translucent.rawValue
+        guard let delegate = delegate else {
+            return
+        }
+
+        delegate.isObstacleSelectedPublisher.sink { [weak self] val in
+            guard let self = self else {
+                return
+            }
+
+            self.alpha = val ? Settings.Alpha.opaque.rawValue : Settings.Alpha.translucent.rawValue
         }
         .store(in: &subscriptions)
     }
 
     func toggleSelectInPalette() {
-        delegate?.toggleSelectObstacleInPalette()
+        guard let delegate = delegate else {
+            fatalError("should not be nil")
+        }
+
+        delegate.toggleSelectObstacleInPalette()
     }
 }

@@ -4,8 +4,8 @@ class FillableObstacleViewModel: AbstractObstacleViewModel, AbstractFillableGame
     var gameObject: GameObject {
         obstacle
     }
-    
-    var obstacle: Obstacle = Obstacle(
+
+    var obstacle = Obstacle(
         shape: TriangleObject(center: CGPoint.zero),
         radiusOfOscillation: 1,
         isConcrete: true

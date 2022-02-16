@@ -2,9 +2,9 @@ import Foundation
 import CoreGraphics
 import Combine
 
-typealias CallbackRunnable = () -> Void
-typealias CallbackUnaryFunction<T> = (T) -> Void
-typealias CallbackBinaryFunction<T> = (T, T) -> Void
+typealias Runnable = () -> Void
+typealias UnaryFunction<T> = (T) -> Void
+typealias BinaryFunction<T> = (T, T) -> Void
 
 struct HydrationIncompatibleError: Error {
     let message = "Attempting to hydrate with a level bigger than the current allowed size"
@@ -12,12 +12,12 @@ struct HydrationIncompatibleError: Error {
 
 /// Encapsulates a single level of Peggle.
 final class DesignerGameLevel {
-    private var setLevelNameCallbacks = [CallbackUnaryFunction<String>]()
-    private var isAcceptingOverlappingPegsCallbacks = [CallbackUnaryFunction<Bool>]()
-    private var addPegCallbacks = [CallbackUnaryFunction<Peg>]()
-    private var updatePegCallbacks = [CallbackBinaryFunction<Peg>]()
-    private var removePegCallbacks = [CallbackUnaryFunction<Peg>]()
-    private var removeAllCallbacks = [CallbackRunnable]()
+    private var setLevelNameCallbacks = [UnaryFunction<String>]()
+    private var isAcceptingOverlappingPegsCallbacks = [UnaryFunction<Bool>]()
+    private var addPegCallbacks = [UnaryFunction<Peg>]()
+    private var updatePegCallbacks = [BinaryFunction<Peg>]()
+    private var removePegCallbacks = [UnaryFunction<Peg>]()
+    private var removeAllCallbacks = [Runnable]()
 
     var isAcceptingOverlappingPegs = false {
         didSet {
@@ -61,27 +61,27 @@ final class DesignerGameLevel {
         }
     }
 
-    func registerOnLevelNameDidSetCallback(callback: @escaping CallbackUnaryFunction<String>) {
+    func registerOnLevelNameDidSetCallback(callback: @escaping UnaryFunction<String>) {
         setLevelNameCallbacks.append(callback)
     }
 
-    func registerIsAcceptingOverlappingPegsDidSetCallback(callback: @escaping CallbackUnaryFunction<Bool>) {
+    func registerIsAcceptingOverlappingPegsDidSetCallback(callback: @escaping UnaryFunction<Bool>) {
         isAcceptingOverlappingPegsCallbacks.append(callback)
     }
 
-    func registerPegDidAddCallback(callback: @escaping CallbackUnaryFunction<Peg>) {
+    func registerPegDidAddCallback(callback: @escaping UnaryFunction<Peg>) {
         addPegCallbacks.append(callback)
     }
 
-    func registerPegDidUpdateCallback(callback: @escaping CallbackBinaryFunction<Peg>) {
+    func registerPegDidUpdateCallback(callback: @escaping BinaryFunction<Peg>) {
         updatePegCallbacks.append(callback)
     }
 
-    func registerPegDidRemoveCallback(callback: @escaping CallbackUnaryFunction<Peg>) {
+    func registerPegDidRemoveCallback(callback: @escaping UnaryFunction<Peg>) {
         removePegCallbacks.append(callback)
     }
 
-    func registerPegDidRemoveAllCallback(callback: @escaping CallbackRunnable) {
+    func registerPegDidRemoveAllCallback(callback: @escaping Runnable) {
         removeAllCallbacks.append(callback)
     }
 
@@ -97,7 +97,7 @@ final class DesignerGameLevel {
     ///   - callbacks: Callbacks to be called on the added peg.
     ///
     /// - Warning: Only calls the callbacks in the parameter and does not call any registered callbacks.
-    func addPeg(peg: Peg, withCallbacks callbacks: [CallbackUnaryFunction<Peg>]) {
+    func addPeg(peg: Peg, withCallbacks callbacks: [UnaryFunction<Peg>]) {
         if pegs.contains(peg) {
             return
         }
@@ -131,7 +131,7 @@ final class DesignerGameLevel {
     /// - Warning: Only calls the callbacks in the parameter and does not call any registered callbacks.
     func updatePeg(old oldPeg: Peg,
                    with updatedPeg: Peg,
-                   withDidUpdateCallbacks callbacks: [CallbackBinaryFunction<Peg>]
+                   withDidUpdateCallbacks callbacks: [BinaryFunction<Peg>]
     ) {
         assert(oldPeg.shape.sides == updatedPeg.shape.sides)
         assert(oldPeg !== updatedPeg)
@@ -181,8 +181,8 @@ final class DesignerGameLevel {
     ///   - didUpdateCallbacks: Callbacks to be called on any other peg that is updated.
     /// - Warning: Only calls the callbacks in the parameter and does not call any registered callbacks.
     func removePeg(peg: Peg,
-                   withDidRemoveCallbacks didRemoveCallbacks: [CallbackUnaryFunction<Peg>],
-                   withDidUpdateCallbacks didUpdateCallbacks: [CallbackBinaryFunction<Peg>]) {
+                   withDidRemoveCallbacks didRemoveCallbacks: [UnaryFunction<Peg>],
+                   withDidUpdateCallbacks didUpdateCallbacks: [BinaryFunction<Peg>]) {
         assert(pegs.contains(peg))
         let oldNeighbors = findNeighbors(peg: peg)
         pegs.remove(peg)
@@ -206,7 +206,7 @@ final class DesignerGameLevel {
     /// Removes all pegs from the level and calls callbacks passed in the parameter on the removed objects.
     /// - Parameter callbacks: Callbacks to be called on the removed objects.
     /// - Warning: Only calls the callbacks in the parameter and does not call any registered callbacks.
-    func removeAllPegs(withDidRemoveCallbacks callbacks: [CallbackRunnable]) {
+    func removeAllPegs(withDidRemoveCallbacks callbacks: [Runnable]) {
         pegs.removeAll()
         neighborFinder.removeAll()
         for callback in callbacks {

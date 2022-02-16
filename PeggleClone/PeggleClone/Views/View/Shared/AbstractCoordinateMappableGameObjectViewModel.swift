@@ -39,7 +39,7 @@ extension AbstractCoordinateMappableGameObjectViewModel {
     var alpha: Double {
         gameObject.isConcrete ? opaqueAlpha : translucentAlpha
     }
-    
+
     private var shapeCenterInView: CGVector {
         guard let delegate = delegate else {
             fatalError("should not be nil")
