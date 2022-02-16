@@ -21,7 +21,7 @@ class PeggleMasterCellViewModel {
     }
     private var subscriptions: Set<AnyCancellable> = []
     @Published private(set) var name: String?
-    @Published private(set) var age: String?
+    @Published private(set) var title: String?
     @Published private(set) var description: String?
     @Published private(set) var portrait: UIImage?
     @Published private(set) var isSelected = false
@@ -30,8 +30,8 @@ class PeggleMasterCellViewModel {
 
     init(peggleMaster: PeggleMaster) {
         self.peggleMaster = peggleMaster
-        self.name = "\(peggleMaster.name) \(peggleMaster.title)"
-        self.age = String(peggleMaster.age)
+        self.name = peggleMaster.name
+        self.title = peggleMaster.title
         self.description = peggleMaster.description
         DispatchQueue.global().async {
             let image = UIImage(named: peggleMaster.id)

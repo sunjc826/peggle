@@ -6,9 +6,53 @@ enum SpecialType {
     case smallBombs
     case blackHole
     case iHatePeople
-    case moonTourist // lower gravity for the same ball
+    case moonTourist
     case multiball
-    case author // hax
+    case author
+}
+
+extension SpecialType {
+    var name: String {
+        switch self {
+        case .normal:
+            return "Normal"
+        case .spooky(activeCount: _):
+            return "Spookyball"
+        case .smallBombs:
+            return "Small Bombs"
+        case .blackHole:
+            return "Black Hole"
+        case .iHatePeople:
+            return "Repulsor"
+        case .moonTourist:
+            return "Moon Tourist"
+        case .multiball:
+            return "Multiball"
+        case .author:
+            return "Author"
+        }
+    }
+
+    var description: String {
+        switch self {
+        case .normal:
+            return "No ability"
+        case .spooky(activeCount: _):
+            return "Ball wraps around"
+        case .smallBombs:
+            return "Explosions"
+        case .blackHole:
+            return "Attract nearby pegs"
+        case .iHatePeople:
+            return "Repel nearby pegs"
+        case .moonTourist:
+            return "Reduced gravity"
+        case .multiball:
+            return "Spawn more balls"
+        case .author:
+            return "Hacks"
+        }
+    }
 }
 
 extension SpecialType: Equatable {}

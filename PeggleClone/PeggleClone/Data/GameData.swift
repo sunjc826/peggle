@@ -6,15 +6,16 @@ struct GameData {
         "beatrice": PeggleMaster(
             id: "beatrice",
             name: "Beatrice",
-            age: 100,
             title: "The Endless Witch",
-            description: "The territory lord of Rokkenjima welcomes you to this 'video' game. No one else is more apt to start off this game with.",
+            description: """
+                The territory lord of Rokkenjima welcomes you to this 'video' game.
+                No one else is more apt to start off this game with.
+                """,
             special: .spooky()
         ),
         "battler": PeggleMaster(
             id: "battler",
             name: "Battler",
-            age: 18,
             title: "The Endless Sorcerer",
             description: "",
             special: .smallBombs
@@ -22,7 +23,6 @@ struct GameData {
         "maria": PeggleMaster(
             id: "maria",
             name: "Maria",
-            age: 9,
             title: "The Witch of Origins",
             description: """
                 As an apprentice witch, she has yet to master the endless magic.
@@ -34,7 +34,6 @@ struct GameData {
         "krauss": PeggleMaster(
             id: "krauss",
             name: "Krauss",
-            age: 52,
             title: "Visionary",
             description: """
                 Crypto Guru, NFT Trader, Moon tourism trailblazer.
@@ -45,7 +44,6 @@ struct GameData {
         "featherine": PeggleMaster(
             id: "featherine",
             name: "Featherine Augustus Aurora",
-            age: 10_000,
             title: "The Witch of Theatergoing",
             description: """
                 An ancient witch who has reached the realm of Creator,
@@ -56,7 +54,6 @@ struct GameData {
         "lambdadelta": PeggleMaster(
             id: "lambdadelta",
             name: "Lambdadelta",
-            age: 1_000,
             title: "The Witch of Certainty",
             description: "Certainly made of candy.",
             special: .blackHole
@@ -64,9 +61,11 @@ struct GameData {
         "bernkastel": PeggleMaster(
             id: "bernkastel",
             name: "Bernkastel",
-            age: 1_000,
             title: "The Witch of Miracles",
-            description: "An all-around asshole. Hates you, probably everyone else you know. Nipah.",
+            description: """
+                An all-around asshole.
+                Hates you, probably everyone else you know. Nipah.
+                """,
             special: .iHatePeople
         )
     ]

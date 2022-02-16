@@ -6,7 +6,7 @@ protocol PeggleMasterCellDelegate: AnyObject {}
 class PeggleMasterCell: UICollectionViewCell {
     @IBOutlet private var ivPicture: UIImageView!
     @IBOutlet private var lblName: UILabel!
-    @IBOutlet private var lblAge: UILabel!
+    @IBOutlet private var lblTitle: UILabel!
     @IBOutlet private var lblDescription: UILabel!
     @IBOutlet private var btnSelect: UIButton!
 
@@ -31,8 +31,8 @@ extension PeggleMasterCell {
             .assign(to: \.text, on: lblName)
             .store(in: &subscriptions)
 
-        viewModel.$age
-            .assign(to: \.text, on: lblAge)
+        viewModel.$title
+            .assign(to: \.text, on: lblTitle)
             .store(in: &subscriptions)
 
         viewModel.$description
