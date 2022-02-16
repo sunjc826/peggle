@@ -42,6 +42,10 @@ extension GameLevel {
             return
         }
 
+        if special == .moonTourist {
+            setRegularGravity()
+        }
+
         cleanupAfterBallDisappears()
 
         if pegs.compulsoryPegCount == 0 {

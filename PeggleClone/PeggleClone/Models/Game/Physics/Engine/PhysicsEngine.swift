@@ -2,8 +2,7 @@ import Foundation
 import Dispatch
 import CoreGraphics
 
-private let signedMagnitudeOfAccelerationDueToGravity = 10.0
-private let accelerationDueToGravity = CGVector(dx: 0, dy: signedMagnitudeOfAccelerationDueToGravity)
+private let accelerationDueToGravity = CGVector(dx: 0, dy: Settings.Physics.signedMagnitudeOfAccelerationDueToGravity)
 
 /// Convention: Just like the GUI, the y axis points downward.
 class PhysicsEngine: AbstractPhysicsEngine {
@@ -21,7 +20,7 @@ class PhysicsEngine: AbstractPhysicsEngine {
     var didFinishAllUpdatesCallbacks: [CallbackRunnable] = []
     var didFinishAllUpdatesTempCallbacks: [CallbackRunnable] = []
 
-    var globalAcceleration: [CGVector] = []
+    var globalAcceleration: [GlobalAcceleration] = []
 
     init<T, S>(
         coordinateMapper: PhysicsCoordinateMapper,
@@ -49,7 +48,10 @@ class PhysicsEngine: AbstractPhysicsEngine {
 
     func setupGlobalAcceleration() {
         globalAcceleration.append(
-            coordinateMapper.getLogicalVector(ofPhysicalVector: accelerationDueToGravity)
+            GlobalAcceleration(
+                accelerationType: .gravity,
+                accelerationValue: coordinateMapper.getLogicalVector(ofPhysicalVector: accelerationDueToGravity)
+            )
         )
     }
 
@@ -87,6 +89,16 @@ extension PhysicsEngine {
                 updatedRigidBody = updatedRigidBody.withWrapAroundCount(count: rigidBody.wrapAroundCount + 1)
             }
 
+            if let localizedForceEmitter = rigidBody.localizedForceEmitter {
+                if localizedForceEmitter.duration < dt {
+                    updatedRigidBody.localizedForceEmitter = nil
+                } else {
+                    updatedRigidBody = updatedRigidBody.withLocalizedForceEmitter(
+                        emitter: localizedForceEmitter.withDuration(duration: localizedForceEmitter.duration - dt)
+                    )
+                }
+            }
+
             if rigidBody.canTranslate {
                 let (newPosition, newLinearVelocity) = rigidBody.getUpdatedLinearData(time: dt)
                 updatedRigidBody = updatedRigidBody.withPositionAndLinearVelocity(
@@ -113,6 +125,7 @@ extension PhysicsEngine {
             resolveBoundaryCollisions(rigidBody: rigidBody)
         }
         resolveRigidBodyCollisions(rigidBody: rigidBody)
+        emitLocalizedForce(rigidBody: rigidBody)
     }
 
     func runCallbacksAfterAllUpdates() {
@@ -159,74 +172,22 @@ extension PhysicsEngine {
     }
 }
 
-// MARK: CRUD
-extension PhysicsEngine {
-    func add(rigidBody: RigidBodyObject) {
-        addWithoutFurtherProcessing(rigidBody: rigidBody)
-    }
-
-    func update(oldRigidBody: RigidBodyObject, with updatedRigidBody: RigidBodyObject) {
-        removeWithoutFurtherProcessing(rigidBody: oldRigidBody)
-        addWithoutFurtherProcessing(rigidBody: updatedRigidBody)
-        for callback in didUpdateCallbacks {
-            callback(oldRigidBody, updatedRigidBody)
-        }
-    }
-
-    func remove(rigidBody: RigidBodyObject) {
-        removeWithoutFurtherProcessing(rigidBody: rigidBody)
-        for callback in didRemoveCallbacks {
-            callback(rigidBody)
-        }
-    }
-
-    func addWithoutFurtherProcessing(rigidBody: RigidBodyObject) {
-        rigidBodies.insert(rigidBody)
-        if rigidBody.canTranslate || rigidBody.canRotate {
-            changeableRigidBodies.insert(rigidBody)
-        }
-
-        neighborFinder.insert(entity: rigidBody)
-    }
-
-    func removeWithoutFurtherProcessing(rigidBody: RigidBodyObject) {
-        rigidBodies.remove(rigidBody)
-        if rigidBody.canTranslate || rigidBody.canRotate {
-            changeableRigidBodies.remove(rigidBody)
-        }
-
-        neighborFinder.remove(entity: rigidBody)
-    }
-}
-
-// MARK: Callbacks
-extension PhysicsEngine {
-    func registerDidUpdateCallback(callback: @escaping CallbackBinaryFunction<RigidBodyObject>) {
-        didUpdateCallbacks.append(callback)
-    }
-
-    func registerDidRemoveCallback(callback: @escaping CallbackUnaryFunction<RigidBodyObject>) {
-        didRemoveCallbacks.append(callback)
-    }
-
-    func registerDidFinishAllUpdatesCallback(callback: @escaping CallbackRunnable, temp: Bool) {
-        if temp {
-            didFinishAllUpdatesTempCallbacks.append(callback)
-        } else {
-            didFinishAllUpdatesCallbacks.append(callback)
-        }
-    }
-}
-
 // MARK: Shared acceleration
 extension PhysicsEngine {
+    func setGravity(physicalGravitationalAcceleration: Double) {
+        globalAcceleration.first(where: { $0.accelerationType == .gravity })?.accelerationValue = coordinateMapper
+            .getLogicalVector(
+                ofPhysicalVector: CGVector(dx: 0, dy: physicalGravitationalAcceleration)
+            )
+    }
+
     func addGlobalAcceleration(rigidBody: RigidBodyObject) {
         guard rigidBody.canTranslate && rigidBody.isAffectedByGlobalForces else {
             return
         }
 
         for accel in globalAcceleration {
-            rigidBody.addAcceleration(acceleration: accel)
+            rigidBody.addAcceleration(acceleration: accel.accelerationValue)
         }
     }
 }

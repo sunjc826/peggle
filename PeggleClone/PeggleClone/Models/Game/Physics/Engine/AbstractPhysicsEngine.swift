@@ -12,4 +12,5 @@ protocol AbstractPhysicsEngine {
     func registerDidUpdateCallback(callback: @escaping CallbackBinaryFunction<RigidBodyObject>)
     func registerDidRemoveCallback(callback: @escaping CallbackUnaryFunction<RigidBodyObject>)
     func registerDidFinishAllUpdatesCallback(callback: @escaping CallbackRunnable, temp: Bool)
+    func setGravity(physicalGravitationalAcceleration: Double)
 }

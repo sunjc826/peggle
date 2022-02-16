@@ -1,14 +1,14 @@
 import Foundation
 
 struct GameData {
-    static let defaultPeggleMaster = peggleMasters["battler"]!
-    static let peggleMasters: [String: PeggleMaster] = [
+    static let defaultPeggleMaster = peggleMastersMap["battler"]!
+    static let peggleMastersMap: [String: PeggleMaster] = [
         "beatrice": PeggleMaster(
             id: "beatrice",
             name: "Beatrice",
             age: 100,
             title: "The Endless Witch",
-            description: "",
+            description: "The territory lord of Rokkenjima welcomes you to this 'video' game. No one else is more apt to start off this game with.",
             special: .spooky()
         ),
         "battler": PeggleMaster(
@@ -17,22 +17,29 @@ struct GameData {
             age: 18,
             title: "The Endless Sorcerer",
             description: "",
-            special: .spooky()
+            special: .smallBombs
         ),
         "maria": PeggleMaster(
             id: "maria",
             name: "Maria",
             age: 9,
             title: "The Witch of Origins",
-            description: "",
+            description: """
+                As an apprentice witch, she has yet to master the endless magic.
+                But as a future Creator, she can create many from none, or more aptly, 1 from 0.
+                In this regard, she has surpassed even the endless witch.
+                """,
             special: .multiball
         ),
         "krauss": PeggleMaster(
             id: "krauss",
             name: "Krauss",
             age: 52,
-            title: "Visionary Investor, Crypto Guru, NFT Trader",
-            description: "",
+            title: "Visionary",
+            description: """
+                Crypto Guru, NFT Trader, Moon tourism trailblazer.
+                No one else is a bigger investor than he is, or maybe not...
+                """,
             special: .moonTourist
         ),
         "featherine": PeggleMaster(
@@ -40,16 +47,36 @@ struct GameData {
             name: "Featherine Augustus Aurora",
             age: 10_000,
             title: "The Witch of Theatergoing",
-            description: "",
+            description: """
+                An ancient witch who has reached the realm of Creator,
+                she has the free will to author her own tales, and rules.
+                """,
             special: .author
         ),
         "lambdadelta": PeggleMaster(
             id: "lambdadelta",
             name: "Lambdadelta",
-            age: 1000,
+            age: 1_000,
             title: "The Witch of Certainty",
-            description: "",
-            special: .smallBombs
+            description: "Certainly made of candy.",
+            special: .blackHole
+        ),
+        "bernkastel": PeggleMaster(
+            id: "bernkastel",
+            name: "Bernkastel",
+            age: 1_000,
+            title: "The Witch of Miracles",
+            description: "An all-around asshole. Hates you, probably everyone else you know. Nipah.",
+            special: .iHatePeople
         )
+    ]
+    static let peggleMasters: [PeggleMaster] = [
+        peggleMastersMap["beatrice"]!,
+        peggleMastersMap["battler"]!,
+        peggleMastersMap["maria"]!,
+        peggleMastersMap["krauss"]!,
+        peggleMastersMap["featherine"]!,
+        peggleMastersMap["lambdadelta"]!,
+        peggleMastersMap["bernkastel"]!
     ]
 }

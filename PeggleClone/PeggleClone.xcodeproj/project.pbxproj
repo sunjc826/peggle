@@ -51,6 +51,11 @@
 		E569733A27A3EB050000BF18 /* PaletteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E569733927A3EB050000BF18 /* PaletteViewController.swift */; };
 		E56B868627A430FC00D475BF /* StorageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56B868527A430FC00D475BF /* StorageViewController.swift */; };
 		E56B868827A4495200D475BF /* ShapeTransformViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56B868727A4495200D475BF /* ShapeTransformViewController.swift */; };
+		E56D8DC627BC844E00B36BF4 /* GlobalAcceleration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56D8DC527BC844E00B36BF4 /* GlobalAcceleration.swift */; };
+		E56D8DC827BC95A900B36BF4 /* LocalizedRadialForceEmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56D8DC727BC95A900B36BF4 /* LocalizedRadialForceEmitter.swift */; };
+		E56D8DCA27BC9EEE00B36BF4 /* PhysicsEngine+Callbacks.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56D8DC927BC9EEE00B36BF4 /* PhysicsEngine+Callbacks.swift */; };
+		E56D8DCC27BC9F1900B36BF4 /* PhysicsEngine+CRUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56D8DCB27BC9F1900B36BF4 /* PhysicsEngine+CRUD.swift */; };
+		E56D8DCE27BC9F7000B36BF4 /* PhysicsEngine+LocalizedRadialForce.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56D8DCD27BC9F7000B36BF4 /* PhysicsEngine+LocalizedRadialForce.swift */; };
 		E56E5A1A27BB408100723D6F /* SpecialType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56E5A1927BB408100723D6F /* SpecialType.swift */; };
 		E56E5A1D27BB58FD00723D6F /* PeggleMasterCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56E5A1C27BB58FD00723D6F /* PeggleMasterCollectionViewController.swift */; };
 		E56E5A1F27BB594600723D6F /* PeggleMasterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56E5A1E27BB594600723D6F /* PeggleMasterViewModel.swift */; };
@@ -241,6 +246,11 @@
 		E569733927A3EB050000BF18 /* PaletteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaletteViewController.swift; sourceTree = "<group>"; };
 		E56B868527A430FC00D475BF /* StorageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageViewController.swift; sourceTree = "<group>"; };
 		E56B868727A4495200D475BF /* ShapeTransformViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShapeTransformViewController.swift; sourceTree = "<group>"; };
+		E56D8DC527BC844E00B36BF4 /* GlobalAcceleration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GlobalAcceleration.swift; sourceTree = "<group>"; };
+		E56D8DC727BC95A900B36BF4 /* LocalizedRadialForceEmitter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizedRadialForceEmitter.swift; sourceTree = "<group>"; };
+		E56D8DC927BC9EEE00B36BF4 /* PhysicsEngine+Callbacks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PhysicsEngine+Callbacks.swift"; sourceTree = "<group>"; };
+		E56D8DCB27BC9F1900B36BF4 /* PhysicsEngine+CRUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PhysicsEngine+CRUD.swift"; sourceTree = "<group>"; };
+		E56D8DCD27BC9F7000B36BF4 /* PhysicsEngine+LocalizedRadialForce.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PhysicsEngine+LocalizedRadialForce.swift"; sourceTree = "<group>"; };
 		E56E5A1927BB408100723D6F /* SpecialType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpecialType.swift; sourceTree = "<group>"; };
 		E56E5A1C27BB58FD00723D6F /* PeggleMasterCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeggleMasterCollectionViewController.swift; sourceTree = "<group>"; };
 		E56E5A1E27BB594600723D6F /* PeggleMasterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeggleMasterViewModel.swift; sourceTree = "<group>"; };
@@ -939,9 +949,14 @@
 			children = (
 				E585FD0C27B4C39700748C2E /* AbstractPhysicsEngine.swift */,
 				E5BA4E3227A9369700C4A576 /* PhysicsEngine.swift */,
-				E573A02C27B163E2004B03EC /* PhysicsEngine+CollisionResolution.swift */,
+				E56D8DCB27BC9F1900B36BF4 /* PhysicsEngine+CRUD.swift */,
+				E56D8DC927BC9EEE00B36BF4 /* PhysicsEngine+Callbacks.swift */,
 				E573A02E27B16424004B03EC /* PhysicsEngine+BoundaryBehavior.swift */,
+				E573A02C27B163E2004B03EC /* PhysicsEngine+CollisionResolution.swift */,
+				E56D8DCD27BC9F7000B36BF4 /* PhysicsEngine+LocalizedRadialForce.swift */,
 				E5773CB127B50934009F5793 /* PhysicsEngine+Prediction.swift */,
+				E56D8DC527BC844E00B36BF4 /* GlobalAcceleration.swift */,
+				E56D8DC727BC95A900B36BF4 /* LocalizedRadialForceEmitter.swift */,
 			);
 			path = Engine;
 			sourceTree = "<group>";
@@ -1200,9 +1215,11 @@
 			files = (
 				E569731C27A3721D0000BF18 /* CenteredShape.swift in Sources */,
 				E5CD080E279862160086C8F5 /* Array.swift in Sources */,
+				E56D8DC827BC95A900B36BF4 /* LocalizedRadialForceEmitter.swift in Sources */,
 				E572B90C27B76E66008E72A6 /* TransitionError.swift in Sources */,
 				E56E5A1D27BB58FD00723D6F /* PeggleMasterCollectionViewController.swift in Sources */,
 				E56FF54127AF62EA00FB4D02 /* ShapeTransformViewModel.swift in Sources */,
+				E56D8DCE27BC9F7000B36BF4 /* PhysicsEngine+LocalizedRadialForce.swift in Sources */,
 				E586262227AD85D8009964BF /* CollisionResolver.swift in Sources */,
 				E569732527A376110000BF18 /* CGVector.swift in Sources */,
 				E572B91827B7BD80008E72A6 /* PhysicsCoordinateMapper.swift in Sources */,
@@ -1220,6 +1237,7 @@
 				E571C08E27AEB703009459CE /* PaletteViewModel.swift in Sources */,
 				E5773CB427B50F42009F5793 /* GameplayAreaViewModel.swift in Sources */,
 				E569732E27A37F270000BF18 /* Obstacle.swift in Sources */,
+				E56D8DC627BC844E00B36BF4 /* GlobalAcceleration.swift in Sources */,
 				E5BA4E3327A9369700C4A576 /* PhysicsEngine.swift in Sources */,
 				E586262527AD870D009964BF /* Collision+Detection.swift in Sources */,
 				E5354E39279A89A900ADF354 /* PalettePegButton.swift in Sources */,
@@ -1267,6 +1285,7 @@
 				E5710F6B27B341E2004ACED4 /* LevelSelectCellViewModel.swift in Sources */,
 				E5DCBC0D27B1128300D92638 /* DesignerPegViewModel.swift in Sources */,
 				E57B6C9C27BA807600522F3F /* GameLevel+PhysicsEngineCallbacks.swift in Sources */,
+				E56D8DCC27BC9F1900B36BF4 /* PhysicsEngine+CRUD.swift in Sources */,
 				E55837EE279D1A8C006F4B1F /* QuadTree.swift in Sources */,
 				E56E5A1F27BB594600723D6F /* PeggleMasterViewModel.swift in Sources */,
 				E5DC46F527B7E51800851C51 /* DesignerViewController+Delegate.swift in Sources */,
@@ -1314,6 +1333,7 @@
 				E573EDA627B5749F00C3BACC /* Storyboardable.swift in Sources */,
 				E578EED427AAAEC200A121F3 /* PolygonObject.swift in Sources */,
 				E573A02F27B16424004B03EC /* PhysicsEngine+BoundaryBehavior.swift in Sources */,
+				E56D8DCA27BC9EEE00B36BF4 /* PhysicsEngine+Callbacks.swift in Sources */,
 				E569732B27A37B160000BF18 /* Double.swift in Sources */,
 				E582E26827AADBA700BBA471 /* GamePegView.swift in Sources */,
 				E578EEEA27AAD85800A121F3 /* BallView.swift in Sources */,

@@ -2,7 +2,7 @@ import Foundation
 import Combine
 
 class PeggleMasterViewModel: CollectionViewModel {
-    let peggleMasters = Array(GameData.peggleMasters.values)
+    let peggleMasters = GameData.peggleMasters
     let numberOfSections: Int = 1
 
     var count: Int {

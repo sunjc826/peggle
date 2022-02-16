@@ -7,8 +7,6 @@ final class RigidBodyObject: RigidBody, HasBoundingBox, Equatable, Hashable {
 
     var nextTeleportLocation: CGPoint?
 
-    var isAffectedByGlobalForces: Bool
-
     var scale: Double {
         get {
             backingShape.scale
@@ -59,9 +57,18 @@ final class RigidBodyObject: RigidBody, HasBoundingBox, Equatable, Hashable {
         }
     }
 
+    var boundingBox: BoundingBox {
+        backingShape.boundingBox
+    }
+
+    // MARK: Force overrides
+    var isAffectedByGlobalForces: Bool
+
     var canTranslate: Bool
 
     var canRotate: Bool
+
+    // MARK: Physical properties
 
     var uniformDensity: Double
 
@@ -91,9 +98,7 @@ final class RigidBodyObject: RigidBody, HasBoundingBox, Equatable, Hashable {
         }
     }
 
-    var boundingBox: BoundingBox {
-        backingShape.boundingBox
-    }
+    // MARK: Wall behavior
 
     var leftWallBehavior: WallBehavior
 
@@ -103,6 +108,8 @@ final class RigidBodyObject: RigidBody, HasBoundingBox, Equatable, Hashable {
 
     var bottomWallBehavior: WallBehavior
 
+    // MARK: Other data
+
     var hasCollidedMostRecently = false
 
     var consecutiveCollisionCount: Int = 0
@@ -110,6 +117,10 @@ final class RigidBodyObject: RigidBody, HasBoundingBox, Equatable, Hashable {
     var hasWrappedAroundMostRecently = false
 
     var wrapAroundCount: Int = 0
+
+    // MARK: Localized radial forces
+
+    var localizedForceEmitter: LocalizedRadialForceEmitter?
 
     init(
         backingShape: TransformableShape,
@@ -123,9 +134,7 @@ final class RigidBodyObject: RigidBody, HasBoundingBox, Equatable, Hashable {
         bottomWallBehavior: WallBehavior = .collide,
         uniformDensity: Double = 1,
         elasticity: Double = 0.9,
-        initialVelocity: CGVector = CGVector.zero,
-        consecutiveCollisionCount: Int = 0,
-        wrapAroundCount: Int = 0
+        initialVelocity: CGVector = CGVector.zero
     ) {
         assert(uniformDensity > 0)
         self.backingShape = backingShape
@@ -146,8 +155,6 @@ final class RigidBodyObject: RigidBody, HasBoundingBox, Equatable, Hashable {
         self.inverseMomentOfInertia = 1 / momentOfInertia
         self.elasticity = elasticity
         self.linearVelocity = initialVelocity
-        self.consecutiveCollisionCount = consecutiveCollisionCount
-        self.wrapAroundCount = wrapAroundCount
     }
 
     /// Copies some properties of a given rigid body.
@@ -167,9 +174,7 @@ final class RigidBodyObject: RigidBody, HasBoundingBox, Equatable, Hashable {
                 topWallBehavior: instance.topWallBehavior,
                 bottomWallBehavior: instance.bottomWallBehavior,
                 uniformDensity: instance.uniformDensity,
-                elasticity: instance.elasticity,
-                consecutiveCollisionCount: instance.consecutiveCollisionCount,
-                wrapAroundCount: instance.wrapAroundCount
+                elasticity: instance.elasticity
             )
         case let polygon as TransformablePolygonObject:
             self.init(
@@ -183,15 +188,16 @@ final class RigidBodyObject: RigidBody, HasBoundingBox, Equatable, Hashable {
                 topWallBehavior: instance.topWallBehavior,
                 bottomWallBehavior: instance.bottomWallBehavior,
                 uniformDensity: instance.uniformDensity,
-                elasticity: instance.elasticity,
-                consecutiveCollisionCount: instance.consecutiveCollisionCount,
-                wrapAroundCount: instance.wrapAroundCount
+                elasticity: instance.elasticity
             )
         default:
             fatalError("Cases should be covered")
         }
+        consecutiveCollisionCount = instance.consecutiveCollisionCount
+        wrapAroundCount = instance.wrapAroundCount
         linearVelocity = instance.linearVelocity
         angularVelocity = instance.angularVelocity
+        localizedForceEmitter = instance.localizedForceEmitter
     }
 
     static func == (lhs: RigidBodyObject, rhs: RigidBodyObject) -> Bool {
@@ -205,29 +211,35 @@ final class RigidBodyObject: RigidBody, HasBoundingBox, Equatable, Hashable {
 
 extension RigidBodyObject {
     func withPositionAndLinearVelocity(position: CGPoint, linearVelocity: CGVector) -> RigidBodyObject {
-        let rigidBodyCopy = RigidBodyObject(instance: self)
-        rigidBodyCopy.center = position
-        rigidBodyCopy.linearVelocity = linearVelocity
-        return rigidBodyCopy
+        let copy = RigidBodyObject(instance: self)
+        copy.center = position
+        copy.linearVelocity = linearVelocity
+        return copy
     }
 
     func withAngleAndAngularVelocity(angle: Double, angularVelocity: Double) -> RigidBodyObject {
-        let rigidBodyCopy = RigidBodyObject(instance: self)
-        rigidBodyCopy.rotation = angle.generalizedMod(within: 2 * Double.pi)
-        rigidBodyCopy.angularVelocity = angularVelocity
-        return rigidBodyCopy
+        let copy = RigidBodyObject(instance: self)
+        copy.rotation = angle.generalizedMod(within: 2 * Double.pi)
+        copy.angularVelocity = angularVelocity
+        return copy
     }
 
     func withConsecutiveCollisionCount(count: Int) -> RigidBodyObject {
-        let rigidBodyCopy = RigidBodyObject(instance: self)
-        rigidBodyCopy.consecutiveCollisionCount = count
-        return rigidBodyCopy
+        let copy = RigidBodyObject(instance: self)
+        copy.consecutiveCollisionCount = count
+        return copy
     }
 
     func withWrapAroundCount(count: Int) -> RigidBodyObject {
-        let rigidBodyCopy = RigidBodyObject(instance: self)
-        rigidBodyCopy.wrapAroundCount = count
-        return rigidBodyCopy
+        let copy = RigidBodyObject(instance: self)
+        copy.wrapAroundCount = count
+        return copy
+    }
+
+    func withLocalizedForceEmitter(emitter: LocalizedRadialForceEmitter) -> RigidBodyObject {
+        let copy = RigidBodyObject(instance: self)
+        copy.localizedForceEmitter = emitter
+        return copy
     }
 }
 

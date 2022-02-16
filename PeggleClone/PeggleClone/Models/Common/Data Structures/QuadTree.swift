@@ -244,6 +244,38 @@ class QuadTree<T>: NeighborFinder where T: Equatable, T: HasBoundingBox, T: AnyO
             return neighbors
         }
 
+        func retrieve(neigborsForBoundingBox boundingBox: BoundingBox,
+                      parentBoundingBox: BoundingBox,
+                      indexUnderParent: Int) -> LinkedList<T> {
+            let ownBoundingBox = calculateOwnBoundingBox(
+                parentBoundingBox: parentBoundingBox, indexUnderParent: indexUnderParent
+            )
+
+            let neighbors = LinkedList<T>()
+
+            func appendNeighborsFromSubdivisions(subdivisions: [QuadTreeNode], indices: Set<Int>) {
+                for i in indices {
+                    let subdivision = subdivisions[i]
+                    let neighborsFromSubdivision = subdivision.retrieve(
+                        neigborsForBoundingBox: boundingBox,
+                        parentBoundingBox: ownBoundingBox,
+                        indexUnderParent: i
+                    )
+                    neighbors.append(neighborsFromSubdivision)
+                }
+            }
+
+            if let unwrappedChildren = children {
+                let subdivisionIndices = getSubdivisionOverlappingIndices(
+                    ownBoundingBox: ownBoundingBox,
+                    objectBoundingBox: boundingBox
+                )
+                appendNeighborsFromSubdivisions(subdivisions: unwrappedChildren, indices: subdivisionIndices)
+            }
+            neighbors.append(entities)
+            return neighbors
+        }
+
         /// Searches for and removes `entity` from the subtree rooted at this node, provided that `entity` exists.
         func remove(entity: T, parentBoundingBox: BoundingBox, indexUnderParent: Int) {
             let ownBoundingBox = calculateOwnBoundingBox(
@@ -286,6 +318,12 @@ class QuadTree<T>: NeighborFinder where T: Equatable, T: HasBoundingBox, T: AnyO
         AnySequence(
             root.retrieve(neigborsFor: entity, parentBoundingBox: bounds, indexUnderParent: -1)
             .filter(predicate: { $0 !== entity })
+        )
+    }
+
+    func retrievePotentialNeighbors(givenBoundingBox boundingBox: BoundingBox) -> AnySequence<T> {
+        AnySequence(
+            root.retrieve(neigborsForBoundingBox: boundingBox, parentBoundingBox: bounds, indexUnderParent: -1)
         )
     }
 

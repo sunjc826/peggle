@@ -20,9 +20,20 @@ struct Settings {
     struct Peg {
         static let uniformDensity: Double = 1
         static let elasticity: Double = 0.7
-        static let canTranslate = false
+        static let canTranslate = true
         struct Polygonal {
             static let canRotate = true
+        }
+
+        struct Special {
+            static let explosionForceBaseMagnitude: Double = 0.001
+            static let explosionRadius: Double = 0.2
+            static let attractionForceBaseMagnitude = 0.002
+            static let attractionRadius: Double = 0.25
+            static let attractionDuration: Double = 1
+            static let repulsionForceBaseMagnitude: Double = 0.001
+            static let repulsionRadius: Double = 0.2
+            static let repulsionDuration: Double = 0.25
         }
     }
 
@@ -36,6 +47,10 @@ struct Settings {
         static let special = UIColor.green
         static let scoreMultiplier = UIColor.purple
         static let pegBorder = UIColor.black
+    }
+
+    struct Physics {
+        static let signedMagnitudeOfAccelerationDueToGravity = 10.0
     }
 }
 // swiftlint:enable nesting
