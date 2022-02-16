@@ -20,7 +20,7 @@ struct Settings {
     struct Peg {
         static let uniformDensity: Double = 1
         static let elasticity: Double = 0.7
-        static let canTranslate = true
+        static let canTranslate = false
         struct Polygonal {
             static let canRotate = true
         }
@@ -34,6 +34,7 @@ struct Settings {
             static let repulsionForceBaseMagnitude: Double = 0.001
             static let repulsionRadius: Double = 0.2
             static let repulsionDuration: Double = 0.25
+            static let multiballEjectionVelocity: Double = 0.35
         }
     }
 

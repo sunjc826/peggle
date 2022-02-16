@@ -108,7 +108,36 @@ extension GameLevel {
                 maximumRadius: Settings.Peg.Special.repulsionRadius,
                 duration: Settings.Peg.Special.repulsionDuration
             )
-        default:
+        case .multiball:
+            let ball: Ball
+            let directionVector: CGVector
+            switch updatedSpecialPeg.shape {
+            case let circle as Circle:
+                let theta = Double.random(in: 0..<2 * Double.pi)
+                directionVector = CGVector.fromPoint(
+                    point: PolarCoordinate(radius: circle.radius, theta: theta).toCartesian()
+                ).normalize()
+                print(directionVector)
+                let offset = directionVector.scaleBy(factor: circle.radius + 0.001)
+                let ballPosition = circle.center.translate(offset: offset)
+                ball = Ball(center: ballPosition)
+            case let polygon as TransformablePolygon:
+                let numVertices = polygon.sides
+                let vertexIndex = Int.random(in: 0..<numVertices)
+                let vertex = polygon.vertices[vertexIndex]
+                directionVector = CGVector(from: polygon.center, to: vertex).normalize()
+                ball = Ball(center: vertex.translate(offset: directionVector.scaleBy(factor: 0.001)))
+            default:
+                fatalError(shapeCastingMessage)
+            }
+            addBall(
+                ball: ball,
+                ejectionVelocity:
+                    directionVector.scaleBy(factor: Settings.Peg.Special.multiballEjectionVelocity)
+            )
+            return
+        case .author:
+            // TODO
             return
         }
     }
