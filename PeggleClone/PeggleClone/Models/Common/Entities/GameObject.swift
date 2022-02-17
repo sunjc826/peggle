@@ -16,6 +16,8 @@ class GameObject: EditableGameEntity, Hashable {
         switch instance.shape {
         case let circle as CircleObject:
             shape = CircleObject(instance: circle)
+        case let triangle as TriangleObject:
+            shape = TriangleObject(instance: triangle)
         case let polygon as TransformablePolygonObject:
             shape = TransformablePolygonObject(instance: polygon)
         default:

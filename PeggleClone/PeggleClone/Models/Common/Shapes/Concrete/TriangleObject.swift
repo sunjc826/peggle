@@ -12,33 +12,39 @@ struct TriangleVertices {
 }
 
 class TriangleObject: TransformablePolygonObject {
+    init(
+        center: CGPoint,
+        polarVerticesRelativeToOwnCenterBeforeTransform: [PolarCoordinate],
+        scale: Double,
+        rotation: Double
+    ) {
+        assert(polarVerticesRelativeToOwnCenterBeforeTransform.count == 3)
+        super.init(
+            center: center,
+            polarVerticesRelativeToOwnCenterBeforeTransform: polarVerticesRelativeToOwnCenterBeforeTransform,
+            sides: 3,
+            scale: scale,
+            rotation: rotation
+        )
+    }
+
     convenience init(center: CGPoint) {
         let regularTriangle = RegularPolygonObject(center: center, sides: 3)
         let polarVertices = regularTriangle.polarVerticesRelativeToOwnCenterBeforeTransform
         self.init(
             center: center,
-            polarVerticesRelativeToOwnCenterBeforeTransform: TriangleVertices(
-                v1: polarVertices[0],
-                v2: polarVertices[1],
-                v3: polarVertices[2]
-            ),
+            polarVerticesRelativeToOwnCenterBeforeTransform: polarVertices,
             scale: 1,
             rotation: 0
         )
     }
 
-    init(
-        center: CGPoint,
-        polarVerticesRelativeToOwnCenterBeforeTransform: TriangleVertices,
-        scale: Double,
-        rotation: Double
-    ) {
-        super.init(
-            center: center,
-            polarVerticesRelativeToOwnCenterBeforeTransform: polarVerticesRelativeToOwnCenterBeforeTransform.vertices,
-            sides: 3,
-            scale: scale,
-            rotation: rotation
+    convenience init(instance: TriangleObject) {
+        self.init(
+            center: instance.center,
+            polarVerticesRelativeToOwnCenterBeforeTransform: instance.polarVerticesRelativeToOwnCenterBeforeTransform,
+            scale: instance.scale,
+            rotation: instance.rotation
         )
     }
 

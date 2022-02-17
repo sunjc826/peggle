@@ -2,6 +2,7 @@ import Foundation
 
 protocol NeighborFinder {
     associatedtype Element where Element: Equatable, Element: HasBoundingBox, Element: AnyObject
+
     func insert(entity: Element)
 
     /// Finds all potential entities that may possibly overlap with the given `entity`.

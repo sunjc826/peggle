@@ -38,13 +38,16 @@ class PaletteViewController: UIViewController {
 
         svPalette.translatesAutoresizingMaskIntoConstraints = false
 
+        svPalette.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        svColor.arrangedSubviews.forEach { $0.removeFromSuperview() }
+
         let palettePegButtons = viewModel.palettePegViewModels.map { palettePegViewModel in
             PalettePegButton(viewModel: palettePegViewModel)
         }
         palettePegButtons.forEach { button in
             svPalette.addArrangedSubview(button)
-            resizeButton(button: button)
-            setupConstraints(for: button)
+            resizeButton(button)
+            setupConstraintsForPalettePegButton(button)
         }
 
         let pegTypeButtons = viewModel.pegTypeViewModels.map { pegTypeViewModel in
@@ -53,9 +56,13 @@ class PaletteViewController: UIViewController {
 
         pegTypeButtons.forEach { button in
             svColor.addArrangedSubview(button)
-            resizeButton(button: button)
-            setupConstraints(for: button)
+            resizeButton(button)
+            setupConstraintsForPegTypeButton(button)
         }
+
+        let spacerView = UIView()
+        spacerView.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        svColor.addArrangedSubview(spacerView)
 
         btnObstacle.viewModel = viewModel.paletteObstacleViewModel
 
@@ -65,15 +72,23 @@ class PaletteViewController: UIViewController {
         svColor.setNeedsDisplay()
     }
 
-    private func resizeButton(button: UIButton) {
+    private func resizeButton(_ button: UIButton) {
         button.transform = CGAffineTransform(uniformScale: 0.7)
     }
 
-    private func setupConstraints(for button: UIButton) {
+    private func setupConstraintsForPalettePegButton(_ button: UIButton) {
         let constraints = [
             button.centerYAnchor.constraint(equalTo: button.superview!.centerYAnchor),
             button.heightAnchor.constraint(equalTo: button.superview!.heightAnchor),
             button.widthAnchor.constraint(equalTo: button.superview!.heightAnchor)
+        ]
+        constraints.forEach { $0.isActive = true }
+    }
+
+    private func setupConstraintsForPegTypeButton(_ button: UIButton) {
+        let constraints = [
+            button.centerYAnchor.constraint(equalTo: button.superview!.centerYAnchor),
+            button.heightAnchor.constraint(equalTo: button.superview!.heightAnchor)
         ]
         constraints.forEach { $0.isActive = true }
     }

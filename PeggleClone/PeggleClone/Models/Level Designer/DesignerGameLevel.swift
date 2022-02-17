@@ -34,16 +34,19 @@ final class DesignerGameLevel {
     private let neighborFinder: AnyNeighborFinder<GameObject>
     private let collisionDetector: CollisionDetector
 
+    /// - Remark: No game objects should be placed into a `DesignerGameLevel` at initialization.
+    /// The injection of a bunch of game objects is always via the `hydrate` method.
     init<T, S>(
         coordinateMapper: CoordinateMapper,
-        container: T,
+        emptyContainer: T,
         neighborFinder: S,
         collisionDetector: CollisionDetector
     )
     where T: Container, T.Element == GameObject, S: NeighborFinder, S.Element == GameObject {
         self.coordinateMapper = coordinateMapper
         self.playArea = coordinateMapper.getPlayArea()
-        self.gameObjects = AnyContainer(container: container)
+        assert(emptyContainer.isEmpty)
+        self.gameObjects = AnyContainer(container: emptyContainer)
         self.neighborFinder = AnyNeighborFinder(neighborFinder: neighborFinder)
         self.collisionDetector = collisionDetector
     }
@@ -58,6 +61,11 @@ final class DesignerGameLevel {
         for persistablePeg in incomingLevel.pegs {
             let peg = Peg.fromPersistable(persistablePeg: persistablePeg)
             addGameObject(gameObject: peg)
+        }
+
+        for persistableObstacle in incomingLevel.obstacles {
+            let obstacle = Obstacle.fromPersistable(persistableObstacle: persistableObstacle)
+            addGameObject(gameObject: obstacle)
         }
     }
 
@@ -85,16 +93,16 @@ final class DesignerGameLevel {
         removeAllCallbacks.append(callback)
     }
 
-    /// Adds the given `peg` into the level and calls the registered callbacks
-    /// - Parameter peg: Peg to be added into the level.
+    /// Adds the given `gameObject` into the level and calls the registered callbacks
+    /// - Parameter gameObject: GameObject to be added into the level.
     func addGameObject(gameObject: GameObject) {
         addGameObject(gameObject: gameObject, withCallbacks: addGameObjectCallbacks)
     }
 
-    /// Adds the given `peg` into the level and call the callbacks passed as a parameter.
+    /// Adds the given `gameObject` into the level and call the callbacks passed as a parameter.
     /// - Parameters:
-    ///   - peg: Peg to be added into the level.
-    ///   - callbacks: Callbacks to be called on the added peg.
+    ///   - gameObject: GameObject to be added into the level.
+    ///   - callbacks: Callbacks to be called on the added `gameObject`.
     ///
     /// - Warning: Only calls the callbacks in the parameter and does not call any registered callbacks.
     func addGameObject(gameObject: GameObject, withCallbacks callbacks: [UnaryFunction<GameObject>]) {
@@ -114,24 +122,25 @@ final class DesignerGameLevel {
         }
     }
 
-    /// Updates `oldPeg` in the level with `updatedPeg` and calls the registered callbacks.
+    /// Updates `oldGameObject` in the level with `updatedGameObject` and calls the registered callbacks.
     /// - Parameters:
-    ///   - oldPeg: Peg to be updated.
-    ///   - updatedPeg: Updated peg.
+    ///   - oldGameObject: GameObject to be updated.
+    ///   - updatedGameObject: Updated game object.
     func updateGameObject(old oldGameObject: GameObject, with updatedGameObject: GameObject) {
         updateGameObject(old: oldGameObject, with: updatedGameObject, withDidUpdateCallbacks: updateGameObjectCallbacks)
     }
 
-    /// Updates `oldPeg` in the level with `updatedPeg` and calls the callbacks passed as a parameter.
+    /// Updates `oldGameObject` in the level with `updatedGameObject` and calls the callbacks passed as a parameter.
     /// - Parameters:
-    ///   - oldPeg: Peg to be updated.
-    ///   - updatedPeg: Updated peg.
-    ///   - callbacks: Callbacks to be called any pegs that are updated.
+    ///   - oldGameObject: Game object to be updated.
+    ///   - updatedGameObject: Updated game object.
+    ///   - callbacks: Callbacks to be called any game objects that are updated.
     ///
     /// - Warning: Only calls the callbacks in the parameter and does not call any registered callbacks.
-    func updateGameObject(old oldGameObject: GameObject,
-                   with updatedGameObject: GameObject,
-                   withDidUpdateCallbacks callbacks: [BinaryFunction<GameObject>]
+    func updateGameObject(
+        old oldGameObject: GameObject,
+        with updatedGameObject: GameObject,
+        withDidUpdateCallbacks callbacks: [BinaryFunction<GameObject>]
     ) {
         assert(oldGameObject.shape.sides == updatedGameObject.shape.sides)
         assert(oldGameObject !== updatedGameObject)
@@ -165,24 +174,30 @@ final class DesignerGameLevel {
         }
     }
 
-    /// Removes `peg` from the level and calls registered callbacks on the removed peg.
+    /// Removes `gameObject` from the level and calls registered callbacks on the removed peg.
     ///
-    /// - Parameter peg: Peg to be removed.
+    /// - Parameter gameObject: GameObject to be removed.
     func removeGameObject(gameObject: GameObject) {
-        removeGameObject(gameObject: gameObject, withDidRemoveCallbacks: removeGameObjectCallbacks, withDidUpdateCallbacks: updateGameObjectCallbacks)
+        removeGameObject(
+            gameObject: gameObject,
+            withDidRemoveCallbacks: removeGameObjectCallbacks,
+            withDidUpdateCallbacks: updateGameObjectCallbacks
+        )
     }
 
-    /// Removes `peg` from the level and calls registered callbacks on the removed peg as well as
-    /// any other peg that is updated.
+    /// Removes `gameObject` from the level and calls registered callbacks on the removed game object as well as
+    /// any other game object that is updated.
     ///
     /// - Parameters:
-    ///   - peg: Peg to be removed.
-    ///   - didRemoveCallbacks: Callbacks to be called on the removed peg.
-    ///   - didUpdateCallbacks: Callbacks to be called on any other peg that is updated.
+    ///   - gameObject: GameObject to be removed.
+    ///   - didRemoveCallbacks: Callbacks to be called on the removed game object.
+    ///   - didUpdateCallbacks: Callbacks to be called on any other game object that is updated.
     /// - Warning: Only calls the callbacks in the parameter and does not call any registered callbacks.
-    func removeGameObject(gameObject: GameObject,
-                   withDidRemoveCallbacks didRemoveCallbacks: [UnaryFunction<GameObject>],
-                   withDidUpdateCallbacks didUpdateCallbacks: [BinaryFunction<GameObject>]) {
+    func removeGameObject(
+        gameObject: GameObject,
+        withDidRemoveCallbacks didRemoveCallbacks: [UnaryFunction<GameObject>],
+        withDidUpdateCallbacks didUpdateCallbacks: [BinaryFunction<GameObject>]
+    ) {
         assert(gameObjects.contains(gameObject))
         let oldNeighbors = findNeighbors(gameObject: gameObject)
         gameObjects.remove(gameObject)
@@ -198,12 +213,12 @@ final class DesignerGameLevel {
         }
     }
 
-    /// Removes all pegs from level and calls registered callbacks on the removed objects.
+    /// Removes all game objects from level and calls registered callbacks on the removed objects.
     func removeAllGameObjects() {
         removeAllGameObjects(withDidRemoveCallbacks: removeAllCallbacks)
     }
 
-    /// Removes all pegs from the level and calls callbacks passed in the parameter on the removed objects.
+    /// Removes all game objects from the level and calls callbacks passed in the parameter on the removed objects.
     /// - Parameter callbacks: Callbacks to be called on the removed objects.
     /// - Warning: Only calls the callbacks in the parameter and does not call any registered callbacks.
     func removeAllGameObjects(withDidRemoveCallbacks callbacks: [Runnable]) {
@@ -214,7 +229,7 @@ final class DesignerGameLevel {
         }
     }
 
-    /// Returns all pegs that collide with the given `peg`.
+    /// Returns all game objects that collide with the given `gameObject`.
     private func findNeighbors(gameObject: GameObject) -> [GameObject] {
         let potentialNeighbors = neighborFinder.retrievePotentialNeighbors(for: gameObject)
         var neighbors = [GameObject]()
@@ -249,7 +264,8 @@ final class DesignerGameLevel {
         }
     }
 
-    /// Updates whether the peg is concrete depending on whether it overlaps with any other concrete peg.
+    /// Updates whether the game object is concrete depending on
+    /// whether it overlaps with any other concrete game object.
     @discardableResult private func updateConcreteStatus(gameObject: GameObject) -> [GameObject] {
         let isContainedInPlayArea = playArea.pegZoneContainsEntity(entity: gameObject)
         let neighbors = findNeighbors(gameObject: gameObject)
@@ -265,7 +281,7 @@ extension DesignerGameLevel {
         let playArea = coordinateMapper.getPlayArea()
         return DesignerGameLevel(
             coordinateMapper: coordinateMapper,
-            container: SetObject<GameObject>(),
+            emptyContainer: SetObject<GameObject>(),
             neighborFinder: QuadTree<GameObject>(bounds: playArea.pegZoneBoundingBox),
             collisionDetector: Collision()
         )
@@ -273,12 +289,12 @@ extension DesignerGameLevel {
 }
 
 extension DesignerGameLevel {
-    /// Returns whether all pegs in the level are concrete.
+    /// Returns whether all game objects in the level are concrete.
     func isConsistent() -> Bool {
         gameObjects.allSatisfy { $0.isConcrete }
     }
 
-    /// Removes all non concrete pegs from the level.
+    /// Removes all non concrete game objects from the level.
     func removeInconsistencies() {
         var gameObjectsToBeRemoved = [GameObject]()
         for gameObject in gameObjects where !gameObject.isConcrete {

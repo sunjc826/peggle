@@ -20,6 +20,9 @@
 		E5354E3B279A89EC00ADF354 /* DesignerPegButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5354E3A279A89EC00ADF354 /* DesignerPegButton.swift */; };
 		E545750B27A97F1100F11F43 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E545750A27A97F1100F11F43 /* GameViewController.swift */; };
 		E545750D27A980A200F11F43 /* GameplayAreaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E545750C27A980A200F11F43 /* GameplayAreaView.swift */; };
+		E54612B727BE799400AAD85A /* DesignerViewController+Editing.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54612B627BE799400AAD85A /* DesignerViewController+Editing.swift */; };
+		E54612B927BE79A400AAD85A /* DesignerViewController+Callbacks.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54612B827BE79A400AAD85A /* DesignerViewController+Callbacks.swift */; };
+		E54612BB27BE7C6A00AAD85A /* DesignerViewController+Letterbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54612BA27BE7C6A00AAD85A /* DesignerViewController+Letterbox.swift */; };
 		E554880827A21B68009B862C /* NeighborFinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E554880727A21B68009B862C /* NeighborFinder.swift */; };
 		E554880A27A21BA8009B862C /* Container.swift in Sources */ = {isa = PBXBuildFile; fileRef = E554880927A21BA8009B862C /* Container.swift */; };
 		E554880C27A22EEC009B862C /* CollisionDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = E554880B27A22EEC009B862C /* CollisionDetector.swift */; };
@@ -227,6 +230,9 @@
 		E5354E3A279A89EC00ADF354 /* DesignerPegButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignerPegButton.swift; sourceTree = "<group>"; };
 		E545750A27A97F1100F11F43 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		E545750C27A980A200F11F43 /* GameplayAreaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameplayAreaView.swift; sourceTree = "<group>"; };
+		E54612B627BE799400AAD85A /* DesignerViewController+Editing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DesignerViewController+Editing.swift"; sourceTree = "<group>"; };
+		E54612B827BE79A400AAD85A /* DesignerViewController+Callbacks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DesignerViewController+Callbacks.swift"; sourceTree = "<group>"; };
+		E54612BA27BE7C6A00AAD85A /* DesignerViewController+Letterbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DesignerViewController+Letterbox.swift"; sourceTree = "<group>"; };
 		E554880727A21B68009B862C /* NeighborFinder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeighborFinder.swift; sourceTree = "<group>"; };
 		E554880927A21BA8009B862C /* Container.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Container.swift; sourceTree = "<group>"; };
 		E554880B27A22EEC009B862C /* CollisionDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollisionDetector.swift; sourceTree = "<group>"; };
@@ -894,10 +900,13 @@
 			children = (
 				E519D56E2798009600BCE59D /* DesignerMainViewController.swift */,
 				E569733727A3E8EB0000BF18 /* DesignerViewController.swift */,
+				E54612B627BE799400AAD85A /* DesignerViewController+Editing.swift */,
+				E54612B827BE79A400AAD85A /* DesignerViewController+Callbacks.swift */,
+				E5DC46F427B7E51800851C51 /* DesignerViewController+Delegate.swift */,
+				E54612BA27BE7C6A00AAD85A /* DesignerViewController+Letterbox.swift */,
 				E569733927A3EB050000BF18 /* PaletteViewController.swift */,
 				E56B868727A4495200D475BF /* ShapeTransformViewController.swift */,
 				E56B868527A430FC00D475BF /* StorageViewController.swift */,
-				E5DC46F427B7E51800851C51 /* DesignerViewController+Delegate.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -1352,11 +1361,13 @@
 				E578EEC727AAA5B700A121F3 /* RegularPolygon.swift in Sources */,
 				E578EED627AAAEF100A121F3 /* RectangleObject.swift in Sources */,
 				E57B6C9A27BA7FE700522F3F /* GameLevel+Lifecycle.swift in Sources */,
+				E54612BB27BE7C6A00AAD85A /* DesignerViewController+Letterbox.swift in Sources */,
 				E586262727AD8719009964BF /* Collision+Resolution.swift in Sources */,
 				E57B6C9627BA7F5900522F3F /* GameLevel+Callbacks.swift in Sources */,
 				E56E5A2327BB597D00723D6F /* PeggleMasterCell.swift in Sources */,
 				E5636DD3279BB203006428E8 /* LoggerWrapper.swift in Sources */,
 				E585FD0D27B4C39700748C2E /* AbstractPhysicsEngine.swift in Sources */,
+				E54612B927BE79A400AAD85A /* DesignerViewController+Callbacks.swift in Sources */,
 				E569731A27A371FA0000BF18 /* TransformableShape.swift in Sources */,
 				E578D2FE27BD3F820080B2DA /* PersistableObstacle.swift in Sources */,
 				E572B8EF27B749FF008E72A6 /* PersistablePeg.swift in Sources */,
@@ -1375,6 +1386,7 @@
 				E5AAA5A9279989AC0092EE3D /* LinkedList.swift in Sources */,
 				E57B6CA027BA897700522F3F /* GameEndViewModel.swift in Sources */,
 				E57B6C8427BA53C500522F3F /* GenericStatView.swift in Sources */,
+				E54612B727BE799400AAD85A /* DesignerViewController+Editing.swift in Sources */,
 				E57B6C8227BA53AA00522F3F /* PegStatView.swift in Sources */,
 				E573A02D27B163E2004B03EC /* PhysicsEngine+CollisionResolution.swift in Sources */,
 				E573EDA627B5749F00C3BACC /* Storyboardable.swift in Sources */,

@@ -17,6 +17,10 @@ class PegContainer: Container {
         return count
     }
 
+    var count: Int {
+        pegs.count
+    }
+
     init<T: Container>(pegs: T) where T.Element == Peg {
         self.pegs = AnyContainer(container: pegs)
         setup()
