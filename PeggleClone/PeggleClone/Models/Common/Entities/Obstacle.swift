@@ -41,6 +41,19 @@ extension Obstacle {
         copy.radiusOfOscillation = radiusOfOscillation
         return copy
     }
+
+    func withVertices(vertices: [CGPoint]) -> Obstacle {
+        let copy = Obstacle(instance: self)
+        guard let triangle = copy.shape as? TriangleObject else {
+            fatalError("unexpected type")
+        }
+
+        let polarVerticesRelativeToOwnCenterBeforeTransform =
+            vertices.map { triangle.inverseTransform(vertex: $0) }
+        triangle.polarVerticesRelativeToOwnCenterBeforeTransform =
+            polarVerticesRelativeToOwnCenterBeforeTransform
+        return copy
+    }
 }
 
 // MARK: Persistable

@@ -6,6 +6,11 @@ protocol DesignerObstacleButtonDelegate: AnyObject {
     func btnDesignerObstacleOnPan(sender: UIPanGestureRecognizer)
     func btnDesignerObstacleOnTap(sender: DesignerObstacleButton)
     func btnDesignerObstacleOnDoubleTap(sender: DesignerObstacleButton)
+    func btnDesignerObstacleVertexOnPan(
+        sender: UIPanGestureRecognizer,
+        vmDesignerObstacleButton: DesignerObstacleButtonViewModel,
+        vertexIndex: Int
+    )
 }
 
 /// Encapsulates an interactive peg placed in the level designer.
@@ -20,6 +25,7 @@ class DesignerObstacleButton: UIButton {
         }
     }
     weak var delegate: DesignerObstacleButtonDelegate?
+    var btnsForVertices: [VertexButton] = []
 
     private var subscriptions: Set<AnyCancellable> = []
 
@@ -59,10 +65,33 @@ extension DesignerObstacleButton {
 
     private func setupBindings() {
         viewModel.$isBeingEdited
-            .sink { [weak self] _ in
-                self?.setNeedsDisplay()
+            .removeDuplicates()
+            .sink { [weak self] isBeingEdited in
+                guard let self = self else {
+                    return
+                }
+
+                self.handleEdit(isBeingEdited: isBeingEdited)
+                self.setNeedsDisplay()
             }
             .store(in: &subscriptions)
+    }
+}
+
+extension DesignerObstacleButton {
+    private func handleEdit(isBeingEdited: Bool) {
+        if isBeingEdited {
+            let triangleVertices = viewModel.vertices
+            triangleVertices.enumerated().forEach { index, vertex in
+                let btnVertex = VertexButton(vertex: vertex, vertexIndex: index)
+                btnVertex.delegate = self
+                btnsForVertices.append(btnVertex)
+                superview?.addSubview(btnVertex)
+            }
+        } else {
+            btnsForVertices.forEach { $0.removeFromSuperview() }
+            btnsForVertices.removeAll()
+        }
     }
 }
 
@@ -98,7 +127,6 @@ extension DesignerObstacleButton {
         guard let delegate = delegate else {
             fatalError("should not be nil")
         }
-
         delegate.btnDesignerObstacleOnPan(sender: sender)
     }
 
@@ -119,5 +147,19 @@ extension DesignerObstacleButton {
         if touch.tapCount == 2 {
             delegate.btnDesignerObstacleOnDoubleTap(sender: sender)
         }
+    }
+}
+
+extension DesignerObstacleButton: VertexButtonDelegate {
+    func btnVertexOnPan(sender: UIPanGestureRecognizer, vertexIndex: Int) {
+        guard let delegate = delegate else {
+            fatalError("should not be nil")
+        }
+
+        delegate.btnDesignerObstacleVertexOnPan(
+            sender: sender,
+            vmDesignerObstacleButton: viewModel,
+            vertexIndex: vertexIndex
+        )
     }
 }

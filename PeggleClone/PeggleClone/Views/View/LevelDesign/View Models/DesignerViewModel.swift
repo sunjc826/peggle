@@ -46,7 +46,6 @@ class DesignerViewModel {
             guard let self = self else {
                 return
             }
-
             self.shouldShowShapeTransform = gameObjectBeingEdited != nil
             self.previouslyEditedGameObject = gameObjectBeingEdited
             guard let gameObjectBeingEdited = gameObjectBeingEdited else {
@@ -167,6 +166,30 @@ class DesignerViewModel {
         )
 
         gameLevel?.updateGameObject(old: oldGameObject, with: rotatedGameObject)
+    }
+
+    func relocateObstacleVertex(
+        of viewModel: CoordinateMappableObstacleViewModel,
+        at vertexIndex: Int,
+        to displayCoords: CGPoint
+    ) {
+        if isDeleting {
+            return
+        }
+
+        guard let coordinateMapper = coordinateMapper else {
+            return
+        }
+        let logicalCoords = coordinateMapper.getLogicalCoords(ofDisplayCoords: displayCoords)
+        let oldObstacle = viewModel.obstacle
+        guard let triangle = oldObstacle.shape as? TriangleObject else {
+            fatalError("unexpected type")
+        }
+        var updatedVertices = triangle.vertices
+        updatedVertices[vertexIndex] = logicalCoords
+        let updatedObstacle = oldObstacle.withVertices(vertices: updatedVertices)
+
+        gameLevel?.updateGameObject(old: oldObstacle, with: updatedObstacle)
     }
 
     func remove(viewModel: AbstractCoordinateMappableGameObjectViewModel) {

@@ -23,6 +23,16 @@ extension TransformablePolygon {
             vertex.translate(offset: CGVector.getPositionVector(of: center))
         }
     }
+
+    func inverseTransform(vertex: CGPoint) -> PolarCoordinate {
+        let vertexRelativeToCenter = vertex.translate(offset: CGVector.getPositionVector(of: center).reverse())
+        let polarVertexRelativeToCenter = vertexRelativeToCenter.toPolar()
+        return inverseTransform(polarVertexRelativeToOwnCenter: polarVertexRelativeToCenter)
+    }
+
+    func inverseTransform(polarVertexRelativeToOwnCenter: PolarCoordinate) -> PolarCoordinate {
+        polarVertexRelativeToOwnCenter.scaleBy(factor: 1 / scale).rotate(angle: -rotation)
+    }
 }
 
 extension TransformablePolygon {

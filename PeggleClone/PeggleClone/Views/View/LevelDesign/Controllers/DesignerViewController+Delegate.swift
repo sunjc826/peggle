@@ -66,7 +66,7 @@ extension DesignerViewController: DesignerObstacleButtonDelegate {
 
     func btnDesignerObstacleOnPan(sender: UIPanGestureRecognizer) {
         guard let btnDesignerObstacle = sender.view as? DesignerObstacleButton else {
-            fatalError("Gesture Recognizer should be attached to a PegEntityButton")
+            fatalError("Gesture Recognizer should be attached to a DesignerObstacleButton")
         }
 
         guard let viewModel = viewModel else {
@@ -95,6 +95,22 @@ extension DesignerViewController: DesignerObstacleButtonDelegate {
         }
 
         viewModel.selectToEdit(viewModel: sender.viewModel)
+    }
+
+    func btnDesignerObstacleVertexOnPan(
+        sender: UIPanGestureRecognizer,
+        vmDesignerObstacleButton: DesignerObstacleButtonViewModel,
+        vertexIndex: Int
+    ) {
+        guard let viewModel = viewModel else {
+            fatalError("should not be nil")
+        }
+
+        viewModel.relocateObstacleVertex(
+            of: vmDesignerObstacleButton,
+            at: vertexIndex,
+            to: sender.location(in: vLayout)
+        )
     }
 }
 

@@ -23,6 +23,7 @@
 		E54612B727BE799400AAD85A /* DesignerViewController+Editing.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54612B627BE799400AAD85A /* DesignerViewController+Editing.swift */; };
 		E54612B927BE79A400AAD85A /* DesignerViewController+Callbacks.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54612B827BE79A400AAD85A /* DesignerViewController+Callbacks.swift */; };
 		E54612BB27BE7C6A00AAD85A /* DesignerViewController+Letterbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54612BA27BE7C6A00AAD85A /* DesignerViewController+Letterbox.swift */; };
+		E54612BD27BE849800AAD85A /* VertexButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54612BC27BE849800AAD85A /* VertexButton.swift */; };
 		E554880827A21B68009B862C /* NeighborFinder.swift in Sources */ = {isa = PBXBuildFile; fileRef = E554880727A21B68009B862C /* NeighborFinder.swift */; };
 		E554880A27A21BA8009B862C /* Container.swift in Sources */ = {isa = PBXBuildFile; fileRef = E554880927A21BA8009B862C /* Container.swift */; };
 		E554880C27A22EEC009B862C /* CollisionDetector.swift in Sources */ = {isa = PBXBuildFile; fileRef = E554880B27A22EEC009B862C /* CollisionDetector.swift */; };
@@ -233,6 +234,7 @@
 		E54612B627BE799400AAD85A /* DesignerViewController+Editing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DesignerViewController+Editing.swift"; sourceTree = "<group>"; };
 		E54612B827BE79A400AAD85A /* DesignerViewController+Callbacks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DesignerViewController+Callbacks.swift"; sourceTree = "<group>"; };
 		E54612BA27BE7C6A00AAD85A /* DesignerViewController+Letterbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DesignerViewController+Letterbox.swift"; sourceTree = "<group>"; };
+		E54612BC27BE849800AAD85A /* VertexButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VertexButton.swift; sourceTree = "<group>"; };
 		E554880727A21B68009B862C /* NeighborFinder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeighborFinder.swift; sourceTree = "<group>"; };
 		E554880927A21BA8009B862C /* Container.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Container.swift; sourceTree = "<group>"; };
 		E554880B27A22EEC009B862C /* CollisionDetector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollisionDetector.swift; sourceTree = "<group>"; };
@@ -900,9 +902,9 @@
 			children = (
 				E519D56E2798009600BCE59D /* DesignerMainViewController.swift */,
 				E569733727A3E8EB0000BF18 /* DesignerViewController.swift */,
-				E54612B627BE799400AAD85A /* DesignerViewController+Editing.swift */,
 				E54612B827BE79A400AAD85A /* DesignerViewController+Callbacks.swift */,
 				E5DC46F427B7E51800851C51 /* DesignerViewController+Delegate.swift */,
+				E54612B627BE799400AAD85A /* DesignerViewController+Editing.swift */,
 				E54612BA27BE7C6A00AAD85A /* DesignerViewController+Letterbox.swift */,
 				E569733927A3EB050000BF18 /* PaletteViewController.swift */,
 				E56B868727A4495200D475BF /* ShapeTransformViewController.swift */,
@@ -919,6 +921,7 @@
 				E5FACBD927BBC6B90013B53E /* PegTypeButton.swift */,
 				E578D30927BD49AB0080B2DA /* PaletteObstacleButton.swift */,
 				E578D2FF27BD42750080B2DA /* DesignerObstacleButton.swift */,
+				E54612BC27BE849800AAD85A /* VertexButton.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1293,6 +1296,7 @@
 				E5FACBDA27BBC6B90013B53E /* PegTypeButton.swift in Sources */,
 				E57B6C8827BA5E4000522F3F /* PegStatViewModel.swift in Sources */,
 				E571C09027AEB712009459CE /* DesignerMainViewModel.swift in Sources */,
+				E54612BD27BE849800AAD85A /* VertexButton.swift in Sources */,
 				E569732927A3766F0000BF18 /* CGAffineTransform.swift in Sources */,
 				E578D30027BD42750080B2DA /* DesignerObstacleButton.swift in Sources */,
 				E567195E279C628300D841DC /* LevelSelectCell.swift in Sources */,

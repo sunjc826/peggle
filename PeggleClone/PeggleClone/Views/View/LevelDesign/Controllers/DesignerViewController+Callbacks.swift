@@ -123,5 +123,10 @@ extension DesignerViewController {
             $0.removeFromSuperview()
         }
         pegToButtonMap.removeAll()
+        
+        obstacleToButtonMap.values.forEach {
+            $0.removeFromSuperview()
+        }
+        obstacleToButtonMap.removeAll()
     }
 }
