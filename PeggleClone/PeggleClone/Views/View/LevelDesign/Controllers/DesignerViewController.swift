@@ -21,6 +21,7 @@ class DesignerViewController: UIViewController {
     private var subscriptions: Set<AnyCancellable> = []
 
     var pegToButtonMap: [Peg: DesignerPegButton] = [:]
+    var obstacleToButtonMap: [Obstacle: DesignerObstacleButton] = [:]
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard segue.identifier == segueShapeTransform else {
@@ -46,7 +47,7 @@ extension DesignerViewController {
         }
         viewModel.registerCallbacks()
         registerEventHandlers()
-        viewModel.deselectPeg()
+        viewModel.deselectGameObject()
     }
 
     private func setupBindings() {
@@ -187,31 +188,56 @@ extension DesignerViewController {
             fatalError("should not be nil")
         }
 
-        viewModel.$previouslyEditedPeg
+        viewModel.$previouslyEditedGameObject
             .sink { [weak self] _ in
                 guard let self = self, let viewModel = self.viewModel else {
                     return
                 }
 
-                if let previouslyEditedPeg = viewModel.previouslyEditedPeg, // get old value
-                   let previouslyEditedPegViewModel = self.pegToButtonMap[previouslyEditedPeg]?.viewModel {
+                guard let previouslyEditedGameObject = viewModel.previouslyEditedGameObject else {
+                    return
+                }
+
+                switch previouslyEditedGameObject {
+                case let peg as Peg:
+                    guard let previouslyEditedPegViewModel = self.pegToButtonMap[peg]?.viewModel else {
+                        return
+                    }
                     previouslyEditedPegViewModel.isBeingEdited = false
+                case let obstacle as Obstacle:
+                    guard let previouslyEditedObstacleViewModel = self.obstacleToButtonMap[obstacle]?.viewModel else {
+                        return
+                    }
+                    previouslyEditedObstacleViewModel.isBeingEdited = false
+                default:
+                    return
                 }
             }
             .store(in: &subscriptions)
 
-        viewModel.$pegBeingEdited
-            .sink { [weak self] pegBeingEdited in
+        viewModel.$gameObjectBeingEdited
+            .sink { [weak self] gameObjectBeingEdited in
                 guard let self = self else {
                     return
                 }
 
-                guard let pegBeingEdited = pegBeingEdited,
-                      let btnPeg = self.pegToButtonMap[pegBeingEdited] else {
+                guard let gameObjectBeingEdited = gameObjectBeingEdited else {
                     return
                 }
-                let pegViewModel = btnPeg.viewModel
-                pegViewModel.isBeingEdited = true
+                switch gameObjectBeingEdited {
+                case let peg as Peg:
+                    guard let vmPeg = self.pegToButtonMap[peg]?.viewModel else {
+                        return
+                    }
+                    vmPeg.isBeingEdited = true
+                case let obstacle as Obstacle:
+                    guard let vmObstacle = self.obstacleToButtonMap[obstacle]?.viewModel else {
+                        return
+                    }
+                    vmObstacle.isBeingEdited = true
+                default:
+                    return
+                }
             }
             .store(in: &subscriptions)
     }
@@ -229,11 +255,11 @@ extension DesignerViewController {
         guard let gameLevel = viewModel.gameLevel else {
             fatalError("game level should be present")
         }
-        gameLevel.registerPegDidAddCallback(callback: addPegChild(peg:))
-        gameLevel.registerPegDidUpdateCallback(callback: updatePegChild(oldPeg:newPeg:))
-        gameLevel.registerPegDidRemoveCallback(callback: removePegChild(peg:))
-        gameLevel.registerPegDidRemoveAllCallback(callback: clearPegs)
-        gameLevel.isAcceptingOverlappingPegs = false
+        gameLevel.registerGameObjectDidAddCallback(callback: addGameObjectChild(gameObject:))
+        gameLevel.registerGameObjectDidUpdateCallback(callback: updateGameObjectChild(oldGameObject:updatedGameObject:))
+        gameLevel.registerGameObjectDidRemoveCallback(callback: removeGameObjectChild(gameObject:))
+        gameLevel.registerGameObjectDidRemoveAllCallback(callback: clearGameObjects)
+        gameLevel.isAcceptingOverlappingGameObjects = false
     }
 
     private func registerEventHandlers() {
@@ -265,7 +291,7 @@ extension DesignerViewController {
             fatalError("should not be nil")
         }
 
-        viewModel.createPegAt(displayCoords: sender.location(in: vLayout))
+        viewModel.createGameObjectAt(displayCoords: sender.location(in: vLayout))
     }
 
     @IBAction private func removeInconsistenciesButtonOnTap() {
@@ -287,49 +313,124 @@ extension DesignerViewController {
 
 // MARK: Callbacks
 extension DesignerViewController {
+    private func addGameObjectChild(gameObject: GameObject) {
+        switch gameObject {
+        case let peg as Peg:
+            addPegChild(peg: peg)
+        case let obstacle as Obstacle:
+            addObstacleChild(obstacle: obstacle)
+        default:
+            fatalError("unexpected type")
+        }
+    }
+
+    private func addObstacleChild(obstacle: Obstacle) {
+        guard let viewModel = viewModel, let vLayout = vLayout else {
+            fatalError("should not be nil")
+        }
+        let vmObstacle = viewModel.getDesignerObstacleViewModel(obstacle: obstacle)
+        let btnDesignerObstacle = DesignerObstacleButton(
+            viewModel: vmObstacle,
+            delegate: self
+        )
+        btnDesignerObstacle.translatesAutoresizingMaskIntoConstraints = true
+        vLayout.addSubview(btnDesignerObstacle)
+        obstacleToButtonMap[obstacle] = btnDesignerObstacle
+    }
+
     private func addPegChild(peg: Peg) {
         guard let viewModel = viewModel, let vLayout = vLayout else {
             fatalError("should not be nil")
         }
-        let pegViewModel = viewModel.getDesignerPegViewModel(peg: peg)
-        let pegEntityButton = DesignerPegButton(
-            viewModel: pegViewModel,
+        let vmPeg = viewModel.getDesignerPegViewModel(peg: peg)
+        let btnDesignerPeg = DesignerPegButton(
+            viewModel: vmPeg,
             delegate: self
         )
-        pegEntityButton.translatesAutoresizingMaskIntoConstraints = true
-        vLayout.addSubview(pegEntityButton)
-        pegToButtonMap[peg] = pegEntityButton
+        btnDesignerPeg.translatesAutoresizingMaskIntoConstraints = true
+        vLayout.addSubview(btnDesignerPeg)
+        pegToButtonMap[peg] = btnDesignerPeg
     }
 
-    private func updatePegChild(oldPeg: Peg, newPeg: Peg) {
-        guard let pegEntityButton = pegToButtonMap[oldPeg] else {
+    private func updateGameObjectChild(oldGameObject: GameObject, updatedGameObject: GameObject) {
+        switch (oldGameObject, updatedGameObject) {
+        case let (oldPeg as Peg, updatedPeg as Peg):
+            updatePegChild(oldPeg: oldPeg, updatedPeg: updatedPeg)
+        case let (oldObstacle as Obstacle, updatedObstacle as Obstacle):
+            updateObstacleChild(oldObstacle: oldObstacle, updatedObstacle: updatedObstacle)
+        default:
+            fatalError("unexpected type")
+        }
+    }
+
+    private func updateObstacleChild(oldObstacle: Obstacle, updatedObstacle: Obstacle) {
+        guard let btnDesignerObstacle = obstacleToButtonMap[oldObstacle] else {
+            fatalError("should not be nil")
+        }
+
+        guard let viewModel = viewModel else {
+            fatalError("should not be nil")
+        }
+
+        obstacleToButtonMap[oldObstacle] = nil
+        obstacleToButtonMap[updatedObstacle] = btnDesignerObstacle
+        btnDesignerObstacle.viewModel = viewModel.getDesignerObstacleViewModel(obstacle: updatedObstacle)
+        viewModel.selectToEdit(viewModel: btnDesignerObstacle.viewModel)
+    }
+
+    private func updatePegChild(oldPeg: Peg, updatedPeg: Peg) {
+        guard let btnDesignerPeg = pegToButtonMap[oldPeg] else {
             fatalError("Peg should be associated with a button")
         }
         guard let viewModel = viewModel else {
             fatalError("should not be nil")
         }
         pegToButtonMap[oldPeg] = nil
-        pegToButtonMap[newPeg] = pegEntityButton
-        pegEntityButton.viewModel = viewModel.getDesignerPegViewModel(peg: newPeg)
-        pegEntityButton.setNeedsDisplay()
-        viewModel.selectToEdit(viewModel: pegEntityButton.viewModel)
+        pegToButtonMap[updatedPeg] = btnDesignerPeg
+        btnDesignerPeg.viewModel = viewModel.getDesignerPegViewModel(peg: updatedPeg)
+        viewModel.selectToEdit(viewModel: btnDesignerPeg.viewModel)
     }
 
-    private func removePegChild(peg: Peg) {
-        guard let pegEntityButton = pegToButtonMap[peg] else {
-            fatalError("Peg entity should be found in map")
+    private func removeGameObjectChild(gameObject: GameObject) {
+        switch gameObject {
+        case let peg as Peg:
+            removePegChild(peg: peg)
+        case let obstacle as Obstacle:
+            removeObstacleChild(obstacle: obstacle)
+        default:
+            fatalError("unexpected type")
+        }
+    }
+
+    private func removeObstacleChild(obstacle: Obstacle) {
+        guard let btnDesignerObstacle = obstacleToButtonMap[obstacle] else {
+            fatalError("should not be nil")
         }
 
         guard let viewModel = viewModel else {
             fatalError("should not be nil")
         }
 
-        viewModel.deselectPeg()
-        pegEntityButton.removeFromSuperview()
+        viewModel.deselectGameObject()
+        btnDesignerObstacle.removeFromSuperview()
+        obstacleToButtonMap[obstacle] = nil
+    }
+
+    private func removePegChild(peg: Peg) {
+        guard let btnDesignerPeg = pegToButtonMap[peg] else {
+            fatalError("Peg should be found in map")
+        }
+
+        guard let viewModel = viewModel else {
+            fatalError("should not be nil")
+        }
+
+        viewModel.deselectGameObject()
+        btnDesignerPeg.removeFromSuperview()
         pegToButtonMap[peg] = nil
     }
 
-    private func clearPegs() {
+    private func clearGameObjects() {
         pegToButtonMap.values.forEach {
             $0.removeFromSuperview()
         }
@@ -381,7 +482,7 @@ extension DesignerViewController {
             hideAllNonPegsSubviews()
             vLayout.layer.render(in: context.cgContext)
             showAllNonPegsSubviews()
-            viewModel.gameLevel?.isAcceptingOverlappingPegs = false
+            viewModel.gameLevel?.isAcceptingOverlappingGameObjects = false
         }
         return image
     }

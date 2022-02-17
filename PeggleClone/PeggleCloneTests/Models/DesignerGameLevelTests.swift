@@ -64,7 +64,7 @@ class DesignerGameLevelTests: XCTestCase {
         )
         var pegAddCount = 0
 
-        designerGameLevel.registerPegDidAddCallback { _ in
+        designerGameLevel.registerGameObjectDidAddCallback { _ in
             pegAddCount += 1
         }
 
@@ -77,7 +77,7 @@ class DesignerGameLevelTests: XCTestCase {
             isConcrete: true
         )
 
-        designerGameLevel.addPeg(peg: anyPeg1)
+        designerGameLevel.addGameObject(gameObject: anyPeg1)
 
         XCTAssertEqual(pegAddCount, 1)
 
@@ -90,7 +90,7 @@ class DesignerGameLevelTests: XCTestCase {
             isConcrete: true
         )
 
-        designerGameLevel.addPeg(peg: anyPeg2)
+        designerGameLevel.addGameObject(gameObject: anyPeg2)
 
         XCTAssertEqual(pegAddCount, 2)
     }
@@ -105,7 +105,7 @@ class DesignerGameLevelTests: XCTestCase {
 
         var pegAddCount = 0
 
-        designerGameLevel.registerPegDidAddCallback { _ in
+        designerGameLevel.registerGameObjectDidAddCallback { _ in
             pegAddCount += 1
         }
 
@@ -118,7 +118,7 @@ class DesignerGameLevelTests: XCTestCase {
             isConcrete: true
         )
 
-        designerGameLevel.addPeg(peg: anyPeg1)
+        designerGameLevel.addGameObject(gameObject: anyPeg1)
 
         XCTAssertEqual(pegAddCount, 1)
 
@@ -131,7 +131,7 @@ class DesignerGameLevelTests: XCTestCase {
             isConcrete: true
         )
 
-        designerGameLevel.addPeg(peg: anyPeg2)
+        designerGameLevel.addGameObject(gameObject: anyPeg2)
 
         XCTAssertEqual(pegAddCount, 1)
     }
@@ -146,7 +146,7 @@ class DesignerGameLevelTests: XCTestCase {
 
         var pegRemoveCount = 0
 
-        designerGameLevel.registerPegDidRemoveCallback { _ in
+        designerGameLevel.registerGameObjectDidRemoveCallback { _ in
             pegRemoveCount += 1
         }
 
@@ -158,7 +158,7 @@ class DesignerGameLevelTests: XCTestCase {
             isCompulsory: false,
             isConcrete: true
         )
-        designerGameLevel.addPeg(peg: anyPeg)
+        designerGameLevel.addGameObject(gameObject: anyPeg)
         designerGameLevel.removePeg(peg: anyPeg)
 
         XCTAssertEqual(pegRemoveCount, 1)

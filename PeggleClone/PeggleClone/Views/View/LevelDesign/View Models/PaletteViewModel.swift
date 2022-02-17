@@ -22,6 +22,18 @@ class PaletteViewModel {
     var palettePegViewModels: [PalettePegButtonViewModel] = []
     var pegTypeViewModels: [PegTypeButtonViewModel] = []
 
+    var selectedGameObject: GameObject? {
+        if selectedPegInPalette != nil {
+            return selectedPegInPalette
+        }
+
+        if isObstacleSelected {
+            return paletteObstacleViewModel.obstacle
+        }
+
+        return nil
+    }
+
     @Published var isObstacleSelected = false
     @Published var selectedPegType = PegType.compulsory
     @Published var selectedPegInPalette: Peg?

@@ -9,13 +9,13 @@ class DesignerViewModel {
     private var paletteViewModel: PaletteViewModel
     private var shapeTransformViewModel: ShapeTransformViewModel
 
-    @Published var previouslyEditedPeg: Peg?
-    @Published var pegBeingEdited: Peg?
+    @Published var previouslyEditedGameObject: GameObject?
+    @Published var gameObjectBeingEdited: GameObject?
     @Published var shouldShowShapeTransform = false
     @Published var gameLevel: DesignerGameLevel?
 
-    var selectedPegInPalette: Peg? {
-        paletteViewModel.selectedPegInPalette
+    var selectedGameObjectInPalette: GameObject? {
+        paletteViewModel.selectedGameObject
     }
 
     var isDeleting: Bool {
@@ -42,23 +42,23 @@ class DesignerViewModel {
     }
 
     private func setupBindings() {
-        $pegBeingEdited.sink { [weak self] pegBeingEdited in
+        $gameObjectBeingEdited.sink { [weak self] gameObjectBeingEdited in
             guard let self = self else {
                 return
             }
 
-            self.shouldShowShapeTransform = pegBeingEdited != nil
-            self.previouslyEditedPeg = pegBeingEdited
-            guard let pegBeingEdited = pegBeingEdited else {
+            self.shouldShowShapeTransform = gameObjectBeingEdited != nil
+            self.previouslyEditedGameObject = gameObjectBeingEdited
+            guard let gameObjectBeingEdited = gameObjectBeingEdited else {
                 return
             }
-            self.shapeTransformViewModel.updateWith(peg: pegBeingEdited)
+            self.shapeTransformViewModel.updateWith(gameObject: gameObjectBeingEdited)
         }
         .store(in: &subscriptions)
     }
 
     func registerCallbacks() {
-        gameLevel?.registerIsAcceptingOverlappingPegsDidSetCallback(
+        gameLevel?.registerIsAcceptingOverlappingGameObjectsDidSetCallback(
             callback: changeEditMode(isAcceptingOverlappingPegs:)
         )
     }
@@ -79,17 +79,17 @@ class DesignerViewModel {
         )
     }
 
-    func selectToEdit(viewModel: CoordinateMappablePegViewModel) {
-        if pegBeingEdited !== viewModel.peg {
-            pegBeingEdited = viewModel.peg
+    func selectToEdit(viewModel: AbstractCoordinateMappableGameObjectViewModel) {
+        if gameObjectBeingEdited !== viewModel.gameObject {
+            gameObjectBeingEdited = viewModel.gameObject
         } else {
-            pegBeingEdited = nil
+            gameObjectBeingEdited = nil
         }
     }
 
-    func deselectPeg() {
-        if pegBeingEdited != nil {
-            pegBeingEdited = nil
+    func deselectGameObject() {
+        if gameObjectBeingEdited != nil {
+            gameObjectBeingEdited = nil
         }
     }
 
@@ -104,8 +104,8 @@ class DesignerViewModel {
         canRemoveInconsistentPegs = isAcceptingOverlappingPegs
     }
 
-    func createPegAt(displayCoords: CGPoint) {
-        guard let selectedPegInPalette = selectedPegInPalette else {
+    func createGameObjectAt(displayCoords: CGPoint) {
+        guard let selectedGameObjectInPalette = selectedGameObjectInPalette else {
             return
         }
 
@@ -113,69 +113,69 @@ class DesignerViewModel {
             return
         }
 
-        deselectPeg()
+        deselectGameObject()
         let logicalCoords = coordinateMapper.getLogicalCoords(ofDisplayCoords: displayCoords)
-        let pegToAdd = selectedPegInPalette.withCenter(center: logicalCoords)
-        gameLevel?.addPeg(peg: pegToAdd)
+        let gameObject = selectedGameObjectInPalette.withCenter(center: logicalCoords)
+        gameLevel?.addGameObject(gameObject: gameObject)
     }
 
     func removeInconsistencies() {
-        deselectPeg()
+        deselectGameObject()
         gameLevel?.removeInconsistencies()
     }
 
     func toggleEditMode() {
-        deselectPeg()
-        gameLevel?.isAcceptingOverlappingPegs.toggle()
+        deselectGameObject()
+        gameLevel?.isAcceptingOverlappingGameObjects.toggle()
     }
 
-    func move(pegViewModel: CoordinateMappablePegViewModel, to displayCoords: CGPoint) {
+    func move(viewModel: AbstractCoordinateMappableGameObjectViewModel, to displayCoords: CGPoint) {
         guard let coordinateMapper = coordinateMapper else {
             return
         }
 
-        deselectPeg()
+        deselectGameObject()
         if isDeleting {
             return
         }
 
         let logicalCoords = coordinateMapper.getLogicalCoords(ofDisplayCoords: displayCoords)
-        let oldPeg = pegViewModel.peg
-        let translatedPeg = oldPeg.withCenter(center: logicalCoords)
-        gameLevel?.updatePeg(old: oldPeg, with: translatedPeg)
+        let oldGameObject = viewModel.gameObject
+        let translatedGameObject = oldGameObject.withCenter(center: logicalCoords)
+        gameLevel?.updateGameObject(old: oldGameObject, with: translatedGameObject)
     }
 
     func scale(_ scale: Double) {
-        guard let oldPeg = pegBeingEdited else {
+        guard let oldGameObject = gameObjectBeingEdited else {
             return
         }
 
-        let scaledPeg = oldPeg.withScale(
+        let scaledGameObject = oldGameObject.withScale(
             scale: scale
         )
 
-        gameLevel?.updatePeg(old: oldPeg, with: scaledPeg)
+        gameLevel?.updateGameObject(old: oldGameObject, with: scaledGameObject)
     }
 
     func rotate(_ rotation: Double) {
-        guard let oldPeg = pegBeingEdited else {
+        guard let oldGameObject = gameObjectBeingEdited else {
             return
         }
 
-        let rotatedPeg = oldPeg.withRotation(
+        let rotatedGameObject = oldGameObject.withRotation(
             rotation: Double(rotation)
         )
 
-        gameLevel?.updatePeg(old: oldPeg, with: rotatedPeg)
+        gameLevel?.updateGameObject(old: oldGameObject, with: rotatedGameObject)
     }
 
-    func remove(pegViewModel: CoordinateMappablePegViewModel) {
-        deselectPeg()
-        gameLevel?.removePeg(peg: pegViewModel.peg)
+    func remove(viewModel: AbstractCoordinateMappableGameObjectViewModel) {
+        deselectGameObject()
+        gameLevel?.removeGameObject(gameObject: viewModel.gameObject)
     }
 
     func tearDownBeforeTransition() {
-        deselectPeg()
+        deselectGameObject()
         gameLevel?.reset()
     }
 
@@ -187,6 +187,12 @@ class DesignerViewModel {
         let vmDesignerPeg = DesignerPegButtonViewModel(peg: peg)
         vmDesignerPeg.delegate = self
         return vmDesignerPeg
+    }
+
+    func getDesignerObstacleViewModel(obstacle: Obstacle) -> DesignerObstacleButtonViewModel {
+        let vmDesignerObstacle = DesignerObstacleButtonViewModel(obstacle: obstacle)
+        vmDesignerObstacle.delegate = self
+        return vmDesignerObstacle
     }
 }
 

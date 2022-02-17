@@ -30,6 +30,24 @@ class GameObject: EditableGameEntity, Hashable {
     func hash(into hasher: inout Hasher) {
         hasher.combine(shape.center)
     }
+
+    func withCenter(center: CGPoint) -> GameObject {
+        let copy = GameObject(instance: self)
+        copy.shape.center = center
+        return copy
+    }
+
+    func withScale(scale: Double) -> GameObject {
+        let copy = GameObject(instance: self)
+        copy.shape.scale = scale
+        return copy
+    }
+
+    func withRotation(rotation: Double) -> GameObject {
+        let copy = GameObject(instance: self)
+        copy.shape.rotation = rotation
+        return copy
+    }
 }
 
 extension GameObject: HasBoundingBox {

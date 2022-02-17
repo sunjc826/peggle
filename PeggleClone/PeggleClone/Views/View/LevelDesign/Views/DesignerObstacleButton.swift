@@ -16,6 +16,7 @@ class DesignerObstacleButton: UIButton {
             setupBindings()
             frame = viewModel.displayFrame
             center = viewModel.displayCoords
+            setNeedsDisplay()
         }
     }
     weak var delegate: DesignerObstacleButtonDelegate?

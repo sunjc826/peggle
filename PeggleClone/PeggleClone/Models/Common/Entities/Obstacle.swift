@@ -15,27 +15,27 @@ final class Obstacle: GameObject {
         radiusOfOscillation = instance.radiusOfOscillation
         super.init(instance: instance)
     }
-}
 
-extension Obstacle {
-    func withCenter(center: CGPoint) -> Obstacle {
+    override func withCenter(center: CGPoint) -> Obstacle {
         let copy = Obstacle(instance: self)
         copy.shape.center = center
         return copy
     }
 
-    func withScale(scale: Double) -> Obstacle {
+    override func withScale(scale: Double) -> Obstacle {
         let copy = Obstacle(instance: self)
         copy.shape.scale = scale
         return copy
     }
 
-    func withRotation(rotation: Double) -> Obstacle {
+    override func withRotation(rotation: Double) -> Obstacle {
         let copy = Obstacle(instance: self)
         copy.shape.rotation = rotation
         return copy
     }
+}
 
+extension Obstacle {
     func withRadiusOfOscillation(radiusOfOscillation: Double) -> Obstacle {
         let copy = Obstacle(instance: self)
         copy.radiusOfOscillation = radiusOfOscillation

@@ -20,27 +20,27 @@ final class Peg: GameObject {
     static func == (lhs: Peg, rhs: Peg) -> Bool {
         lhs === rhs
     }
-}
 
-extension Peg {
-    func withCenter(center: CGPoint) -> Peg {
+    override func withCenter(center: CGPoint) -> Peg {
         let copy = Peg(instance: self)
         copy.shape.center = center
         return copy
     }
 
-    func withScale(scale: Double) -> Peg {
+    override func withScale(scale: Double) -> Peg {
         let copy = Peg(instance: self)
         copy.shape.scale = scale
         return copy
     }
 
-    func withRotation(rotation: Double) -> Peg {
+    override func withRotation(rotation: Double) -> Peg {
         let copy = Peg(instance: self)
         copy.shape.rotation = rotation
         return copy
     }
+}
 
+extension Peg {
     func withHasCollided(hasCollided: Bool) -> Peg {
         let copy = Peg(instance: self)
         copy.hasCollided = hasCollided
