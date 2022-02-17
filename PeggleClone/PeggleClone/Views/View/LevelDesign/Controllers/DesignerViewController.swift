@@ -52,7 +52,7 @@ extension DesignerViewController {
 
     private func setupBindings() {
         bindDimensions()
-        bindPegs()
+        bindGameObjects()
         bindShapeTransform()
         bindButtons()
     }
@@ -129,7 +129,7 @@ extension DesignerViewController {
             .store(in: &subscriptions)
     }
 
-    func bindPegs() {
+    func bindGameObjects() {
         guard let viewModel = viewModel else {
             fatalError("should not be nil")
         }
@@ -139,7 +139,6 @@ extension DesignerViewController {
                 guard let self = self else {
                     return
                 }
-
                 // Note: This uses the fact that @Published broadcasts a new value BEFORE setting it, i.e. willSet.
                 self.stopEditingGameObject()
             }

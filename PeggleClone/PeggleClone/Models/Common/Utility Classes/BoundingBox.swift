@@ -69,6 +69,7 @@ class BoundingBox: Rectangle {
                      rightWidth: Double,
                      topHeight: Double,
                      bottomHeight: Double) {
+        // TODO: Reshaping triangle can break orientation
         assert(leftWidth >= 0 && rightWidth >= 0 && topHeight >= 0 && bottomHeight >= 0)
         let width = leftWidth + rightWidth
         let height = topHeight + bottomHeight

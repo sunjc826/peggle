@@ -6,7 +6,7 @@ extension DesignerViewController: DesignerPegButtonDelegate {
             fatalError("should not be nil")
         }
 
-        viewModel.selectToEdit(viewModel: sender.viewModel)
+        viewModel.selectToEditAndDeselectIfAlreadyEditing(viewModel: sender.viewModel)
     }
 
     func btnDesignerPegOnLongPress(sender: UILongPressGestureRecognizer) {
@@ -94,7 +94,7 @@ extension DesignerViewController: DesignerObstacleButtonDelegate {
             fatalError("should not be nil")
         }
 
-        viewModel.selectToEdit(viewModel: sender.viewModel)
+        viewModel.selectToEditAndDeselectIfAlreadyEditing(viewModel: sender.viewModel)
     }
 
     func btnDesignerObstacleVertexOnPan(

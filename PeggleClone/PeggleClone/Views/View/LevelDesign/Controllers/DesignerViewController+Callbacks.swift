@@ -23,6 +23,7 @@ extension DesignerViewController {
         )
         btnDesignerObstacle.translatesAutoresizingMaskIntoConstraints = true
         vLayout.addSubview(btnDesignerObstacle)
+        btnDesignerObstacle.setupAfterAddingToSuperview()
         obstacleToButtonMap[obstacle] = btnDesignerObstacle
     }
 
@@ -123,7 +124,7 @@ extension DesignerViewController {
             $0.removeFromSuperview()
         }
         pegToButtonMap.removeAll()
-        
+
         obstacleToButtonMap.values.forEach {
             $0.removeFromSuperview()
         }

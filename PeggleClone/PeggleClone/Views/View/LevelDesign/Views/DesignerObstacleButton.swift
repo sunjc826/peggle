@@ -21,6 +21,7 @@ class DesignerObstacleButton: UIButton {
             setupBindings()
             frame = viewModel.displayFrame
             center = viewModel.displayCoords
+            updateButtons()
             setNeedsDisplay()
         }
     }
@@ -54,6 +55,29 @@ class DesignerObstacleButton: UIButton {
 
 // MARK: Setup
 extension DesignerObstacleButton {
+    func setupAfterAddingToSuperview() {
+        setupButtons()
+    }
+
+    private func setupButtons() {
+        let triangleVertices = viewModel.vertices
+        triangleVertices.enumerated().forEach { index, vertex in
+            let btnVertex = VertexButton(vertex: vertex, vertexIndex: index)
+            btnVertex.delegate = self
+            btnVertex.isHidden = true
+            btnsForVertices.append(btnVertex)
+            superview?.addSubview(btnVertex)
+        }
+    }
+
+    private func updateButtons() {
+        let triangleVertices = viewModel.vertices
+        triangleVertices.enumerated().forEach { index, vertex in
+            let btnVertex = btnsForVertices[index]
+            btnVertex.center = vertex
+        }
+    }
+
     private func registerEventHandlers() {
         addTarget(self, action: #selector(onTap(_:)), for: .touchUpInside)
         addTarget(self, action: #selector(onMultipleTap(_:event:)), for: .touchDownRepeat)
@@ -81,16 +105,9 @@ extension DesignerObstacleButton {
 extension DesignerObstacleButton {
     private func handleEdit(isBeingEdited: Bool) {
         if isBeingEdited {
-            let triangleVertices = viewModel.vertices
-            triangleVertices.enumerated().forEach { index, vertex in
-                let btnVertex = VertexButton(vertex: vertex, vertexIndex: index)
-                btnVertex.delegate = self
-                btnsForVertices.append(btnVertex)
-                superview?.addSubview(btnVertex)
-            }
+            btnsForVertices.forEach { $0.isHidden = false }
         } else {
-            btnsForVertices.forEach { $0.removeFromSuperview() }
-            btnsForVertices.removeAll()
+            btnsForVertices.forEach { $0.isHidden = true }
         }
     }
 }

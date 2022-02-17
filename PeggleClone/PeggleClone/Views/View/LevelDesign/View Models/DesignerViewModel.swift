@@ -42,18 +42,19 @@ class DesignerViewModel {
     }
 
     private func setupBindings() {
-        $gameObjectBeingEdited.sink { [weak self] gameObjectBeingEdited in
-            guard let self = self else {
-                return
+        $gameObjectBeingEdited
+            .sink { [weak self] gameObjectBeingEdited in
+                guard let self = self else {
+                    return
+                }
+                self.shouldShowShapeTransform = gameObjectBeingEdited != nil
+                self.previouslyEditedGameObject = gameObjectBeingEdited
+                guard let gameObjectBeingEdited = gameObjectBeingEdited else {
+                    return
+                }
+                self.shapeTransformViewModel.updateWith(gameObject: gameObjectBeingEdited)
             }
-            self.shouldShowShapeTransform = gameObjectBeingEdited != nil
-            self.previouslyEditedGameObject = gameObjectBeingEdited
-            guard let gameObjectBeingEdited = gameObjectBeingEdited else {
-                return
-            }
-            self.shapeTransformViewModel.updateWith(gameObject: gameObjectBeingEdited)
-        }
-        .store(in: &subscriptions)
+            .store(in: &subscriptions)
     }
 
     func registerCallbacks() {
@@ -78,11 +79,17 @@ class DesignerViewModel {
         )
     }
 
-    func selectToEdit(viewModel: AbstractCoordinateMappableGameObjectViewModel) {
+    func selectToEditAndDeselectIfAlreadyEditing(viewModel: AbstractCoordinateMappableGameObjectViewModel) {
         if gameObjectBeingEdited !== viewModel.gameObject {
             gameObjectBeingEdited = viewModel.gameObject
         } else {
             gameObjectBeingEdited = nil
+        }
+    }
+
+    func selectToEdit(viewModel: AbstractCoordinateMappableGameObjectViewModel) {
+        if gameObjectBeingEdited !== viewModel.gameObject {
+            gameObjectBeingEdited = viewModel.gameObject
         }
     }
 
