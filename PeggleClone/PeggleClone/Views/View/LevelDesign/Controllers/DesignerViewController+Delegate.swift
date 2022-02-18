@@ -112,6 +112,17 @@ extension DesignerViewController: DesignerObstacleButtonDelegate {
             to: sender.location(in: vLayout)
         )
     }
+
+    func btnDesignerObstacleOscillationLocalityOnPan(
+        vmDesignerObstacleButton: DesignerObstacleButtonViewModel,
+        radius: Double
+    ) {
+        guard let viewModel = viewModel else {
+            fatalError("should not be nil")
+        }
+
+        viewModel.setOscillationRadius(of: vmDesignerObstacleButton, to: radius)
+    }
 }
 
 extension DesignerViewController: ShapeTransformViewControllerDelegate {

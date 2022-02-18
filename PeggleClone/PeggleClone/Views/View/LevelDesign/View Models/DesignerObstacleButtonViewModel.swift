@@ -17,4 +17,12 @@ class DesignerObstacleButtonViewModel: CoordinateMappableObstacleViewModel {
             delegate.getDisplayCoords(of: $0)
         }
     }
+
+    var displayRadiusOfOscillation: Double {
+        guard let delegate = delegate else {
+            fatalError("should not be nil")
+        }
+
+        return delegate.getDisplayLength(of: obstacle.radiusOfOscillation)
+    }
 }

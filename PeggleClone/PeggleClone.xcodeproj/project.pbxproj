@@ -177,6 +177,7 @@
 		E586262227AD85D8009964BF /* CollisionResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = E586262127AD85D8009964BF /* CollisionResolver.swift */; };
 		E586262527AD870D009964BF /* Collision+Detection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E586262427AD870D009964BF /* Collision+Detection.swift */; };
 		E586262727AD8719009964BF /* Collision+Resolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = E586262627AD8719009964BF /* Collision+Resolution.swift */; };
+		E587678C27BFE26400E49356 /* OscillationLocalityButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E587678B27BFE26400E49356 /* OscillationLocalityButton.swift */; };
 		E588D23D27B813CF0009F1DA /* CoordinateMapperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E588D23C27B813CF0009F1DA /* CoordinateMapperTests.swift */; };
 		E590099627A92E9200E764B5 /* EditableGameEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = E590099527A92E9200E764B5 /* EditableGameEntity.swift */; };
 		E5AAA5A9279989AC0092EE3D /* LinkedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AAA5A8279989AC0092EE3D /* LinkedList.swift */; };
@@ -393,6 +394,7 @@
 		E586262127AD85D8009964BF /* CollisionResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollisionResolver.swift; sourceTree = "<group>"; };
 		E586262427AD870D009964BF /* Collision+Detection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collision+Detection.swift"; sourceTree = "<group>"; };
 		E586262627AD8719009964BF /* Collision+Resolution.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collision+Resolution.swift"; sourceTree = "<group>"; };
+		E587678B27BFE26400E49356 /* OscillationLocalityButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OscillationLocalityButton.swift; sourceTree = "<group>"; };
 		E588D23C27B813CF0009F1DA /* CoordinateMapperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinateMapperTests.swift; sourceTree = "<group>"; };
 		E590099527A92E9200E764B5 /* EditableGameEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableGameEntity.swift; sourceTree = "<group>"; };
 		E5AAA5A8279989AC0092EE3D /* LinkedList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkedList.swift; sourceTree = "<group>"; };
@@ -937,6 +939,7 @@
 				E578D30927BD49AB0080B2DA /* PaletteObstacleButton.swift */,
 				E578D2FF27BD42750080B2DA /* DesignerObstacleButton.swift */,
 				E54612BC27BE849800AAD85A /* VertexButton.swift */,
+				E587678B27BFE26400E49356 /* OscillationLocalityButton.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1356,6 +1359,7 @@
 				E572B91627B7B9F2008E72A6 /* CoordinateMappable.swift in Sources */,
 				E57E831F27AFBE7E006C3401 /* UIView+GradientView.swift in Sources */,
 				E5BA4E3127A9322B00C4A576 /* GameLevel.swift in Sources */,
+				E587678C27BFE26400E49356 /* OscillationLocalityButton.swift in Sources */,
 				E5710F6B27B341E2004ACED4 /* LevelSelectCellViewModel.swift in Sources */,
 				E5DCBC0D27B1128300D92638 /* DesignerPegButtonViewModel.swift in Sources */,
 				E57B6C9C27BA807600522F3F /* GameLevel+PhysicsEngineCallbacks.swift in Sources */,

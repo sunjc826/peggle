@@ -204,6 +204,30 @@ class DesignerViewModel {
         gameLevel?.updateGameObject(old: oldObstacle, with: updatedObstacle)
     }
 
+    // Remark: Setting oscillation radius would never actually cause any shape overlap
+    // with respect to design stage, so it is perfectly possible and safe to just mutate the oscillationRadius
+    // property of an obstacle. Additonally, the obstacle can then publish its oscillationRadius
+    // with Combine. However, I chose to still do a full update for 2 reasons.
+    // 1. There is already a robust update callback system, so minimal extra code is required.
+    // 2. There will be multiple forms of data flow, leading to inconsistencies if I added a Publisher to
+    // Obstacle. For e.g., most properties will be updated via the usual GameLevel.updateGameObject method
+    // but some properties are published. Multiple types of data flow can complicate things quickly.
+    //
+    // The con of my design choice, of course, is needless update steps, reducing performance.
+    func setOscillationRadius(
+        of viewModel: CoordinateMappableObstacleViewModel,
+        to displayOscillationRadius: Double
+    ) {
+        guard let coordinateMapper = coordinateMapper else {
+            return
+        }
+
+        let logicalOscillationRadius = coordinateMapper.getLogicalLength(ofDisplayLength: displayOscillationRadius)
+        let oldObstacle = viewModel.obstacle
+        let updatedObstacle = oldObstacle.withRadiusOfOscillation(radiusOfOscillation: logicalOscillationRadius)
+        gameLevel?.updateGameObject(old: oldObstacle, with: updatedObstacle)
+    }
+
     func remove(viewModel: AbstractCoordinateMappableGameObjectViewModel) {
         deselectGameObject()
         gameLevel?.removeGameObject(gameObject: viewModel.gameObject)

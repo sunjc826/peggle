@@ -16,19 +16,23 @@ class VertexButton: UIView {
                 center: vertex, halfWidth: radiusInPixels, halfHeight: radiusInPixels
             )
         )
-
         super.init(frame: frame)
-        registerEventHandlers()
-    }
 
-    func registerEventHandlers() {
-        let grPan = UIPanGestureRecognizer(target: self, action: #selector(self.onPan(_:)))
-        addGestureRecognizer(grPan)
+        // reference: https://stackoverflow.com/questions/26050655/how-to-create-a-circular-button-in-swift
+
+        layer.cornerRadius = 0.5 * bounds.size.width
+        clipsToBounds = true
+        registerEventHandlers()
     }
 
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    private func registerEventHandlers() {
+        let grPan = UIPanGestureRecognizer(target: self, action: #selector(self.onPan(_:)))
+        addGestureRecognizer(grPan)
     }
 
     override func draw(_ rect: CGRect) {
