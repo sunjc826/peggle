@@ -17,6 +17,21 @@ struct Settings {
         static let elasticity: Double = 0.7
     }
 
+    enum Springiness: Double {
+        case insanelyStiff = 10.0
+        case stiff = 1.0
+        case springy = 0.01
+        case ludicrouslySpringy = 0.001
+    }
+
+    struct Obstacle {
+        static let easeOfOscillation: Springiness = .ludicrouslySpringy
+        static let uniformDensity: Double = 1
+        static let elasticity: Double = 0.7
+        static let canTranslate = true
+        static let canRotate = true
+    }
+
     struct Peg {
         static let uniformDensity: Double = 1
         static let elasticity: Double = 0.7
