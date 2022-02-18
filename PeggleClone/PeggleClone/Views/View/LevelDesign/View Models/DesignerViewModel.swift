@@ -194,6 +194,11 @@ class DesignerViewModel {
         }
         var updatedVertices = triangle.vertices
         updatedVertices[vertexIndex] = logicalCoords
+
+        guard BoundingBox.isOrientationValid(vertices: updatedVertices) else {
+            return
+        }
+
         let updatedObstacle = oldObstacle.withVertices(vertices: updatedVertices)
 
         gameLevel?.updateGameObject(old: oldObstacle, with: updatedObstacle)

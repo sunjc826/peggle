@@ -1,13 +1,5 @@
 import UIKit
 
-let innerColor = UIColor.white.withAlphaComponent(0.9)
-let outerColor = UIColor.clear
-let gradient = CGGradient(
-    colorsSpace: CGColorSpaceCreateDeviceRGB(),
-    colors: [innerColor, outerColor].map { $0.cgColor } as CFArray,
-    locations: [0.0, 1.0]
-)!
-
 class GamePegView: UIView {
     var viewModel: GamePegViewModel {
         didSet {
@@ -63,7 +55,7 @@ class GamePegView: UIView {
         }
 
         if viewModel.shouldLightUp {
-            drawGradient(path: path, gradient: gradient, context: context)
+            drawGradient(path: path, gradient: Settings.Peg.Color.gradient, context: context)
         }
     }
 }

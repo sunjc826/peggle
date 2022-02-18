@@ -113,3 +113,12 @@ class BoundingBox: Rectangle {
         left < boundingBox.left && boundingBox.right < right && top < boundingBox.top && boundingBox.bottom < bottom
     }
 }
+
+extension BoundingBox {
+    static func isOrientationValid(vertices: [CGPoint]) -> Bool {
+        let v1 = vertices[0]
+        let v2 = vertices[1]
+        let v3 = vertices[2]
+        return (v2.x - v1.x) * (v3.y - v1.y) - (v3.x - v1.x) * (v2.y - v1.y) > 0
+    }
+}

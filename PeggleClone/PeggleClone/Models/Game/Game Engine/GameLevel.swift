@@ -17,6 +17,7 @@ final class GameLevel {
     let cannon: Cannon
     var balls: [Ball] = []
     let pegs: PegContainer
+    var obstacles: Set<Obstacle> = []
     var special: SpecialType
 
     @Published var numBalls: Int = GameLevel.startingBalls
@@ -29,27 +30,27 @@ final class GameLevel {
     var didAddPegCallbacks: [UnaryFunction<Peg>] = []
     var didUpdatePegCallbacks: [BinaryFunction<Peg>] = []
     var didRemovePegCallbacks: [UnaryFunction<Peg>] = []
+    var didAddObstacleCallbacks: [UnaryFunction<Obstacle>] = []
+    var didUpdateObstacleCallbacks: [BinaryFunction<Obstacle>] = []
+    var didRemoveObstacleCallbacks: [UnaryFunction<Obstacle>] = []
     var gameDidEndCallbacks: [UnaryFunction<Bool>] = []
 
     init<T: Container>(
         coordinateMapper: PhysicsCoordinateMapper,
-        pegs: T,
+        emptyPegsContainer: T,
         special: SpecialType
     ) where T.Element == Peg {
         self.coordinateMapper = coordinateMapper
         self.playArea = coordinateMapper.getPlayArea()
-        self.pegs = PegContainer(pegs: pegs)
+        assert(emptyPegsContainer.isEmpty)
+        self.pegs = PegContainer(pegs: emptyPegsContainer)
         let cannonPosition = CGPoint(x: playArea.boundingBox.center.x, y: 0)
         self.cannon = Cannon(position: cannonPosition)
-        let rigidBodies = SetObject<RigidBodyObject>()
-        for peg in pegs {
-            rigidBodies.insert(peg.toRigidBody())
-        }
         let boundary = Boundary(playArea: playArea)
         self.physicsEngine = PhysicsEngine(
             coordinateMapper: coordinateMapper,
             boundary: boundary,
-            rigidBodies: rigidBodies,
+            rigidBodies: SetObject<RigidBodyObject>(),
             neighborFinder: QuadTree(bounds: playArea.boundingBox),
             collisionResolver: Collision()
         )
@@ -67,6 +68,11 @@ final class GameLevel {
         for persistablePeg in incomingLevel.pegs {
             let peg = Peg.fromPersistable(persistablePeg: persistablePeg)
             addPeg(peg: peg)
+        }
+
+        for persistableObstacle in incomingLevel.obstacles {
+            let obstacle = Obstacle.fromPersistable(persistableObstacle: persistableObstacle)
+            addObstacle(obstacle: obstacle)
         }
     }
 

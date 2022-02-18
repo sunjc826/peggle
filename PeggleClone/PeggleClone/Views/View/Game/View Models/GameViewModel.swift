@@ -65,7 +65,7 @@ class GameViewModel {
 
         gameLevel = GameLevel(
             coordinateMapper: coordinateMapper,
-            pegs: SetObject<Peg>(),
+            emptyPegsContainer: SetObject<Peg>(),
             special: peggleMaster.special
         )
     }
@@ -153,6 +153,12 @@ extension GameViewModel {
         let vmGamePeg = GamePegViewModel(peg: peg)
         vmGamePeg.delegate = self
         return vmGamePeg
+    }
+
+    func getObstacleViewModel(obstacle: Obstacle) -> GameObstacleViewModel {
+        let vmGameObstacle = GameObstacleViewModel(obstacle: obstacle)
+        vmGameObstacle.delegate = self
+        return vmGameObstacle
     }
 
     func getGameEndViewModel(stats: GameRoundStats) -> GameEndViewModel {

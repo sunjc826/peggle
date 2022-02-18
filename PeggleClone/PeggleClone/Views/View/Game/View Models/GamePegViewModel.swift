@@ -1,5 +1,4 @@
-import UIKit
-import Combine
+import Foundation
 
 class GamePegViewModel: CoordinateMappablePegViewModel {
     var shouldLightUp: Bool {

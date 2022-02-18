@@ -14,11 +14,11 @@ extension GameLevel {
         }
     }
 
-    func updateBall(oldBall: Ball, with newBall: Ball) {
+    func updateBall(oldBall: Ball, with updatedBall: Ball) {
         balls.removeByIdentity(oldBall)
-        balls.append(newBall)
+        balls.append(updatedBall)
         for callback in didUpdateBallCallbacks {
-            callback(oldBall, newBall)
+            callback(oldBall, updatedBall)
         }
     }
 
@@ -39,10 +39,10 @@ extension GameLevel {
         }
     }
 
-    func updatePeg(oldPeg: Peg, with newPeg: Peg) {
-        pegs.update(oldPeg: oldPeg, with: newPeg)
+    func updatePeg(oldPeg: Peg, with updatedPeg: Peg) {
+        pegs.update(oldPeg: oldPeg, with: updatedPeg)
         for callback in didUpdatePegCallbacks {
-            callback(oldPeg, newPeg)
+            callback(oldPeg, updatedPeg)
         }
     }
 
@@ -52,4 +52,30 @@ extension GameLevel {
             callback(peg)
         }
     }
+
+    func addObstacle(obstacle: Obstacle) {
+        obstacles.insert(obstacle)
+        let rigidBody = obstacle.toRigidBody()
+        obstacle.rigidBody = rigidBody
+        physicsEngine.add(rigidBody: rigidBody)
+        for callback in didAddObstacleCallbacks {
+            callback(obstacle)
+        }
+    }
+
+    func updateObstacle(oldObstacle: Obstacle, with updatedObstacle: Obstacle) {
+        obstacles.remove(oldObstacle)
+        obstacles.insert(updatedObstacle)
+        for callback in didUpdateObstacleCallbacks {
+            callback(oldObstacle, updatedObstacle)
+        }
+    }
+
+    func removeObstacle(obstacle: Obstacle) {
+        obstacles.remove(obstacle)
+        for callback in didRemoveObstacleCallbacks {
+            callback(obstacle)
+        }
+    }
+
 }

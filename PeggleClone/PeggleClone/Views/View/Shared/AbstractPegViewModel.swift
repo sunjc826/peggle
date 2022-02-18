@@ -11,7 +11,7 @@ extension AbstractPegViewModel {
     }
 
     var borderColor: UIColor {
-        Settings.PegColor.pegBorder
+        Settings.Peg.Color.pegBorder
     }
 
     var shouldDrawCircle: Bool {

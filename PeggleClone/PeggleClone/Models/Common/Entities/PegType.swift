@@ -36,13 +36,13 @@ extension PegType {
     var color: UIColor {
         switch self {
         case .compulsory:
-            return Settings.PegColor.compulsory
+            return Settings.Peg.Color.compulsory
         case .optional:
-            return Settings.PegColor.optional
+            return Settings.Peg.Color.optional
         case .special:
-            return Settings.PegColor.special
+            return Settings.Peg.Color.special
         case .valuable:
-            return Settings.PegColor.scoreMultiplier
+            return Settings.Peg.Color.scoreMultiplier
         }
     }
 }

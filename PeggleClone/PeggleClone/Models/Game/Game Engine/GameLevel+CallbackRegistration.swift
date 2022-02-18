@@ -25,6 +25,18 @@ extension GameLevel {
         didRemovePegCallbacks.append(callback)
     }
 
+    func registerDidAddObstacleCallback(callback: @escaping UnaryFunction<Obstacle>) {
+        didAddObstacleCallbacks.append(callback)
+    }
+
+    func registerDidUpdateObstacleCallback(callback: @escaping BinaryFunction<Obstacle>) {
+        didUpdateObstacleCallbacks.append(callback)
+    }
+
+    func registerDidRemoveObstacleCallback(callback: @escaping UnaryFunction<Obstacle>) {
+        didRemoveObstacleCallbacks.append(callback)
+    }
+
     func registerGameDidEndCallback(callback: @escaping UnaryFunction<Bool>) {
         gameDidEndCallbacks.append(callback)
     }

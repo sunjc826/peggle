@@ -144,5 +144,8 @@ extension GameLevel {
         for peg in pegs {
             removePeg(peg: peg)
         }
+        for obstacle in obstacles {
+            removeObstacle(obstacle: obstacle)
+        }
     }
 }

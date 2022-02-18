@@ -45,13 +45,19 @@ extension GameLevel {
             }
 
             updatePeg(oldPeg: oldPeg, with: updatedPeg)
+        case let oldObstacle as Obstacle:
+            let updatedObstacle = oldObstacle
+                .withCenter(center: updatedPosition)
+                .withRotation(rotation: updatedRotation)
+            updatedRigidBody.associatedEntity = updatedObstacle
+            updatedObstacle.rigidBody = updatedRigidBody
+            updateObstacle(oldObstacle: oldObstacle, with: updatedObstacle)
         default:
             break
         }
     }
 
     func updateSpookyStatus(oldBall: Ball, updatedBall: Ball) {
-
         guard let oldRigidBody = oldBall.rigidBody, let updatedRigidBody = updatedBall.rigidBody else {
             fatalError("should not be nil")
         }

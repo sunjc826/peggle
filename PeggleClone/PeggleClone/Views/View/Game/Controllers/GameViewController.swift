@@ -16,6 +16,7 @@ class GameViewController: UIViewController, Storyboardable {
 
     var ballToViewMap: [Ball: BallView] = [:]
     var pegToViewMap: [Peg: GamePegView] = [:]
+    var obstacleToViewMap: [Obstacle: GameObstacleView] = [:]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -90,11 +91,14 @@ class GameViewController: UIViewController, Storyboardable {
         }
 
         gameLevel.registerDidAddBallCallback(callback: addBallChild(ball:))
-        gameLevel.registerDidUpdateBallCallback(callback: updateBallChild(oldBall:newBall:))
+        gameLevel.registerDidUpdateBallCallback(callback: updateBallChild(oldBall:updatedBall:))
         gameLevel.registerDidRemoveBallCallback(callback: removeBallChild(ball:))
         gameLevel.registerDidAddPegCallback(callback: addPegChild(peg:))
-        gameLevel.registerDidUpdatePegCallback(callback: updatePegChild(oldPeg:newPeg:))
+        gameLevel.registerDidUpdatePegCallback(callback: updatePegChild(oldPeg:updatedPeg:))
         gameLevel.registerDidRemovePegCallback(callback: removePegChild(peg:))
+        gameLevel.registerDidAddObstacleCallback(callback: addObstacleChild(obstacle:))
+        gameLevel.registerDidUpdateObstacleCallback(callback: updateObstacleChild(oldObstacle:updatedObstacle:))
+        gameLevel.registerDidRemoveObstacleCallback(callback: removeObstacleChild(obstacle:))
 
         viewModel.hydrate()
     }
@@ -154,7 +158,6 @@ class GameViewController: UIViewController, Storyboardable {
     }
 }
 
-// MARK: Callbacks
 extension GameViewController {
     func addBallChild(ball: Ball) {
         guard let viewModel = viewModel else {
@@ -167,7 +170,7 @@ extension GameViewController {
         ballToViewMap[ball] = vBall
     }
 
-    func updateBallChild(oldBall: Ball, newBall: Ball) {
+    func updateBallChild(oldBall: Ball, updatedBall: Ball) {
         guard let vBall = ballToViewMap[oldBall] else {
             fatalError("Ball should be associated with a view")
         }
@@ -175,8 +178,8 @@ extension GameViewController {
             fatalError("should not be nil")
         }
         ballToViewMap[oldBall] = nil
-        ballToViewMap[newBall] = vBall
-        vBall.viewModel = viewModel.getBallViewModel(ball: newBall)
+        ballToViewMap[updatedBall] = vBall
+        vBall.viewModel = viewModel.getBallViewModel(ball: updatedBall)
     }
 
     func removeBallChild(ball: Ball) {
@@ -198,7 +201,7 @@ extension GameViewController {
         pegToViewMap[peg] = vPeg
     }
 
-    func updatePegChild(oldPeg: Peg, newPeg: Peg) {
+    func updatePegChild(oldPeg: Peg, updatedPeg: Peg) {
         guard let vPeg = pegToViewMap[oldPeg] else {
             fatalError("Peg should be associated with a view")
         }
@@ -206,8 +209,8 @@ extension GameViewController {
             fatalError("should not be nil")
         }
         pegToViewMap[oldPeg] = nil
-        pegToViewMap[newPeg] = vPeg
-        vPeg.viewModel = viewModel.getPegViewModel(peg: newPeg)
+        pegToViewMap[updatedPeg] = vPeg
+        vPeg.viewModel = viewModel.getPegViewModel(peg: updatedPeg)
     }
 
     func removePegChild(peg: Peg) {
@@ -220,6 +223,41 @@ extension GameViewController {
             }
         }
         pegToViewMap[peg] = nil
+    }
+
+    func addObstacleChild(obstacle: Obstacle) {
+        guard let viewModel = viewModel else {
+            fatalError("should not be nil")
+        }
+        let vmObstacle = viewModel.getObstacleViewModel(obstacle: obstacle)
+        let vObstacle = GameObstacleView(viewModel: vmObstacle)
+        vObstacle.translatesAutoresizingMaskIntoConstraints = true
+        vGame.addSubview(vObstacle)
+        obstacleToViewMap[obstacle] = vObstacle
+    }
+
+    func updateObstacleChild(oldObstacle: Obstacle, updatedObstacle: Obstacle) {
+        guard let vObstacle = obstacleToViewMap[oldObstacle] else {
+            fatalError("Obstacle should be associated with a view")
+        }
+        guard let viewModel = viewModel else {
+            fatalError("should not be nil")
+        }
+        obstacleToViewMap[oldObstacle] = nil
+        obstacleToViewMap[updatedObstacle] = vObstacle
+        vObstacle.viewModel = viewModel.getObstacleViewModel(obstacle: updatedObstacle)
+    }
+
+    func removeObstacleChild(obstacle: Obstacle) {
+        guard let vObstacle = obstacleToViewMap[obstacle] else {
+            fatalError("Obstacle should be found in map")
+        }
+        vObstacle.fadeOut { [weak vObstacle] isComplete in
+            if isComplete {
+                vObstacle?.removeFromSuperview()
+            }
+        }
+        obstacleToViewMap[obstacle] = nil
     }
 }
 
