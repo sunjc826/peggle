@@ -50,6 +50,14 @@ class PhysicsCoordinateMapper: CoordinateMapper {
     func getLogicalVector(ofPhysicalVector physicalVector: CGVector) -> CGVector {
         physicalVector.scaleBy(factor: inversePhysicalScalingFactor)
     }
+
+    func getPhysicalLength(ofLogicalLength logicalLength: Double) -> Double {
+        logicalLength * physicalScalingFactor
+    }
+
+    func getLogicalLength(ofPhysicalLength physicalLength: Double) -> Double {
+        physicalLength * inversePhysicalScalingFactor
+    }
 }
 
 extension PhysicsCoordinateMapper {

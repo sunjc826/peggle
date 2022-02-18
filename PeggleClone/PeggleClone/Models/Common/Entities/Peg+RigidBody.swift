@@ -8,7 +8,6 @@ extension Peg {
             return RigidBodyObject(
                 backingShape: circle,
                 associatedEntity: self,
-                isAffectedByGlobalForces: false,
                 canTranslate: Settings.Peg.canTranslate,
                 canRotate: false,
                 uniformDensity: Settings.Peg.uniformDensity,
@@ -19,7 +18,6 @@ extension Peg {
             return RigidBodyObject(
                 backingShape: polygon,
                 associatedEntity: self,
-                isAffectedByGlobalForces: false,
                 canTranslate: Settings.Peg.canTranslate,
                 canRotate: Settings.Peg.Polygonal.canRotate,
                 uniformDensity: Settings.Peg.uniformDensity,

@@ -8,6 +8,12 @@ extension GameLevel {
             logicalEjectionVelocity: ejectionVelocity
         )
         ball.rigidBody = rigidBody
+        let gravity: Force = .gravity(
+            gravitationalAcceleration: coordinateMapper.getLogicalLength(
+                ofPhysicalLength: Settings.Physics.signedMagnitudeOfAccelerationDueToGravity
+            )
+        )
+        rigidBody.persistentForces.append(gravity)
         physicsEngine.add(rigidBody: rigidBody)
         for callback in didAddBallCallbacks {
             callback(ball)

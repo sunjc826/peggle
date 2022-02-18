@@ -6,7 +6,6 @@ extension Ball {
         RigidBodyObject(
             backingShape: getCircle(),
             associatedEntity: self,
-            isAffectedByGlobalForces: true,
             canTranslate: true,
             canRotate: false,
             leftWallBehavior: .collide,

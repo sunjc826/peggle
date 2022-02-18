@@ -62,8 +62,6 @@ final class RigidBodyObject: RigidBody, HasBoundingBox, Equatable, Hashable {
     }
 
     // MARK: Force overrides
-    var isAffectedByGlobalForces: Bool
-
     var canTranslate: Bool
 
     var canRotate: Bool
@@ -122,10 +120,13 @@ final class RigidBodyObject: RigidBody, HasBoundingBox, Equatable, Hashable {
 
     var localizedForceEmitter: LocalizedRadialForceEmitter?
 
+    // MARK: Persistent forces
+
+    var persistentForces: [Force] = []
+
     init(
         backingShape: TransformableShape,
         associatedEntity: GameEntity?,
-        isAffectedByGlobalForces: Bool,
         canTranslate: Bool,
         canRotate: Bool,
         leftWallBehavior: WallBehavior = .collide,
@@ -139,7 +140,6 @@ final class RigidBodyObject: RigidBody, HasBoundingBox, Equatable, Hashable {
         assert(uniformDensity > 0)
         self.backingShape = backingShape
         self.associatedEntity = associatedEntity
-        self.isAffectedByGlobalForces = isAffectedByGlobalForces
         self.canTranslate = canTranslate
         self.canRotate = canRotate
         self.leftWallBehavior = leftWallBehavior
@@ -166,7 +166,6 @@ final class RigidBodyObject: RigidBody, HasBoundingBox, Equatable, Hashable {
             self.init(
                 backingShape: CircleObject(instance: circle),
                 associatedEntity: instance.associatedEntity,
-                isAffectedByGlobalForces: instance.isAffectedByGlobalForces,
                 canTranslate: instance.canTranslate,
                 canRotate: instance.canRotate,
                 leftWallBehavior: instance.leftWallBehavior,
@@ -180,7 +179,6 @@ final class RigidBodyObject: RigidBody, HasBoundingBox, Equatable, Hashable {
             self.init(
                 backingShape: TransformablePolygonObject(instance: polygon),
                 associatedEntity: instance.associatedEntity,
-                isAffectedByGlobalForces: instance.isAffectedByGlobalForces,
                 canTranslate: instance.canTranslate,
                 canRotate: instance.canRotate,
                 leftWallBehavior: instance.leftWallBehavior,
@@ -198,6 +196,7 @@ final class RigidBodyObject: RigidBody, HasBoundingBox, Equatable, Hashable {
         linearVelocity = instance.linearVelocity
         angularVelocity = instance.angularVelocity
         localizedForceEmitter = instance.localizedForceEmitter
+        persistentForces = instance.persistentForces
     }
 
     static func == (lhs: RigidBodyObject, rhs: RigidBodyObject) -> Bool {

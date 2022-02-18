@@ -100,7 +100,6 @@ final class GameLevel {
         case .gameEnd(stats: _), .disabled:
             return
         }
-
     }
 }
 

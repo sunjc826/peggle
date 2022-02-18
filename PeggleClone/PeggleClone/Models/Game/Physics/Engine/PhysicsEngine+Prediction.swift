@@ -14,7 +14,7 @@ extension PhysicsEngine {
     }
 
     func predictForSingleInterval(for rigidBody: RigidBodyObject, intervalSize dt: Double) -> RigidBodyObject {
-        predictAddSharedAcceleration(rigidBody: rigidBody)
+        predictResolvePersistentForces(rigidBody: rigidBody)
         predictResolveBoundaryCollisions(rigidBody: rigidBody)
         predictResolveCollisions(rigidBody: rigidBody)
 
@@ -28,8 +28,10 @@ extension PhysicsEngine {
         return updatedRigidBody
     }
 
-    func predictAddSharedAcceleration(rigidBody: RigidBodyObject) {
-        addGlobalAcceleration(rigidBody: rigidBody)
+    func predictResolvePersistentForces(rigidBody: RigidBodyObject) {
+        for force in rigidBody.persistentForces {
+            rigidBody.addAcceleration(acceleration: force.getAccelerationVector(rigidBody: rigidBody))
+        }
     }
 
     func predictResolveBoundaryCollisions(rigidBody: RigidBodyObject) {

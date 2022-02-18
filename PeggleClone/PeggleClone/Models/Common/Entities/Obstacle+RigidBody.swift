@@ -10,7 +10,6 @@ extension Obstacle {
         return RigidBodyObject(
             backingShape: triangle,
             associatedEntity: self,
-            isAffectedByGlobalForces: false,
             canTranslate: Settings.Peg.canTranslate,
             canRotate: Settings.Peg.Polygonal.canRotate,
             uniformDensity: Settings.Peg.uniformDensity,

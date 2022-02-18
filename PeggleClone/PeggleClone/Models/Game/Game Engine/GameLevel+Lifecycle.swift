@@ -74,10 +74,16 @@ extension GameLevel {
     func getBallPrediction() -> [CGPoint] {
         let (ball, ejectionVelocity) = cannon.shootBall()
         let rigidBody = ball.toRigidBody(logicalEjectionVelocity: ejectionVelocity)
+        let gravity: Force = .gravity(
+            gravitationalAcceleration: coordinateMapper.getLogicalLength(
+                ofPhysicalLength: Settings.Physics.signedMagnitudeOfAccelerationDueToGravity
+            )
+        )
+        rigidBody.persistentForces.append(gravity)
         let predictedPositions = physicsEngine.predict(
             for: rigidBody,
             intervalSize: GameLevel.predictionTimeIntervalInSeconds,
-            numberOfIntervals: 20
+            numberOfIntervals: 30
         )
 
         return predictedPositions

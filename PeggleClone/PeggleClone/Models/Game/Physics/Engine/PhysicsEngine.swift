@@ -20,8 +20,6 @@ class PhysicsEngine: AbstractPhysicsEngine {
     var didFinishAllUpdatesCallbacks: [Runnable] = []
     var didFinishAllUpdatesTempCallbacks: [Runnable] = []
 
-    var globalAcceleration: [GlobalAcceleration] = []
-
     init<T, S>(
         coordinateMapper: PhysicsCoordinateMapper,
         boundary: Boundary,
@@ -42,17 +40,6 @@ class PhysicsEngine: AbstractPhysicsEngine {
                 changeableRigidBodies.insert(rigidBody)
             }
         }
-
-        setupGlobalAcceleration()
-    }
-
-    func setupGlobalAcceleration() {
-        globalAcceleration.append(
-            GlobalAcceleration(
-                accelerationType: .gravity,
-                accelerationValue: coordinateMapper.getLogicalVector(ofPhysicalVector: accelerationDueToGravity)
-            )
-        )
     }
 
     func simulateAll(time dt: Double) {
@@ -120,8 +107,8 @@ extension PhysicsEngine {
     }
 
     func simulate(rigidBody: RigidBodyObject) {
+        resolvePersistentForces(rigidBody: rigidBody)
         if rigidBody.canTranslate {
-            addGlobalAcceleration(rigidBody: rigidBody)
             resolveBoundaryCollisions(rigidBody: rigidBody)
         }
         resolveRigidBodyCollisions(rigidBody: rigidBody)
@@ -172,22 +159,18 @@ extension PhysicsEngine {
     }
 }
 
-// MARK: Shared acceleration
 extension PhysicsEngine {
-    func setGravity(physicalGravitationalAcceleration: Double) {
-        globalAcceleration.first(where: { $0.accelerationType == .gravity })?.accelerationValue = coordinateMapper
-            .getLogicalVector(
-                ofPhysicalVector: CGVector(dx: 0, dy: physicalGravitationalAcceleration)
-            )
-    }
+//    func setGravity(physicalGravitationalAcceleration: Double) {
+//        globalAcceleration.first(where: { $0.accelerationType == .gravity })?.accelerationValue = coordinateMapper
+//            .getLogicalVector(
+//                ofPhysicalVector: CGVector(dx: 0, dy: physicalGravitationalAcceleration)
+//            )
+//    }
 
-    func addGlobalAcceleration(rigidBody: RigidBodyObject) {
-        guard rigidBody.canTranslate && rigidBody.isAffectedByGlobalForces else {
-            return
-        }
-
-        for accel in globalAcceleration {
-            rigidBody.addAcceleration(acceleration: accel.accelerationValue)
+    func resolvePersistentForces(rigidBody: RigidBodyObject) {
+        for force in rigidBody.persistentForces {
+            let acceleration = force.getAccelerationVector(rigidBody: rigidBody)
+            rigidBody.addAcceleration(acceleration: acceleration)
         }
     }
 }

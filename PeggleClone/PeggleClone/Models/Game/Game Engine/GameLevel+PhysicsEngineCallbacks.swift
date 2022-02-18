@@ -150,16 +150,43 @@ extension GameLevel {
         )
     }
 
+    /// Reduces gravity for all objects affected by gravity, i.e. balls.
+    /// - Remark: A more general implementation would involve explicitly tracking what types of forces an object can be
+    /// affected by.
     func setMoonGravity() {
-        physicsEngine.setGravity(
-            physicalGravitationalAcceleration: Settings.Physics.signedMagnitudeOfAccelerationDueToGravity / 6
+        let moonGravity: Force = .gravity(
+            gravitationalAcceleration: coordinateMapper.getPhysicalLength(
+                ofLogicalLength: Settings.Physics.signedMagnitudeOfAccelerationDueToGravity / 6
+            )
         )
+
+        for ball in balls {
+            ball.rigidBody?.persistentForces.removeAll(where: {
+                guard case .gravity = $0 else {
+                    return false
+                }
+                return true
+            })
+            ball.rigidBody?.persistentForces.append(moonGravity)
+        }
     }
 
     func setRegularGravity() {
-        physicsEngine.setGravity(
-            physicalGravitationalAcceleration: Settings.Physics.signedMagnitudeOfAccelerationDueToGravity
+        let regularGravity: Force = .gravity(
+            gravitationalAcceleration: coordinateMapper.getPhysicalLength(
+                ofLogicalLength: Settings.Physics.signedMagnitudeOfAccelerationDueToGravity
+            )
         )
+
+        for ball in balls {
+            ball.rigidBody?.persistentForces.removeAll(where: {
+                guard case .gravity = $0 else {
+                    return false
+                }
+                return true
+            })
+            ball.rigidBody?.persistentForces.append(regularGravity)
+        }
     }
 
     func physicsEngineDidRemove(rigidBody: RigidBodyObject) {

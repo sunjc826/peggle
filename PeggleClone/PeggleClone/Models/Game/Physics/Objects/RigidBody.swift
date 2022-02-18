@@ -12,8 +12,6 @@ protocol RigidBody: TransformableShape {
 
     var nextTeleportLocation: CGPoint? { get set }
 
-    var isAffectedByGlobalForces: Bool { get set }
-
     /// Whether a body can actually move as a result of physics, ignores mass.
     var canTranslate: Bool { get set }
 
