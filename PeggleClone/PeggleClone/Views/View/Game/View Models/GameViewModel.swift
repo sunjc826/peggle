@@ -6,12 +6,21 @@ private let rotationRateSecondsTillTarget = 1.5
 class GameViewModel {
     private var subscriptions: Set<AnyCancellable> = []
 
+    var actualDisplayDimensionsPublisher: AnyPublisher<CGRect, Never> {
+        actualDisplayDimensions.eraseToAnyPublisher()
+    }
+
+    private let actualDisplayDimensions: PassthroughSubject<CGRect, Never> = PassthroughSubject()
+
     var peggleMaster: PeggleMaster
 
-    var gameEndViewModelPublisher: AnyPublisher<GameEndViewModel, Never>?
+    var gameEndViewModelPublisher: AnyPublisher<GameEndViewModel, Never> {
+        gameEndViewModel.eraseToAnyPublisher()
+    }
+    var gameEndViewModel: PassthroughSubject<GameEndViewModel, Never> = PassthroughSubject()
     var gameLevel: GameLevel? {
         didSet {
-            setupBindings()
+            setupGameLevelBindings()
         }
     }
     var backingDesignerGameLevel: PersistableDesignerGameLevel?
@@ -27,12 +36,12 @@ class GameViewModel {
         self.peggleMaster = peggleMaster ?? GameData.defaultPeggleMaster
     }
 
-    private func setupBindings() {
+    private func setupGameLevelBindings() {
         guard let gameLevel = gameLevel else {
             fatalError("should not be nil")
         }
 
-        gameEndViewModelPublisher = gameLevel.$gamePhase
+        gameLevel.$gamePhase
             .map { [weak self] gamePhase -> GameEndViewModel? in
                 guard let self = self else {
                     return nil
@@ -47,7 +56,8 @@ class GameViewModel {
                 return vmGameEnd
             }
             .compactMap { $0 }
-            .eraseToAnyPublisher()
+            .sink { [weak self] in self?.gameEndViewModel.send($0) }
+            .store(in: &subscriptions)
     }
 
     func setDimensions(width: Double, height: Double) {
@@ -61,6 +71,15 @@ class GameViewModel {
             coordinateMapper: coordinateMapper,
             emptyPegsContainer: SetObject<Peg>(),
             special: peggleMaster.special
+        )
+
+        actualDisplayDimensions.send(
+            CGRect(
+                x: 0,
+                y: 0,
+                width: coordinateMapper.displayWidth,
+                height: coordinateMapper.displayHeight
+            )
         )
     }
 

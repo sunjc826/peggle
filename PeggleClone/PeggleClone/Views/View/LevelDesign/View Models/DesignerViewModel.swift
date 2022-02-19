@@ -65,7 +65,11 @@ class DesignerViewModel {
 
     @Published var canRemoveInconsistentPegs = false
 
-    @Published var actualDisplayDimensions: CGRect?
+    var actualDisplayDimensionsPublisher: AnyPublisher<CGRect, Never> {
+        actualDisplayDimensions.eraseToAnyPublisher()
+    }
+
+    private let actualDisplayDimensions: PassthroughSubject<CGRect, Never> = PassthroughSubject()
 
     var coordinateMapper: CoordinateMapper? {
         gameLevel?.coordinateMapper
@@ -135,11 +139,13 @@ class DesignerViewModel {
             onScreenDisplayHeight: designerHeight
         )
         gameLevel = DesignerGameLevel.withDefaultDependencies(coordinateMapper: coordinateMapper)
-        actualDisplayDimensions = CGRect(
-            x: 0,
-            y: 0,
-            width: coordinateMapper.displayWidth,
-            height: coordinateMapper.displayHeight
+        actualDisplayDimensions.send(
+            CGRect(
+                x: 0,
+                y: 0,
+                width: coordinateMapper.displayWidth,
+                height: coordinateMapper.displayHeight
+            )
         )
     }
 

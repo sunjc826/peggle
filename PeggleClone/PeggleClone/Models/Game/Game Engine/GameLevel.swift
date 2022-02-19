@@ -11,6 +11,8 @@ final class GameLevel {
     static let pegCatcherZoneHeight: Double = 30.0
     static let startingBalls: Int = 5
 
+    var subscriptions: Set<AnyCancellable> = []
+
     let physicsEngine: AbstractPhysicsEngine
     var coordinateMapper: PhysicsCoordinateMapper
     var playArea: PlayArea
@@ -22,7 +24,7 @@ final class GameLevel {
 
     @Published var numBalls: Int = GameLevel.startingBalls
     @Published var gamePhase: GamePhase = .disabled
-    var totalScore: AnyPublisher<Int, Never>?
+    var totalScore: PassthroughSubject<Int, Never> = PassthroughSubject()
 
     var didAddBallCallbacks: [UnaryFunction<Ball>] = []
     var didUpdateBallCallbacks: [BinaryFunction<Ball>] = []
@@ -112,8 +114,10 @@ extension GameLevel {
     }
 
     private func setupBindings() {
-        totalScore = pegs.$pegScores
-            .map { $0.values.reduce(0, +) }
-            .eraseToAnyPublisher()
+        pegs.$pegScores
+            .sink { [weak self] in
+                self?.totalScore.send($0.values.reduce(0, +))
+            }
+            .store(in: &subscriptions)
     }
 }

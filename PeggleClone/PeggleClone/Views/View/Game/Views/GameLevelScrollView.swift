@@ -1,10 +1,15 @@
 import UIKit
 
-class LetterBoxView: UIView {
+class GameLevelScrollView: UIScrollView {
+    var vGame: GameplayAreaDynamicView
+
     override init(frame: CGRect) {
+        vGame = GameplayAreaDynamicView(frame: frame)
         super.init(frame: frame)
-        backgroundColor = UIColor.blue
-        alpha = 0.2
+        isScrollEnabled = false
+
+        vGame.frame = bounds
+        addSubview(vGame)
     }
 
     @available(*, unavailable)

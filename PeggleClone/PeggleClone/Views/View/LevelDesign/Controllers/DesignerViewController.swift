@@ -77,8 +77,7 @@ extension DesignerViewController {
             fatalError("should not be nil")
         }
 
-        viewModel.$actualDisplayDimensions
-            .compactMap { $0 }
+        viewModel.actualDisplayDimensionsPublisher
             .sink { [weak self] actualDisplayDimensions in
                 guard let self = self else {
                     return
@@ -98,9 +97,10 @@ extension DesignerViewController {
                 for vLetterBox in self.vLetterBoxes {
                     vLetterBox.removeFromSuperview()
                 }
+
                 self.vLetterBoxes.removeAll()
 
-                self.addLetterBoxes(displayDimensions: actualDisplayDimensions)
+                self.addLetterBoxes()
                 self.view.addSubview(scrollvLayout)
                 self.view.sendSubviewToBack(scrollvLayout)
                 self.view.sendSubviewToBack(self.ivBackground)

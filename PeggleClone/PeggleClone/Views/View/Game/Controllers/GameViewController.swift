@@ -4,9 +4,15 @@ import Combine
 private let segueGameEnd = "segueGameEnd"
 
 class GameViewController: UIViewController, Storyboardable {
-    @IBOutlet private var vGame: GameplayAreaView!
+    @IBOutlet private var vWithinSafeArea: GameplayAreaView!
     @IBOutlet private var cvGameEnd: UIView!
-    private var vcGameEnd: GameEndViewController?
+
+    var scrollvGame: GameLevelScrollView?
+    var vGame: GameplayAreaDynamicView? {
+        scrollvGame?.vGame
+    }
+    var vcGameEnd: GameEndViewController?
+    var vLetterBoxes: [LetterBoxView] = []
     private var displayLink: CADisplayLink?
 
     var didBackToLevelSelect: (() -> Void)?
@@ -18,22 +24,21 @@ class GameViewController: UIViewController, Storyboardable {
     var pegToViewMap: [Peg: GamePegView] = [:]
     var obstacleToViewMap: [Obstacle: GameObstacleView] = [:]
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         setup()
     }
 
     private func setup() {
+        setupBindings()
+        setupViews()
         setupModels()
         registerEventHandlers()
-        setupViews()
-        setupBindings()
-
-        guard let viewModel = viewModel else {
+        guard let vGame = vGame, let viewModel = viewModel else {
             fatalError("should not be nil")
         }
 
-        vGame.setup(viewModel: viewModel.getGameplayAreaViewModel())
+        vGame.viewModel = viewModel.getGameplayAreaViewModel()
         viewModel.startNewGame()
         startTimer()
     }
@@ -53,30 +58,69 @@ class GameViewController: UIViewController, Storyboardable {
             fatalError("should not be nil")
         }
 
-        guard let gameEndViewModelPublisher = viewModel.gameEndViewModelPublisher else {
+        viewModel.gameEndViewModelPublisher
+            .sink { [weak self] vmGameEnd in
+                guard let self = self else {
+                    return
+                }
+
+                guard let vcGameEnd = self.vcGameEnd else {
+                    fatalError("should not be nil")
+                }
+
+                self.displayLink?.invalidate()
+                self.displayLink = nil
+                vcGameEnd.viewModel = vmGameEnd
+                self.cvGameEnd.isHidden = false
+            }
+            .store(in: &subscriptions)
+
+        viewModel.actualDisplayDimensionsPublisher
+            .sink { [weak self] actualDisplayDimensions in
+                guard let self = self else {
+                    return
+                }
+
+                if self.scrollvGame == nil {
+                    self.scrollvGame = GameLevelScrollView(frame: actualDisplayDimensions)
+                }
+
+                guard let scrollvGame = self.scrollvGame else {
+                    fatalError("should not be nil")
+                }
+
+                scrollvGame.center.x = self.vWithinSafeArea.frame.midX
+
+                for vLetterBox in self.vLetterBoxes {
+                    vLetterBox.removeFromSuperview()
+                }
+
+                self.vLetterBoxes.removeAll()
+
+                self.addLetterBoxes()
+                self.vWithinSafeArea.addSubview(scrollvGame)
+                scrollvGame.setNeedsLayout()
+                scrollvGame.setNeedsDisplay()
+            }
+            .store(in: &subscriptions)
+    }
+
+    func addLetterBoxes() {
+        guard let scrollvGame = scrollvGame else {
             fatalError("should not be nil")
         }
 
-        gameEndViewModelPublisher.sink { [weak self] vmGameEnd in
-            guard let self = self else {
-                return
-            }
-
-            guard let vcGameEnd = self.vcGameEnd else {
-                fatalError("should not be nil")
-            }
-
-            self.displayLink?.invalidate()
-            self.displayLink = nil
-            vcGameEnd.viewModel = vmGameEnd
-            self.cvGameEnd.isHidden = false
+        let vLetterBoxes = vWithinSafeArea.getLetterBoxes(around: scrollvGame)
+        self.vLetterBoxes.append(contentsOf: vLetterBoxes)
+        for vLetterBox in self.vLetterBoxes {
+            vWithinSafeArea.addSubview(vLetterBox)
+            vWithinSafeArea.sendSubviewToBack(vLetterBox)
         }
-        .store(in: &subscriptions)
     }
 
     @objc func gameLoop(displaylink: CADisplayLink) {
         viewModel?.update()
-        vGame.setNeedsDisplay()
+        vGame?.setNeedsDisplay()
     }
 
     private func setupModels() {
@@ -84,7 +128,7 @@ class GameViewController: UIViewController, Storyboardable {
             fatalError("should not be nil")
         }
 
-        viewModel.setDimensions(width: vGame.frame.width, height: vGame.frame.height)
+        viewModel.setDimensions(width: vWithinSafeArea.frame.width, height: vWithinSafeArea.frame.height)
 
         guard let gameLevel = viewModel.gameLevel else {
             fatalError("should not be nil")
@@ -104,6 +148,9 @@ class GameViewController: UIViewController, Storyboardable {
     }
 
     private func registerEventHandlers() {
+        guard let vGame = vGame else {
+            return
+        }
         let longPressGestureRecognizer = UILongPressGestureRecognizer(
             target: self,
             action: #selector(self.onLongPress(_:))
@@ -160,7 +207,7 @@ class GameViewController: UIViewController, Storyboardable {
 
 extension GameViewController {
     func addBallChild(ball: Ball) {
-        guard let viewModel = viewModel else {
+        guard let vGame = vGame, let viewModel = viewModel else {
             fatalError("should not be nil")
         }
         let vmBall = viewModel.getBallViewModel(ball: ball)
@@ -191,7 +238,7 @@ extension GameViewController {
     }
 
     func addPegChild(peg: Peg) {
-        guard let viewModel = viewModel else {
+        guard let vGame = vGame, let viewModel = viewModel else {
             fatalError("should not be nil")
         }
         let vmPeg = viewModel.getPegViewModel(peg: peg)
@@ -226,7 +273,7 @@ extension GameViewController {
     }
 
     func addObstacleChild(obstacle: Obstacle) {
-        guard let viewModel = viewModel else {
+        guard let vGame = vGame, let viewModel = viewModel else {
             fatalError("should not be nil")
         }
         let vmObstacle = viewModel.getObstacleViewModel(obstacle: obstacle)

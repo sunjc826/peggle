@@ -19,7 +19,7 @@
 		E5354E39279A89A900ADF354 /* PalettePegButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5354E38279A89A900ADF354 /* PalettePegButton.swift */; };
 		E5354E3B279A89EC00ADF354 /* DesignerPegButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5354E3A279A89EC00ADF354 /* DesignerPegButton.swift */; };
 		E545750B27A97F1100F11F43 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E545750A27A97F1100F11F43 /* GameViewController.swift */; };
-		E545750D27A980A200F11F43 /* GameplayAreaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E545750C27A980A200F11F43 /* GameplayAreaView.swift */; };
+		E545750D27A980A200F11F43 /* GameplayAreaDynamicView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E545750C27A980A200F11F43 /* GameplayAreaDynamicView.swift */; };
 		E54612B727BE799400AAD85A /* DesignerViewController+Editing.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54612B627BE799400AAD85A /* DesignerViewController+Editing.swift */; };
 		E54612B927BE79A400AAD85A /* DesignerViewController+Callbacks.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54612B827BE79A400AAD85A /* DesignerViewController+Callbacks.swift */; };
 		E54612BB27BE7C6A00AAD85A /* DesignerViewController+Letterbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54612BA27BE7C6A00AAD85A /* DesignerViewController+Letterbox.swift */; };
@@ -190,6 +190,12 @@
 		E5E580D027C0B4E500392E28 /* DesignerScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E580CF27C0B4E500392E28 /* DesignerScrollView.swift */; };
 		E5E580D227C0C56F00392E28 /* PersistableCoordinateMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E580D127C0C56F00392E28 /* PersistableCoordinateMapper.swift */; };
 		E5E580D427C0D1F800392E28 /* DesignerViewModel+Delegates.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E580D327C0D1F800392E28 /* DesignerViewModel+Delegates.swift */; };
+		E5E580D827C104AF00392E28 /* UIView+LetterBoxing.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E580D727C104AF00392E28 /* UIView+LetterBoxing.swift */; };
+		E5E580DE27C10CE900392E28 /* GameLevelScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E580DD27C10CE900392E28 /* GameLevelScrollView.swift */; };
+		E5E580E227C11EF000392E28 /* GameplayAreaStaticView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E580E127C11EF000392E28 /* GameplayAreaStaticView.swift */; };
+		E5E580E427C11FFD00392E28 /* GameplayAreaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E580E327C11FFD00392E28 /* GameplayAreaView.swift */; };
+		E5E580E627C123FC00392E28 /* CannonLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E580E527C123FC00392E28 /* CannonLineView.swift */; };
+		E5E580E827C1245800392E28 /* CannonLineViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E580E727C1245800392E28 /* CannonLineViewModel.swift */; };
 		E5EBE2EA27A05AD4006E9D1E /* LinkedListTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EBE2E927A05AD4006E9D1E /* LinkedListTests.swift */; };
 		E5EBE2EC27A05AF1006E9D1E /* ArrayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EBE2EB27A05AF1006E9D1E /* ArrayTests.swift */; };
 		E5EBE2EE27A05B01006E9D1E /* CollisionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EBE2ED27A05B01006E9D1E /* CollisionTests.swift */; };
@@ -238,7 +244,7 @@
 		E5354E38279A89A900ADF354 /* PalettePegButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PalettePegButton.swift; sourceTree = "<group>"; };
 		E5354E3A279A89EC00ADF354 /* DesignerPegButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignerPegButton.swift; sourceTree = "<group>"; };
 		E545750A27A97F1100F11F43 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
-		E545750C27A980A200F11F43 /* GameplayAreaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameplayAreaView.swift; sourceTree = "<group>"; };
+		E545750C27A980A200F11F43 /* GameplayAreaDynamicView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameplayAreaDynamicView.swift; sourceTree = "<group>"; };
 		E54612B627BE799400AAD85A /* DesignerViewController+Editing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DesignerViewController+Editing.swift"; sourceTree = "<group>"; };
 		E54612B827BE79A400AAD85A /* DesignerViewController+Callbacks.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DesignerViewController+Callbacks.swift"; sourceTree = "<group>"; };
 		E54612BA27BE7C6A00AAD85A /* DesignerViewController+Letterbox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DesignerViewController+Letterbox.swift"; sourceTree = "<group>"; };
@@ -409,6 +415,12 @@
 		E5E580CF27C0B4E500392E28 /* DesignerScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignerScrollView.swift; sourceTree = "<group>"; };
 		E5E580D127C0C56F00392E28 /* PersistableCoordinateMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistableCoordinateMapper.swift; sourceTree = "<group>"; };
 		E5E580D327C0D1F800392E28 /* DesignerViewModel+Delegates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DesignerViewModel+Delegates.swift"; sourceTree = "<group>"; };
+		E5E580D727C104AF00392E28 /* UIView+LetterBoxing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+LetterBoxing.swift"; sourceTree = "<group>"; };
+		E5E580DD27C10CE900392E28 /* GameLevelScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameLevelScrollView.swift; sourceTree = "<group>"; };
+		E5E580E127C11EF000392E28 /* GameplayAreaStaticView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameplayAreaStaticView.swift; sourceTree = "<group>"; };
+		E5E580E327C11FFD00392E28 /* GameplayAreaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameplayAreaView.swift; sourceTree = "<group>"; };
+		E5E580E527C123FC00392E28 /* CannonLineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CannonLineView.swift; sourceTree = "<group>"; };
+		E5E580E727C1245800392E28 /* CannonLineViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CannonLineViewModel.swift; sourceTree = "<group>"; };
 		E5EBE2E927A05AD4006E9D1E /* LinkedListTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkedListTests.swift; sourceTree = "<group>"; };
 		E5EBE2EB27A05AF1006E9D1E /* ArrayTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayTests.swift; sourceTree = "<group>"; };
 		E5EBE2ED27A05B01006E9D1E /* CollisionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollisionTests.swift; sourceTree = "<group>"; };
@@ -665,6 +677,7 @@
 				E57B6C8727BA5E4000522F3F /* PegStatViewModel.swift */,
 				E57B6C8D27BA66EE00522F3F /* StackPegViewModel.swift */,
 				E57B6C9F27BA897700522F3F /* GameEndViewModel.swift */,
+				E5E580E727C1245800392E28 /* CannonLineViewModel.swift */,
 			);
 			path = "View Models";
 			sourceTree = "<group>";
@@ -681,7 +694,7 @@
 		E56FF54527AFA8B600FB4D02 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				E545750C27A980A200F11F43 /* GameplayAreaView.swift */,
+				E545750C27A980A200F11F43 /* GameplayAreaDynamicView.swift */,
 				E578EEE927AAD85800A121F3 /* BallView.swift */,
 				E582E26727AADBA700BBA471 /* GamePegView.swift */,
 				E56958CF27BF2E4100AF360B /* GameObstacleView.swift */,
@@ -689,6 +702,10 @@
 				E57B6C8327BA53C500522F3F /* GenericStatView.swift */,
 				E57B6C8127BA53AA00522F3F /* PegStatView.swift */,
 				E57B6C8B27BA66A100522F3F /* StackPegView.swift */,
+				E5E580DD27C10CE900392E28 /* GameLevelScrollView.swift */,
+				E5E580E127C11EF000392E28 /* GameplayAreaStaticView.swift */,
+				E5E580E327C11FFD00392E28 /* GameplayAreaView.swift */,
+				E5E580E527C123FC00392E28 /* CannonLineView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -786,6 +803,7 @@
 				E57E832027AFCC02006C3401 /* UIView+Animate.swift */,
 				E57B6C7B27BA327700522F3F /* UIImage+Rotate.swift */,
 				E57B6C7D27BA343D00522F3F /* UIView+Transform.swift */,
+				E5E580D727C104AF00392E28 /* UIView+LetterBoxing.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -1334,6 +1352,7 @@
 				E56958CA27BF273100AF360B /* Peg+RigidBody.swift in Sources */,
 				E578D30827BD465F0080B2DA /* AbstractObstacleViewModel.swift in Sources */,
 				E57B6CA227BA905300522F3F /* GameRoundStats.swift in Sources */,
+				E5E580E227C11EF000392E28 /* GameplayAreaStaticView.swift in Sources */,
 				E56B868627A430FC00D475BF /* StorageViewController.swift in Sources */,
 				E5FB39C927AA16E4008CE4D2 /* UIViewController+Preview.swift in Sources */,
 				E578D2FC27BD3CF00080B2DA /* TriangleObject.swift in Sources */,
@@ -1343,7 +1362,8 @@
 				E5354E3B279A89EC00ADF354 /* DesignerPegButton.swift in Sources */,
 				E5FB39CF27AA5A79008CE4D2 /* Boundary.swift in Sources */,
 				E571C09227AEBC6C009459CE /* DesignerViewModel.swift in Sources */,
-				E545750D27A980A200F11F43 /* GameplayAreaView.swift in Sources */,
+				E545750D27A980A200F11F43 /* GameplayAreaDynamicView.swift in Sources */,
+				E5E580E627C123FC00392E28 /* CannonLineView.swift in Sources */,
 				E5FB39D127AA6174008CE4D2 /* Ball.swift in Sources */,
 				E57B6C8C27BA66A100522F3F /* StackPegView.swift in Sources */,
 				E56958D227BF2FA000AF360B /* GameObstacleViewModel.swift in Sources */,
@@ -1390,6 +1410,7 @@
 				E57B6C7C27BA327700522F3F /* UIImage+Rotate.swift in Sources */,
 				E569731427A3717F0000BF18 /* Circle.swift in Sources */,
 				E57B6C9827BA7F9800522F3F /* GameLevel+CRUD.swift in Sources */,
+				E5E580E827C1245800392E28 /* CannonLineViewModel.swift in Sources */,
 				E578EEC727AAA5B700A121F3 /* RegularPolygon.swift in Sources */,
 				E578EED627AAAEF100A121F3 /* RectangleObject.swift in Sources */,
 				E57B6C9A27BA7FE700522F3F /* GameLevel+Lifecycle.swift in Sources */,
@@ -1411,6 +1432,7 @@
 				E57B6C8A27BA617000522F3F /* FillablePegViewModel.swift in Sources */,
 				E55837F7279D21A5006F4B1F /* PlayArea.swift in Sources */,
 				E57E831D27AFB7DB006C3401 /* GamePegViewModel.swift in Sources */,
+				E5E580D827C104AF00392E28 /* UIView+LetterBoxing.swift in Sources */,
 				E57B6C8027BA536100522F3F /* ScoreboardView.swift in Sources */,
 				E578EEE527AAC42000A121F3 /* ErrorMessages.swift in Sources */,
 				E572B91427B7AFF2008E72A6 /* GameViewModel.swift in Sources */,
@@ -1432,6 +1454,7 @@
 				E578EEEA27AAD85800A121F3 /* BallView.swift in Sources */,
 				E554880A27A21BA8009B862C /* Container.swift in Sources */,
 				E572B90727B76D91008E72A6 /* WallBehavior.swift in Sources */,
+				E5E580DE27C10CE900392E28 /* GameLevelScrollView.swift in Sources */,
 				E5E580D427C0D1F800392E28 /* DesignerViewModel+Delegates.swift in Sources */,
 				E569733027A37F4B0000BF18 /* Peg.swift in Sources */,
 				E578EEE027AABB4100A121F3 /* RegularPolygonObject.swift in Sources */,
@@ -1439,6 +1462,7 @@
 				E578EED827AAAF1700A121F3 /* CircleObject.swift in Sources */,
 				E5636DD7279C07CF006428E8 /* Storage.swift in Sources */,
 				E57B6C9027BA686100522F3F /* PegType.swift in Sources */,
+				E5E580E427C11FFD00392E28 /* GameplayAreaView.swift in Sources */,
 				E569732327A375F00000BF18 /* CGPoint.swift in Sources */,
 				E5710F6E27B344E3004ACED4 /* LevelSelectViewModel.swift in Sources */,
 				E571C08227AE346B009459CE /* CenteredPolygonObject.swift in Sources */,

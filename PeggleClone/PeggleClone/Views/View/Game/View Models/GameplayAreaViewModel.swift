@@ -16,25 +16,23 @@ class GameplayAreaViewModel {
 
     let gameLevel: GameLevel
 
-    var predictiveLinePoints: [CGPoint] {
-        guard let delegate = self.delegate else {
-            fatalError("should not be nil")
-        }
-        let logicalLine = gameLevel.getBallPrediction()
-        return logicalLine.map { logicalCoords in
-            delegate.getDisplayCoords(of: logicalCoords)
-        }
+    var cannonAnglePublisher: AnyPublisher<Double, Never> {
+        cannonAngle.eraseToAnyPublisher()
     }
-
-    var cannonAngle: AnyPublisher<Double, Never>?
-    var cannonPosition: AnyPublisher<CGPoint, Never>?
-    var ballsLeft: AnyPublisher<Int, Never>?
-    var totalScore: AnyPublisher<Int, Never>?
+    var cannonAngle: PassthroughSubject<Double, Never> = PassthroughSubject()
+    var cannonPositionPublisher: AnyPublisher<CGPoint, Never> {
+        cannonPosition.eraseToAnyPublisher()
+    }
+    var cannonPosition: PassthroughSubject<CGPoint, Never> = PassthroughSubject()
+    var ballsLeftPublisher: AnyPublisher<Int, Never> {
+        ballsLeft.eraseToAnyPublisher()
+    }
+    var ballsLeft: PassthroughSubject<Int, Never> = PassthroughSubject()
+    var totalScorePublisher: AnyPublisher<Int, Never> {
+        totalScore.eraseToAnyPublisher()
+    }
+    var totalScore: PassthroughSubject<Int, Never> = PassthroughSubject()
     var pegStatViewModels: [PegStatViewModel] = []
-
-    var shouldDrawPrediction: Bool {
-        gameLevel.gamePhase == .beginning || gameLevel.gamePhase == .shootBallWhenReady
-    }
 
     init(gameLevel: GameLevel) {
         self.gameLevel = gameLevel
@@ -48,19 +46,47 @@ class GameplayAreaViewModel {
     }
 
     private func setupBindings() {
-        cannonAngle = gameLevel.cannon.$angle.eraseToAnyPublisher()
-
-        cannonPosition = gameLevel.cannon.$position
-            .map { [weak self] logicalCannonPosition in
+        gameLevel.cannon.$angle.sink { [weak self] in self?.cannonAngle.send($0) }.store(in: &subscriptions)
+        gameLevel.cannon.$position
+            .sink { [weak self] logicalCannonPosition in
                 guard let self = self, let delegate = self.delegate else {
-                    fatalError("should not be nil")
+                    return
                 }
-                return delegate.getDisplayCoords(of: logicalCannonPosition)
+                self.cannonPosition.send(delegate.getDisplayCoords(of: logicalCannonPosition))
             }
-            .eraseToAnyPublisher()
+            .store(in: &subscriptions)
+        gameLevel.$numBalls.sink { [weak self] in self?.ballsLeft.send($0) }.store(in: &subscriptions)
+        gameLevel.totalScore.sink { [weak self] in self?.totalScore.send($0) }.store(in: &subscriptions)
+    }
+}
 
-        ballsLeft = gameLevel.$numBalls.eraseToAnyPublisher()
+extension GameplayAreaViewModel {
+    func getCannonLineViewModel() -> CannonLineViewModel {
+        let vmCannonLine = CannonLineViewModel()
+        vmCannonLine.delegate = self
+        return vmCannonLine
+    }
+}
 
-        totalScore = gameLevel.totalScore
+extension GameplayAreaViewModel: CannonLineViewModelDelegate {
+    func getDisplayCoords(of logicalCoords: CGPoint) -> CGPoint {
+        guard let delegate = delegate else {
+            fatalError("should not be nil")
+        }
+        return delegate.getDisplayCoords(of: logicalCoords)
+    }
+
+    func getDisplayLength(of logicalLength: Double) -> Double {
+        guard let delegate = delegate else {
+            fatalError("should not be nil")
+        }
+        return delegate.getDisplayLength(of: logicalLength)
+    }
+
+    func getDisplayVector(of logicalVector: CGVector) -> CGVector {
+        guard let delegate = delegate else {
+            fatalError("should not be nil")
+        }
+        return delegate.getDisplayVector(of: logicalVector)
     }
 }
