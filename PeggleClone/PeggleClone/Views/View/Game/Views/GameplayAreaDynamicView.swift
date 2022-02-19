@@ -75,13 +75,14 @@ extension GameplayAreaDynamicView {
             .assign(to: \.ivCannon.center, on: self)
             .store(in: &subscriptions)
 
-        viewModel.$displayHeight
+        viewModel.$displayDimensions
             .compactMap { $0 }
-            .sink { [weak self] displayHeight in
-                guard let self = self else {
+            .sink { [weak self] displayDimensions in
+                guard let self = self, let superview = self.superview else {
                     return
                 }
-                self.frame = self.frame.withHeight(height: displayHeight)
+                self.frame = displayDimensions
+                self.center.x = superview.bounds.midX
                 self.ivBackground.frame = self.bounds
             }
             .store(in: &subscriptions)

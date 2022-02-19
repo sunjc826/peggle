@@ -6,11 +6,11 @@ private let rotationRateSecondsTillTarget = 1.5
 class GameViewModel {
     private var subscriptions: Set<AnyCancellable> = []
 
-    var actualDisplayDimensionsPublisher: AnyPublisher<CGRect, Never> {
-        actualDisplayDimensions.eraseToAnyPublisher()
+    var onScreenDisplayDimensionsPublisher: AnyPublisher<CGRect, Never> {
+        onScreenDisplayDimensions.eraseToAnyPublisher()
     }
 
-    private let actualDisplayDimensions: PassthroughSubject<CGRect, Never> = PassthroughSubject()
+    private let onScreenDisplayDimensions: PassthroughSubject<CGRect, Never> = PassthroughSubject()
 
     var peggleMaster: PeggleMaster
 
@@ -72,14 +72,14 @@ class GameViewModel {
             emptyPegsContainer: SetObject<Peg>(),
             special: peggleMaster.special
         )
-
-        actualDisplayDimensions.send(
-            CGRect(
-                x: 0,
-                y: 0,
-                width: coordinateMapper.displayWidth,
-                height: coordinateMapper.displayHeight
-            )
+        let rect = CGRect(
+            x: 0,
+            y: 0,
+            width: coordinateMapper.onScreenDisplayWidth,
+            height: coordinateMapper.onScreenDisplayHeight
+        )
+        onScreenDisplayDimensions.send(
+           rect
         )
     }
 
@@ -90,6 +90,15 @@ class GameViewModel {
 
         do {
             try gameLevel.hydrate(with: backingDesignerGameLevel)
+            let rect = CGRect(
+                x: 0,
+                y: 0,
+                width: gameLevel.coordinateMapper.onScreenDisplayWidth,
+                height: gameLevel.coordinateMapper.onScreenDisplayHeight
+            )
+            onScreenDisplayDimensions.send(
+                rect
+            )
         } catch {
             logger.error("\(error)")
         }

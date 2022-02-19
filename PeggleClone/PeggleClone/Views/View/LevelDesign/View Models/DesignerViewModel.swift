@@ -40,11 +40,11 @@ class DesignerViewModel {
 
     var toggleScrollText: AnyPublisher<String, Never>?
 
-    var designerDisplayHeightPublisher: AnyPublisher<Double, Never> {
-        designerDisplayHeight.eraseToAnyPublisher()
+    var displayDimensionsPublisher: AnyPublisher<CGRect, Never> {
+        displayDimensions.eraseToAnyPublisher()
     }
 
-    private var designerDisplayHeight: PassthroughSubject<Double, Never> = PassthroughSubject()
+    private var displayDimensions: PassthroughSubject<CGRect, Never> = PassthroughSubject()
 
     @Published var contentOffsetYBottom: Double?
 
@@ -113,13 +113,18 @@ class DesignerViewModel {
             self?.isLoading.send(isLoading)
         }
         .store(in: &subscriptions)
-        gameLevel.$playArea.sink { [weak self] playArea in
-            guard let self = self, let coordinateMapper = self.coordinateMapper else {
+        gameLevel.$coordinateMapper.sink { [weak self] coordinateMapper in
+            guard let self = self else {
                 return
             }
 
-            self.designerDisplayHeight.send(
-                coordinateMapper.getDisplayLength(ofLogicalLength: playArea.height)
+            self.displayDimensions.send(
+                CGRect(
+                    x: 0,
+                    y: 0,
+                    width: coordinateMapper.displayWidth,
+                    height: coordinateMapper.displayHeight
+                )
             )
         }
         .store(in: &subscriptions)

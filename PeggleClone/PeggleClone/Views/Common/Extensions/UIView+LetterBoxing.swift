@@ -4,10 +4,10 @@ extension UIView {
     func getLetterBoxes(around childView: UIView) -> [LetterBoxView] {
         var vLetterBoxes: [LetterBoxView] = []
 
-        let frameLeft = frame.minX
-        let frameRight = frame.maxX
-        let frameTop = frame.minY
-        let frameBottom = frame.maxY
+        let boundsLeft = bounds.minX
+        let boundsRight = bounds.maxX
+        let boundsTop = bounds.minY
+        let boundsBottom = bounds.maxY
         let childLeft = childView.frame.minX
         let childRight = childView.frame.maxX
         let childTop = childView.frame.minY
@@ -18,14 +18,14 @@ extension UIView {
             let vLeftLetterBox = LetterBoxView()
             let vRightLetterBox = LetterBoxView()
             vLeftLetterBox.frame = CGRect(
-                x: frameLeft, y: frameTop,
-                width: childLeft - frameLeft,
-                height: frameBottom - frameTop
+                x: boundsLeft, y: boundsTop,
+                width: childLeft - boundsLeft,
+                height: boundsBottom - boundsTop
             )
             vRightLetterBox.frame = CGRect(
-                x: childRight, y: frameTop,
-                width: frameRight - childRight,
-                height: frameBottom - frameTop
+                x: childRight, y: boundsTop,
+                width: boundsRight - childRight,
+                height: boundsBottom - boundsTop
             )
             vLetterBoxes.append(vLeftLetterBox)
             vLetterBoxes.append(vRightLetterBox)
@@ -36,14 +36,14 @@ extension UIView {
             let vTopLetterBox = LetterBoxView()
             let vBottomLetterBox = LetterBoxView()
             vTopLetterBox.frame = CGRect(
-                x: frameLeft, y: frameTop,
-                width: frameRight - frameLeft,
-                height: childTop - frameTop
+                x: boundsLeft, y: boundsTop,
+                width: boundsRight - boundsLeft,
+                height: childTop - boundsTop
             )
             vBottomLetterBox.frame = CGRect(
-                x: frameLeft, y: childBottom,
-                width: frameRight - frameLeft,
-                height: frameBottom - childBottom
+                x: boundsLeft, y: childBottom,
+                width: boundsRight - boundsLeft,
+                height: boundsBottom - childBottom
             )
             vLetterBoxes.append(vTopLetterBox)
             vLetterBoxes.append(vBottomLetterBox)

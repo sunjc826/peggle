@@ -190,12 +190,15 @@ extension DesignerViewController {
                 scrollvLayout.setContentOffset(CGPoint(x: 0, y: contentOffset), animated: false)
             }
             .store(in: &subscriptions)
-        viewModel?.designerDisplayHeightPublisher
-            .sink { [weak self] displayHeight in
-                guard let self = self, let vLayout = self.vLayout else {
+        viewModel?.displayDimensionsPublisher
+            .sink { [weak self] displayDimensions in
+                guard let self = self,
+                      let vLayout = self.vLayout,
+                      let superview = vLayout.superview else {
                     return
                 }
-                vLayout.frame = vLayout.frame.withHeight(height: displayHeight)
+                vLayout.frame = displayDimensions
+                vLayout.center.x = superview.bounds.midX
             }
             .store(in: &subscriptions)
     }

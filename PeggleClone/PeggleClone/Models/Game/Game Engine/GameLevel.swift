@@ -14,8 +14,8 @@ final class GameLevel {
     var subscriptions: Set<AnyCancellable> = []
 
     let physicsEngine: AbstractPhysicsEngine
-    var coordinateMapper: PhysicsCoordinateMapper
-    @Published var playArea: PlayArea
+    @Published var coordinateMapper: PhysicsCoordinateMapper
+    var playArea: PlayArea
     let cannon: Cannon
     var balls: [Ball] = []
     let pegs: PegContainer

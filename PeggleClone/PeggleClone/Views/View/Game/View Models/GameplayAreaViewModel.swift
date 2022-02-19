@@ -16,7 +16,7 @@ class GameplayAreaViewModel {
 
     let gameLevel: GameLevel
 
-    @Published var displayHeight: Double?
+    @Published var displayDimensions: CGRect?
 
     var cannonAnglePublisher: AnyPublisher<Double, Never> {
         cannonAngle.eraseToAnyPublisher()
@@ -60,11 +60,16 @@ class GameplayAreaViewModel {
             .store(in: &subscriptions)
         gameLevel.$numBalls.sink { [weak self] in self?.ballsLeft.send($0) }.store(in: &subscriptions)
         gameLevel.totalScore.sink { [weak self] in self?.totalScore.send($0) }.store(in: &subscriptions)
-        gameLevel.$playArea.sink { [weak self] playArea in
-            guard let self = self, let delegate = self.delegate else {
+        gameLevel.$coordinateMapper.sink { [weak self] coordinateMapper in
+            guard let self = self else {
                 fatalError("should not be nil")
             }
-            self.displayHeight = delegate.getDisplayLength(of: playArea.height)
+            self.displayDimensions = CGRect(
+                x: 0,
+                y: 0,
+                width: coordinateMapper.displayWidth,
+                height: coordinateMapper.displayHeight
+            )
         }
         .store(in: &subscriptions)
     }

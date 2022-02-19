@@ -83,7 +83,7 @@ class GameViewController: UIViewController, Storyboardable {
             }
             .store(in: &subscriptions)
 
-        viewModel.actualDisplayDimensionsPublisher
+        viewModel.onScreenDisplayDimensionsPublisher
             .sink { [weak self] actualDisplayDimensions in
                 guard let self = self else {
                     return
@@ -91,6 +91,8 @@ class GameViewController: UIViewController, Storyboardable {
 
                 if self.scrollvGame == nil {
                     self.scrollvGame = GameLevelScrollView(frame: actualDisplayDimensions)
+                } else {
+                    self.scrollvGame?.frame = actualDisplayDimensions
                 }
 
                 guard let scrollvGame = self.scrollvGame else {
@@ -264,7 +266,6 @@ extension GameViewController {
             maximumScrollOffset,
             Double.maximum(0, lowestYPosition - scrollvGame.frame.height / 2)
         )
-
         scrollvGame.setContentOffset(CGPoint(x: 0, y: contentOffsetY), animated: false)
     }
 

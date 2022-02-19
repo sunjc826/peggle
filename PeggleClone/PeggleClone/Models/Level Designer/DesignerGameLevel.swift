@@ -30,8 +30,8 @@ final class DesignerGameLevel {
     let isLoading: PassthroughSubject<Bool, Never> = PassthroughSubject()
 
     @Published var levelName: String? = "Default level name"
-    var coordinateMapper: CoordinateMapper
-    @Published var playArea: PlayArea
+    @Published var coordinateMapper: CoordinateMapper
+    var playArea: PlayArea
     private var gameObjects: AnyContainer<GameObject>
     private let neighborFinder: AnyNeighborFinder<GameObject>
     private let collisionDetector: CollisionDetector
