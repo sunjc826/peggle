@@ -2,17 +2,17 @@ import UIKit
 
 extension DesignerViewController {
     func addLetterBoxes(displayDimensions: CGRect) {
-        guard let vLayout = vLayout else {
+        guard let scrollvLayout = scrollvLayout else {
             fatalError("should not be nil")
         }
         let frameLeft = self.view.frame.minX
         let frameRight = self.view.frame.maxX
         let frameTop = self.view.frame.minY
         let frameBottom = self.view.frame.maxY
-        let vLayoutLeft = vLayout.frame.minX
-        let vLayoutRight = vLayout.frame.maxX
-        let vLayoutTop = vLayout.frame.minY
-        let vLayoutBottom = vLayout.frame.maxY
+        let vLayoutLeft = scrollvLayout.frame.minX
+        let vLayoutRight = scrollvLayout.frame.maxX
+        let vLayoutTop = scrollvLayout.frame.minY
+        let vLayoutBottom = scrollvLayout.frame.maxY
         // letterboxes on left and right
         if displayDimensions.width < self.view.frame.width {
             let vLeftLetterBox = LetterBoxView()

@@ -122,7 +122,7 @@ class DesignerMainViewModel {
                 return
             }
 
-            try gameLevel?.hydrate(with: decodedGameLevel)
+            gameLevel?.hydrate(with: decodedGameLevel)
         } catch {
             logger.error("\(error)")
         }

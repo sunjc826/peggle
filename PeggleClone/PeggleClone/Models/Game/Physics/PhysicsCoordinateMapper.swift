@@ -7,30 +7,28 @@ class PhysicsCoordinateMapper: CoordinateMapper {
 
     init(
         aspectRatio: Double,
-        displayWidth: Double,
-        displayHeight: Double,
+        onScreenDisplayWidth: Double,
+        onScreenDisplayHeight: Double,
         physicalScale: Double
     ) {
         physicalScalingFactor = physicalScale
         inversePhysicalScalingFactor = 1 / physicalScale
         super.init(
             aspectRatio: aspectRatio,
-            displayWidth: displayWidth,
-            displayHeight: displayHeight
+            onScreenDisplayWidth: onScreenDisplayWidth,
+            onScreenDisplayHeight: onScreenDisplayHeight
         )
     }
 
     convenience init(
-        width: Double,
-        height: Double,
-        displayWidth: Double,
-        displayHeight: Double,
+        onScreenDisplayWidth: Double,
+        onScreenDisplayHeight: Double,
         physicalScale: Double
     ) {
         self.init(
-            aspectRatio: width / height,
-            displayWidth: displayWidth,
-            displayHeight: displayHeight,
+            aspectRatio: onScreenDisplayWidth / onScreenDisplayHeight,
+            onScreenDisplayWidth: onScreenDisplayWidth,
+            onScreenDisplayHeight: onScreenDisplayHeight,
             physicalScale: physicalScale
         )
     }
@@ -60,19 +58,31 @@ class PhysicsCoordinateMapper: CoordinateMapper {
     }
 }
 
+struct PhysicsCoordinateMapperConfigurable {
+    var onScreenDisplayWidth: Double
+    var onScreenDisplayHeight: Double
+    var physicalScale: Double
+}
+
 extension PhysicsCoordinateMapper {
-    convenience init(
-        playArea: PersistablePlayArea,
-        displayWidth: Double,
-        displayHeight: Double,
-        physicalScale: Double
-    ) {
-        self.init(
-            width: playArea.width,
-            height: playArea.height,
-            displayWidth: displayWidth,
-            displayHeight: displayHeight,
-            physicalScale: physicalScale
+    func getPhysicsConfigurable() -> PhysicsCoordinateMapperConfigurable {
+        PhysicsCoordinateMapperConfigurable(
+            onScreenDisplayWidth: onScreenDisplayWidth,
+            onScreenDisplayHeight: onScreenDisplayHeight,
+            physicalScale: physicalScalingFactor)
+    }
+
+    static func fromPersistable(
+        persistableCoordinateMapper: PersistableCoordinateMapper,
+        physicsCoordinateMapperConfigurable: PhysicsCoordinateMapperConfigurable
+    ) -> PhysicsCoordinateMapper {
+        let coordinateMapper = PhysicsCoordinateMapper(
+            aspectRatio: persistableCoordinateMapper.logicalWidth,
+            onScreenDisplayWidth: physicsCoordinateMapperConfigurable.onScreenDisplayWidth,
+            onScreenDisplayHeight: physicsCoordinateMapperConfigurable.onScreenDisplayHeight,
+            physicalScale: physicsCoordinateMapperConfigurable.physicalScale
         )
+        coordinateMapper.logicalHeight = persistableCoordinateMapper.logicalHeight
+        return coordinateMapper
     }
 }

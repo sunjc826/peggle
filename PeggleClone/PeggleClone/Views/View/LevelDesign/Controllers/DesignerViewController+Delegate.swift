@@ -141,5 +141,22 @@ extension DesignerViewController: ShapeTransformViewControllerDelegate {
 
         viewModel.rotate(rotation)
     }
+}
 
+extension DesignerViewController: DesignerScrollViewDelegate {
+    func scrollvDesignerOnPan(dy: Double) {
+        guard let viewModel = viewModel else {
+            fatalError("should not be nil")
+        }
+
+        viewModel.scroll(dy: dy)
+    }
+
+    func scrollvDesignerEndPan() {
+        guard let viewModel = viewModel else {
+            fatalError("should not be nil")
+        }
+
+        viewModel.terminateScroll()
+    }
 }

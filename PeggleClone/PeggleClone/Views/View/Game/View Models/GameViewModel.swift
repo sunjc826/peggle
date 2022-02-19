@@ -2,7 +2,6 @@ import UIKit
 import Combine
 
 private let rotationRateSecondsTillTarget = 1.5
-private let physicalScale: Double = 100.0
 
 class GameViewModel {
     private var subscriptions: Set<AnyCancellable> = []
@@ -52,15 +51,10 @@ class GameViewModel {
     }
 
     func setDimensions(width: Double, height: Double) {
-        guard let backingDesignerGameLevel = backingDesignerGameLevel else {
-            fatalError("Game level should be present")
-        }
-
         let coordinateMapper = PhysicsCoordinateMapper(
-            playArea: backingDesignerGameLevel.playArea,
-            displayWidth: width,
-            displayHeight: height,
-            physicalScale: physicalScale
+            onScreenDisplayWidth: width,
+            onScreenDisplayHeight: height,
+            physicalScale: Settings.Physics.physicalScale
         )
 
         gameLevel = GameLevel(

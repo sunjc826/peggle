@@ -130,7 +130,6 @@ extension GameLevel {
             directionVector = CGVector.fromPoint(
                 point: PolarCoordinate(radius: circle.radius, theta: theta).toCartesian()
             ).normalize()
-            print(directionVector)
             let offset = directionVector.scaleBy(factor: circle.radius + 0.001)
             let ballPosition = circle.center.translate(offset: offset)
             ball = Ball(center: ballPosition)

@@ -62,7 +62,6 @@ extension GameLevel {
     func addObstacle(obstacle: Obstacle) {
         obstacles.insert(obstacle)
         let rigidBody = obstacle.toRigidBody()
-        print(obstacle.radiusOfOscillation)
         let restoringForce: Force = .restoring(
             springConstant: Settings.Obstacle.easeOfOscillation.rawValue / obstacle.radiusOfOscillation,
             centerOfOscillation: obstacle.shape.center

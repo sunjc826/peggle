@@ -66,18 +66,3 @@ extension PlayArea: CustomDebugStringConvertible {
         boundingBox.debugDescription
     }
 }
-
-// MARK: Persistable
-extension PlayArea {
-    func toPersistable() -> PersistablePlayArea {
-        PersistablePlayArea(width: width, height: height, cannonZoneHeight: cannonZoneHeight)
-    }
-
-    static func fromPersistable(persistableArea: PersistablePlayArea) -> PlayArea {
-        PlayArea(
-            width: persistableArea.width,
-            height: persistableArea.height,
-            cannonZoneHeight: persistableArea.cannonZoneHeight
-        )
-    }
-}

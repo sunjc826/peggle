@@ -5,15 +5,19 @@ private let segueShapeTransform = "segueShapeTransform"
 
 /// Controls the placement and relocation of pegs on the canvas.
 class DesignerViewController: UIViewController {
-
     @IBOutlet private var lblEditModeHeader: UILabel!
     @IBOutlet private var btnRemoveInconsistentPegs: UIButton!
     @IBOutlet private var lblEditMode: UILabel!
     @IBOutlet private var btnChangeEditMode: UIButton!
     @IBOutlet private var vShapeTransform: UIView!
     @IBOutlet private var ivBackground: UIImageView!
+    @IBOutlet private var btnToggleAllowScrollResize: UIButton!
+    @IBOutlet private var aiLoading: UIActivityIndicatorView!
 
-    var vLayout: UIView?
+    var scrollvLayout: DesignerScrollView?
+    var vLayout: UIView? {
+        scrollvLayout?.vLayout
+    }
     var vLetterBoxes: [LetterBoxView] = []
     var vcShapeTransform: ShapeTransformViewController?
 
@@ -30,7 +34,7 @@ class DesignerViewController: UIViewController {
 
         vcShapeTransform = segue.destination as? ShapeTransformViewController
         guard let vcShapeTransform = vcShapeTransform, let viewModel = viewModel else {
-            fatalError("should not be niil")
+            fatalError("should not be nil")
         }
         vcShapeTransform.viewModel = viewModel.getShapeTransformViewModel()
         vcShapeTransform.delegate = self
@@ -42,19 +46,30 @@ extension DesignerViewController {
     func duringParentViewDidAppear() {
         setupBindings()
         setupModels()
-        guard let viewModel = viewModel else {
-            fatalError("should not be nil")
-        }
-        viewModel.registerCallbacks()
         registerEventHandlers()
-        viewModel.deselectGameObject()
     }
 
     private func setupBindings() {
+        bindLoad()
         bindDimensions()
         bindGameObjects()
         bindShapeTransform()
         bindButtons()
+        bindScroll()
+    }
+
+    private func bindLoad() {
+        viewModel?.isLoadingPublisher
+            .sink { [weak self] isLoading in
+                if isLoading {
+                    self?.aiLoading.isHidden = false
+                    self?.aiLoading.startAnimating()
+                } else {
+                    self?.aiLoading.stopAnimating()
+                    self?.aiLoading.isHidden = true
+                }
+            }
+            .store(in: &subscriptions)
     }
 
     func bindDimensions() {
@@ -69,16 +84,16 @@ extension DesignerViewController {
                     return
                 }
 
-                if self.vLayout == nil {
-                    self.vLayout = UIView()
+                if self.scrollvLayout == nil {
+                    self.scrollvLayout = DesignerScrollView(frame: actualDisplayDimensions)
+                    self.scrollvLayout!.ownDelegate = self
                 }
 
-                guard let vLayout = self.vLayout else {
+                guard let scrollvLayout = self.scrollvLayout else {
                     fatalError("should not be nil")
                 }
 
-                vLayout.frame = actualDisplayDimensions
-                vLayout.center.x = self.view.frame.midX
+                scrollvLayout.center.x = self.view.frame.midX
 
                 for vLetterBox in self.vLetterBoxes {
                     vLetterBox.removeFromSuperview()
@@ -86,11 +101,12 @@ extension DesignerViewController {
                 self.vLetterBoxes.removeAll()
 
                 self.addLetterBoxes(displayDimensions: actualDisplayDimensions)
-                self.view.addSubview(vLayout)
-                self.view.sendSubviewToBack(vLayout)
+                self.view.addSubview(scrollvLayout)
+                self.view.sendSubviewToBack(scrollvLayout)
                 self.view.sendSubviewToBack(self.ivBackground)
-                vLayout.setNeedsLayout()
-                vLayout.setNeedsDisplay()
+                scrollvLayout.setNeedsLayout()
+                scrollvLayout.setNeedsDisplay()
+                self.viewModel?.contentOffsetYBottom = scrollvLayout.frame.height
             }
             .store(in: &subscriptions)
     }
@@ -127,6 +143,12 @@ extension DesignerViewController {
                 self?.btnRemoveInconsistentPegs.isHidden = !canRemoveInconsistentPegs
             }
             .store(in: &subscriptions)
+
+        viewModel.toggleScrollText?
+            .sink { [weak self] text in
+                self?.btnToggleAllowScrollResize.setTitle(text, for: .normal)
+            }
+            .store(in: &subscriptions)
     }
 
     func bindGameObjects() {
@@ -151,6 +173,29 @@ extension DesignerViewController {
                 }
 
                 self.startEditingGameObject(gameObjectBeingEdited: gameObjectBeingEdited)
+            }
+            .store(in: &subscriptions)
+    }
+
+    func bindScroll() {
+        viewModel?.$contentOffsetYBottom
+            .compactMap { $0 }
+            .removeDuplicates()
+            .sink { [weak self] contentOffsetYBottom in
+                guard let self = self,
+                      let scrollvLayout = self.scrollvLayout else {
+                    return
+                }
+                let contentOffset = contentOffsetYBottom - scrollvLayout.frame.height
+                scrollvLayout.setContentOffset(CGPoint(x: 0, y: contentOffset), animated: false)
+            }
+            .store(in: &subscriptions)
+        viewModel?.designerDisplayHeightPublisher
+            .sink { [weak self] displayHeight in
+                guard let self = self, let vLayout = self.vLayout else {
+                    return
+                }
+                vLayout.frame = vLayout.frame.withHeight(height: displayHeight)
             }
             .store(in: &subscriptions)
     }
@@ -186,12 +231,17 @@ extension DesignerViewController {
         vLayout.addGestureRecognizer(tapGestureRecognizer)
         btnRemoveInconsistentPegs.addTarget(
             self,
-            action: #selector(removeInconsistenciesButtonOnTap),
+            action: #selector(btnRemoveInconsistenciesOnTap),
             for: .touchUpInside
         )
         btnChangeEditMode.addTarget(
             self,
-            action: #selector(editModeButtonOnTap),
+            action: #selector(btnEditModeOnTap),
+            for: .touchUpInside
+        )
+        btnToggleAllowScrollResize.addTarget(
+            self,
+            action: #selector(btnToggleAllowScrollResizeOnTap),
             for: .touchUpInside
         )
     }
@@ -207,7 +257,7 @@ extension DesignerViewController {
         viewModel.createGameObjectAt(displayCoords: sender.location(in: vLayout))
     }
 
-    @IBAction private func removeInconsistenciesButtonOnTap() {
+    @IBAction private func btnRemoveInconsistenciesOnTap() {
         guard let viewModel = viewModel else {
             fatalError("should not be nil")
         }
@@ -215,12 +265,20 @@ extension DesignerViewController {
         viewModel.removeInconsistencies()
     }
 
-    @IBAction private func editModeButtonOnTap() {
+    @IBAction private func btnEditModeOnTap() {
         guard let viewModel = viewModel else {
             fatalError("should not be nil")
         }
 
         viewModel.toggleEditMode()
+    }
+
+    @IBAction private func btnToggleAllowScrollResizeOnTap() {
+        guard let viewModel = viewModel else {
+            fatalError("should not be nil")
+        }
+
+        viewModel.toggleAllowScrollResize()
     }
 }
 

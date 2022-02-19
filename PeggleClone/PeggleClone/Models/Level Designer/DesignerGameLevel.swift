@@ -27,9 +27,11 @@ final class DesignerGameLevel {
         }
     }
 
+    let isLoading: PassthroughSubject<Bool, Never> = PassthroughSubject()
+
     @Published var levelName: String? = "Default level name"
-    let coordinateMapper: CoordinateMapper
-    let playArea: PlayArea
+    var coordinateMapper: CoordinateMapper
+    @Published var playArea: PlayArea
     private var gameObjects: AnyContainer<GameObject>
     private let neighborFinder: AnyNeighborFinder<GameObject>
     private let collisionDetector: CollisionDetector
@@ -49,15 +51,22 @@ final class DesignerGameLevel {
         self.gameObjects = AnyContainer(container: emptyContainer)
         self.neighborFinder = AnyNeighborFinder(neighborFinder: neighborFinder)
         self.collisionDetector = collisionDetector
+        isLoading.send(false)
     }
 
     /// Updates self with the contents of the incoming level.
-    func hydrate(with incomingLevel: PersistableDesignerGameLevel) throws {
-        let incomingPlayArea = PlayArea.fromPersistable(persistableArea: incomingLevel.playArea)
-        if incomingPlayArea != playArea {
-            throw HydrationIncompatibleError()
-        }
+    func hydrate(
+        with incomingLevel: PersistableDesignerGameLevel
+    ) {
+        isLoading.send(true)
+
         levelName = incomingLevel.levelName
+        let incomingCoordinateMapper = CoordinateMapper.fromPersistable(
+            persistableCoordinateMapper: incomingLevel.coordinateMapper,
+            coordinateMapperConfigurable: coordinateMapper.getConfigurable()
+        )
+        coordinateMapper = incomingCoordinateMapper
+        playArea = coordinateMapper.getPlayArea()
         for persistablePeg in incomingLevel.pegs {
             let peg = Peg.fromPersistable(persistablePeg: persistablePeg)
             addGameObject(gameObject: peg)
@@ -67,6 +76,8 @@ final class DesignerGameLevel {
             let obstacle = Obstacle.fromPersistable(persistableObstacle: persistableObstacle)
             addGameObject(gameObject: obstacle)
         }
+
+        isLoading.send(false)
     }
 
     func registerOnLevelNameDidSetCallback(callback: @escaping UnaryFunction<String>) {
@@ -273,6 +284,27 @@ final class DesignerGameLevel {
         gameObject.isConcrete = isContainedInPlayArea && !isOverlappingWithConcreteNeighbor
         return neighbors
     }
+
+    func resizeLevelWithoutUpdatingNeighborFinder(updatedHeight: Double) {
+        coordinateMapper.logicalHeight = updatedHeight
+        playArea = coordinateMapper.getPlayArea()
+    }
+
+    func commitResize() {
+        let boundingBox = playArea.pegZoneBoundingBox
+        isLoading.send(true)
+        DispatchQueue.global().async { [weak self] in
+            guard let self = self else {
+                return
+            }
+            logger.info("recalculating game objects")
+            self.neighborFinder.resize(with: boundingBox, entities: self.gameObjects)
+            DispatchQueue.main.async { [weak self] in
+                self?.isLoading.send(false)
+                logger.info("recalculating done")
+            }
+        }
+    }
 }
 
 // MARK: Defaults
@@ -336,7 +368,7 @@ extension DesignerGameLevel {
             levelName: levelName,
             pegs: persistablePegs,
             obstacles: persistableObstacles,
-            playArea: playArea.toPersistable()
+            coordinateMapper: coordinateMapper.toPersistable()
         )
     }
 }

@@ -46,4 +46,6 @@ class LoggerWrapper {
         logger.error("\(message)")
     }
 }
+
+/// Global logger object for the application.
 let logger = LoggerWrapper()

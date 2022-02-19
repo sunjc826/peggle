@@ -39,7 +39,7 @@ class DesignerGameLevelTests: XCTestCase {
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        coordinateMapper = CoordinateMapper(width: 100, height: 100, displayWidth: 100, displayHeight: 100)
+        coordinateMapper = CoordinateMapper(targetDisplayWidth: 100, targetDisplayHeight: 100, onScreenDisplayWidth: 100, onScreenDisplayHeight: 100)
         playArea = coordinateMapper.getPlayArea()
         container = SetObject<Peg>()
         quadtree = QuadTree<Peg>(bounds: playArea.boundingBox)

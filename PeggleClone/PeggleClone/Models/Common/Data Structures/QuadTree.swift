@@ -295,8 +295,8 @@ class QuadTree<T>: NeighborFinder where T: Equatable, T: HasBoundingBox, T: AnyO
         }
     }
 
-    private let root: QuadTreeNode
-    private let bounds: BoundingBox
+    private var root: QuadTreeNode
+    private var bounds: BoundingBox
 
     /// Creates a quad tree with dimensions given by `bounds`.
     init(bounds: BoundingBox) {
@@ -335,6 +335,14 @@ class QuadTree<T>: NeighborFinder where T: Equatable, T: HasBoundingBox, T: AnyO
     /// Clears the tree.
     func removeAll() {
         root.removeAll()
+    }
+
+    func resize<C: Container>(with updatedBounds: BoundingBox, entities: C) where C.Element == T {
+        removeAll()
+        bounds = updatedBounds
+        for entity in entities {
+            insert(entity: entity)
+        }
     }
 }
 

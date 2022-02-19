@@ -264,9 +264,12 @@
                         <rect key="frame" x="0.0" y="0.0" width="810" height="920"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="background" translatesAutoresizingMaskIntoConstraints="NO" id="tu2-EW-2Dj">
-                                <rect key="frame" x="0.0" y="0.0" width="810" height="940"/>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="85G-Va-IyJ">
+                                <rect key="frame" x="395" y="450" width="20" height="20"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </activityIndicatorView>
+                            <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="background" translatesAutoresizingMaskIntoConstraints="NO" id="tu2-EW-2Dj">
+                                <rect key="frame" x="0.0" y="20" width="810" height="900"/>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Edit Mode:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s35-1E-SP9">
                                 <rect key="frame" x="40" y="30" width="90" height="21"/>
@@ -284,6 +287,11 @@
                                 <rect key="frame" x="40" y="61" width="127" height="31"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="filled" title="CHANGE MODE"/>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kgg-xX-Wb1">
+                                <rect key="frame" x="371.5" y="869" width="67" height="31"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="filled" title="Button"/>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n9z-Py-DHf">
                                 <rect key="frame" x="610.5" y="60" width="179.5" height="31"/>
@@ -306,18 +314,26 @@
                             <constraint firstItem="Ney-2d-0oc" firstAttribute="trailing" secondItem="C0K-rn-oU5" secondAttribute="trailing" id="GhY-f8-KXx"/>
                             <constraint firstItem="l3Y-yJ-t69" firstAttribute="leading" secondItem="RNI-eH-CpF" secondAttribute="leadingMargin" constant="20" id="MU3-pc-4UY"/>
                             <constraint firstItem="C0K-rn-oU5" firstAttribute="top" secondItem="RNI-eH-CpF" secondAttribute="top" constant="20" id="NJP-Uy-2p4"/>
+                            <constraint firstItem="Ney-2d-0oc" firstAttribute="leading" secondItem="tu2-EW-2Dj" secondAttribute="leading" id="O1O-AQ-l9n"/>
                             <constraint firstItem="n9z-Py-DHf" firstAttribute="top" secondItem="C0K-rn-oU5" secondAttribute="top" constant="40" id="OEs-B4-R6z"/>
                             <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="g5P-aN-9PW" secondAttribute="trailing" constant="100" id="OkE-vB-W5o"/>
+                            <constraint firstItem="Ney-2d-0oc" firstAttribute="bottom" secondItem="tu2-EW-2Dj" secondAttribute="bottom" id="Org-96-Wf8"/>
+                            <constraint firstItem="Ney-2d-0oc" firstAttribute="trailing" secondItem="tu2-EW-2Dj" secondAttribute="trailing" id="QOe-am-UGY"/>
+                            <constraint firstItem="Kgg-xX-Wb1" firstAttribute="centerX" secondItem="RNI-eH-CpF" secondAttribute="centerX" id="SZ4-ic-j5t"/>
                             <constraint firstItem="Ney-2d-0oc" firstAttribute="trailing" secondItem="n9z-Py-DHf" secondAttribute="trailing" constant="20" id="U6Q-oB-WzS"/>
                             <constraint firstItem="Ney-2d-0oc" firstAttribute="bottom" secondItem="C0K-rn-oU5" secondAttribute="bottom" constant="783" id="Z9f-yW-b1z"/>
+                            <constraint firstItem="Ney-2d-0oc" firstAttribute="bottom" secondItem="Kgg-xX-Wb1" secondAttribute="bottom" constant="20" id="ZQu-ki-Zva"/>
                             <constraint firstItem="s35-1E-SP9" firstAttribute="leading" secondItem="RNI-eH-CpF" secondAttribute="leadingMargin" constant="20" id="bCi-pF-1pV"/>
                             <constraint firstItem="g5P-aN-9PW" firstAttribute="leading" secondItem="s35-1E-SP9" secondAttribute="trailing" constant="15" id="sS4-nM-X3X"/>
+                            <constraint firstItem="Ney-2d-0oc" firstAttribute="top" secondItem="tu2-EW-2Dj" secondAttribute="top" id="spU-xh-RI5"/>
                             <constraint firstItem="C0K-rn-oU5" firstAttribute="centerX" secondItem="RNI-eH-CpF" secondAttribute="centerX" id="vLm-Z2-djV"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="aiLoading" destination="85G-Va-IyJ" id="s55-Ix-SHp"/>
                         <outlet property="btnChangeEditMode" destination="l3Y-yJ-t69" id="eBs-SW-xPS"/>
                         <outlet property="btnRemoveInconsistentPegs" destination="n9z-Py-DHf" id="xXV-Oe-vKg"/>
+                        <outlet property="btnToggleAllowScrollResize" destination="Kgg-xX-Wb1" id="Ovg-Cg-Ipb"/>
                         <outlet property="ivBackground" destination="tu2-EW-2Dj" id="fXO-87-uXJ"/>
                         <outlet property="lblEditMode" destination="g5P-aN-9PW" id="prd-Ji-pga"/>
                         <outlet property="lblEditModeHeader" destination="s35-1E-SP9" id="N9S-mf-xW8"/>

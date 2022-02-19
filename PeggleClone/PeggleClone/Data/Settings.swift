@@ -3,6 +3,8 @@ import UIKit
 // This file consists of constants, hence deep levels of nesting are accepted.
 // swiftlint:disable nesting
 struct Settings {
+    static let logLevel: LoggerWrapper.LogLevel = .info
+
     enum EaseOfRotation: Double {
         case insanelyStiff = 0
         case stiff = 1.0
@@ -81,6 +83,7 @@ struct Settings {
     }
 
     struct Physics {
+        static let physicalScale = 100.0
         static let signedMagnitudeOfAccelerationDueToGravity = 10.0
     }
 }

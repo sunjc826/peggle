@@ -12,8 +12,8 @@ final class GameLevel {
     static let startingBalls: Int = 5
 
     let physicsEngine: AbstractPhysicsEngine
-    let coordinateMapper: PhysicsCoordinateMapper
-    let playArea: PlayArea
+    var coordinateMapper: PhysicsCoordinateMapper
+    var playArea: PlayArea
     let cannon: Cannon
     var balls: [Ball] = []
     let pegs: PegContainer
@@ -60,10 +60,11 @@ final class GameLevel {
     }
 
     func hydrate(with incomingLevel: PersistableDesignerGameLevel) throws {
-        let incomingPlayArea = PlayArea.fromPersistable(persistableArea: incomingLevel.playArea)
-        if incomingPlayArea != playArea {
-            throw HydrationIncompatibleError()
-        }
+        coordinateMapper = PhysicsCoordinateMapper.fromPersistable(
+            persistableCoordinateMapper: incomingLevel.coordinateMapper,
+            physicsCoordinateMapperConfigurable: coordinateMapper.getPhysicsConfigurable()
+        )
+        playArea = coordinateMapper.getPlayArea()
 
         for persistablePeg in incomingLevel.pegs {
             let peg = Peg.fromPersistable(persistablePeg: persistablePeg)

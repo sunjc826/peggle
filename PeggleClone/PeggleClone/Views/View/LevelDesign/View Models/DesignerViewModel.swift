@@ -3,16 +3,30 @@ import Combine
 
 private let editModeConcreteOnlyText = "Concrete \u{1f9f1}"
 private let editModeOverlappingAllowedText = "Ghost \u{1f47b}"
+private let scrollResizeEnabledText = "Scroll Expansion Enabled"
+private let scrollResizeDisabledText = "Scroll Expansion Disabled"
 
 class DesignerViewModel {
     private var subscriptions: Set<AnyCancellable> = []
     private var paletteViewModel: PaletteViewModel
     private var shapeTransformViewModel: ShapeTransformViewModel
 
+    var isLoadingPublisher: AnyPublisher<Bool, Never> {
+        isLoading.eraseToAnyPublisher()
+    }
+    private var isLoading: PassthroughSubject<Bool, Never> = PassthroughSubject()
+
     @Published var previouslyEditedGameObject: GameObject?
     @Published var gameObjectBeingEdited: GameObject?
     @Published var shouldShowShapeTransform = false
-    @Published var gameLevel: DesignerGameLevel?
+    @Published var gameLevel: DesignerGameLevel? {
+        didSet {
+            registerCallbacks()
+            setupGameLevelBindings()
+            deselectGameObject()
+            isLoading.send(false)
+        }
+    }
 
     var selectedGameObjectInPalette: GameObject? {
         paletteViewModel.selectedGameObject
@@ -22,13 +36,38 @@ class DesignerViewModel {
         paletteViewModel.isDeleting
     }
 
+    @Published var allowScrollResize = false
+
+    var toggleScrollText: AnyPublisher<String, Never>?
+
+    var designerDisplayHeightPublisher: AnyPublisher<Double, Never> {
+        designerDisplayHeight.eraseToAnyPublisher()
+    }
+
+    private var designerDisplayHeight: PassthroughSubject<Double, Never> = PassthroughSubject()
+
+    @Published var contentOffsetYBottom: Double?
+
+    var mimimumContentOffsetYBottom: Double {
+        guard let coordinateMapper = coordinateMapper else {
+            fatalError("should not be nil")
+        }
+        return coordinateMapper.onScreenDisplayHeight
+    }
+    var maximumContentOffsetYBottom: Double {
+        guard let coordinateMapper = coordinateMapper else {
+            fatalError("should not be nil")
+        }
+        return coordinateMapper.displayHeight
+    }
+
     @Published var editModeText: String = editModeConcreteOnlyText
 
     @Published var canRemoveInconsistentPegs = false
 
     @Published var actualDisplayDimensions: CGRect?
 
-    private var coordinateMapper: CoordinateMapper? {
+    var coordinateMapper: CoordinateMapper? {
         gameLevel?.coordinateMapper
     }
 
@@ -55,6 +94,31 @@ class DesignerViewModel {
                 self.shapeTransformViewModel.updateWith(gameObject: gameObjectBeingEdited)
             }
             .store(in: &subscriptions)
+
+        toggleScrollText = $allowScrollResize.map { allowScrollResize in
+            allowScrollResize ? scrollResizeEnabledText : scrollResizeDisabledText
+        }.eraseToAnyPublisher()
+    }
+
+    private func setupGameLevelBindings() {
+        guard let gameLevel = gameLevel else {
+            return
+        }
+
+        gameLevel.isLoading.sink { [weak self] isLoading in
+            self?.isLoading.send(isLoading)
+        }
+        .store(in: &subscriptions)
+        gameLevel.$playArea.sink { [weak self] playArea in
+            guard let self = self, let coordinateMapper = self.coordinateMapper else {
+                return
+            }
+
+            self.designerDisplayHeight.send(
+                coordinateMapper.getDisplayLength(ofLogicalLength: playArea.height)
+            )
+        }
+        .store(in: &subscriptions)
     }
 
     func registerCallbacks() {
@@ -65,10 +129,10 @@ class DesignerViewModel {
 
     func setDimensions(designerWidth: Double, designerHeight: Double, gameWidth: Double, gameHeight: Double) {
         let coordinateMapper = CoordinateMapper(
-            width: gameWidth,
-            height: gameHeight,
-            displayWidth: designerWidth,
-            displayHeight: designerHeight
+            targetDisplayWidth: gameWidth,
+            targetDisplayHeight: gameHeight,
+            onScreenDisplayWidth: designerWidth,
+            onScreenDisplayHeight: designerHeight
         )
         gameLevel = DesignerGameLevel.withDefaultDependencies(coordinateMapper: coordinateMapper)
         actualDisplayDimensions = CGRect(
@@ -108,6 +172,10 @@ class DesignerViewModel {
         }
 
         canRemoveInconsistentPegs = isAcceptingOverlappingPegs
+    }
+
+    func toggleAllowScrollResize() {
+        allowScrollResize.toggle()
     }
 
     func createGameObjectAt(displayCoords: CGPoint) {
@@ -238,6 +306,45 @@ class DesignerViewModel {
         gameLevel?.reset()
     }
 
+    // Remark: This has some assumptions about the view, so this can be
+    // argued to be part of a controller's logic. Even so, on the whole,
+    // it seems more logical to place it in the view model.
+    func scroll(dy: Double) {
+        guard let gameLevel = gameLevel,
+              let coordinateMapper = coordinateMapper,
+              let contentOffsetYBottom = contentOffsetYBottom else {
+            return
+        }
+
+        let targetContentOffsetYBottom = Double.maximum(contentOffsetYBottom + dy, mimimumContentOffsetYBottom)
+
+        if targetContentOffsetYBottom <= maximumContentOffsetYBottom {
+            self.contentOffsetYBottom = targetContentOffsetYBottom
+            return
+        }
+
+        guard allowScrollResize else {
+            self.contentOffsetYBottom = maximumContentOffsetYBottom
+            return
+        }
+
+        let updatedDisplayHeight = coordinateMapper.displayHeight + dy
+        let updatedLogicalHeight = coordinateMapper.getLogicalLength(ofDisplayLength: updatedDisplayHeight)
+        gameLevel.resizeLevelWithoutUpdatingNeighborFinder(updatedHeight: updatedLogicalHeight)
+        self.contentOffsetYBottom = updatedDisplayHeight
+    }
+
+    func terminateScroll() {
+        guard allowScrollResize else {
+            return
+        }
+
+        gameLevel?.commitResize()
+    }
+}
+
+// MARK: View model factories
+extension DesignerViewModel {
     func getShapeTransformViewModel() -> ShapeTransformViewModel {
         shapeTransformViewModel
     }
@@ -252,31 +359,5 @@ class DesignerViewModel {
         let vmDesignerObstacle = DesignerObstacleButtonViewModel(obstacle: obstacle)
         vmDesignerObstacle.delegate = self
         return vmDesignerObstacle
-    }
-}
-
-extension DesignerViewModel: CoordinateMappableViewModelDelegate {
-    func getDisplayCoords(of logicalCoords: CGPoint) -> CGPoint {
-        guard let coordinateMapper = coordinateMapper else {
-            fatalError("should not be nil")
-        }
-
-        return coordinateMapper.getDisplayCoords(ofLogicalCoords: logicalCoords)
-    }
-
-    func getDisplayVector(of logicalVector: CGVector) -> CGVector {
-        guard let coordinateMapper = coordinateMapper else {
-            fatalError("should not be nil")
-        }
-
-        return coordinateMapper.getDisplayVector(ofLogicalVector: logicalVector)
-    }
-
-    func getDisplayLength(of logicalLength: Double) -> Double {
-        guard let coordinateMapper = coordinateMapper else {
-            fatalError("should not be nil")
-        }
-
-        return coordinateMapper.getDisplayLength(ofLogicalLength: logicalLength)
     }
 }

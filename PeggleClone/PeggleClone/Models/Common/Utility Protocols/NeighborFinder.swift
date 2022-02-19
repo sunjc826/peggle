@@ -13,6 +13,9 @@ protocol NeighborFinder {
     func remove(entity: Element)
 
     func removeAll()
+
+    func resize<C: Container>(with updatedBounds: BoundingBox, entities: C) where C.Element == Element
+
 }
 
 // type erased class
@@ -23,6 +26,7 @@ where Element: Equatable, Element: HasBoundingBox, Element: AnyObject {
     private let _retrievePotentialNeighborsBB: (BoundingBox) -> AnySequence<Element>
     private let _remove: (Element) -> Void
     private let _removeAll: () -> Void
+    private let _resize: (BoundingBox, AnyContainer<Element>) -> Void
 
     init<T: NeighborFinder>(neighborFinder: T) where T.Element == Element {
         self._insert = neighborFinder.insert
@@ -30,6 +34,7 @@ where Element: Equatable, Element: HasBoundingBox, Element: AnyObject {
         self._retrievePotentialNeighborsBB = neighborFinder.retrievePotentialNeighbors(givenBoundingBox:)
         self._remove = neighborFinder.remove
         self._removeAll = neighborFinder.removeAll
+        self._resize = neighborFinder.resize(with:entities:)
     }
 
     func insert(entity: Element) {
@@ -50,5 +55,9 @@ where Element: Equatable, Element: HasBoundingBox, Element: AnyObject {
 
     func removeAll() {
         _removeAll()
+    }
+
+    func resize<C: Container>(with updatedBounds: BoundingBox, entities: C) where C.Element == Element {
+        _resize(updatedBounds, AnyContainer(container: entities))
     }
 }

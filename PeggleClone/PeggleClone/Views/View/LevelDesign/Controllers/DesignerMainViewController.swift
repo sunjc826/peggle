@@ -21,7 +21,6 @@ class DesignerMainViewController: UIViewController, Storyboardable {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        logger.logLevel = .error
     }
 
     override func viewDidAppear(_ animated: Bool) {

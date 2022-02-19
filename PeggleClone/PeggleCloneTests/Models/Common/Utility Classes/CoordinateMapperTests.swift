@@ -15,7 +15,7 @@ class CoordinateMapperTests: XCTestCase {
 
     func testMapperInit_displayAspectRatioHigher_widthTruncated() {
         mapper = CoordinateMapper(
-            width: 10, height: 20, displayWidth: 100, displayHeight: 40
+            targetDisplayWidth: 10, targetDisplayHeight: 20, onScreenDisplayWidth: 100, onScreenDisplayHeight: 40
         )
         XCTAssertEqual(mapper.displayWidth, 20, accuracy: floatingPointAccuracy)
         XCTAssertEqual(mapper.displayHeight, 40, accuracy: floatingPointAccuracy)
@@ -23,7 +23,7 @@ class CoordinateMapperTests: XCTestCase {
 
     func testMapperInit_displayAspectRatioLower_heightTruncated() {
         mapper = CoordinateMapper(
-            width: 10, height: 20, displayWidth: 5, displayHeight: 40
+            targetDisplayWidth: 10, targetDisplayHeight: 20, onScreenDisplayWidth: 5, onScreenDisplayHeight: 40
         )
         XCTAssertEqual(mapper.displayWidth, 5, accuracy: floatingPointAccuracy)
         XCTAssertEqual(mapper.displayHeight, 10, accuracy: floatingPointAccuracy)
@@ -31,7 +31,7 @@ class CoordinateMapperTests: XCTestCase {
 
     func testGetDisplayCoords() {
         mapper = CoordinateMapper(
-            width: 10, height: 20, displayWidth: 100, displayHeight: 40
+            targetDisplayWidth: 10, targetDisplayHeight: 20, onScreenDisplayWidth: 100, onScreenDisplayHeight: 40
         )
 
         let displayCoords = mapper.getDisplayCoords(ofLogicalCoords: CGPoint(x: 0.1, y: 0.1))
@@ -41,7 +41,7 @@ class CoordinateMapperTests: XCTestCase {
 
     func testGetLogicalCoords() {
         mapper = CoordinateMapper(
-            width: 10, height: 20, displayWidth: 100, displayHeight: 40
+            targetDisplayWidth: 10, targetDisplayHeight: 20, onScreenDisplayWidth: 100, onScreenDisplayHeight: 40
         )
 
         let logicalCoords = mapper.getLogicalCoords(ofDisplayCoords: CGPoint(x: 20, y: 20))
@@ -51,7 +51,7 @@ class CoordinateMapperTests: XCTestCase {
 
     func testGetDisplayVector() {
         mapper = CoordinateMapper(
-            width: 10, height: 20, displayWidth: 100, displayHeight: 40
+            targetDisplayWidth: 10, targetDisplayHeight: 20, onScreenDisplayWidth: 100, onScreenDisplayHeight: 40
         )
         let displayVector = mapper.getDisplayVector(ofLogicalVector: CGVector(dx: 0.1, dy: 0.1))
         XCTAssertEqual(displayVector.dx, 4, accuracy: floatingPointAccuracy)
@@ -60,7 +60,7 @@ class CoordinateMapperTests: XCTestCase {
 
     func testGetLogicalVector() {
         mapper = CoordinateMapper(
-            width: 10, height: 20, displayWidth: 100, displayHeight: 40
+            targetDisplayWidth: 10, targetDisplayHeight: 20, onScreenDisplayWidth: 100, onScreenDisplayHeight: 40
         )
         let logicalVector = mapper.getLogicalVector(ofDisplayVector: CGVector(dx: 20, dy: 20))
         XCTAssertEqual(logicalVector.dx, 0.5, accuracy: floatingPointAccuracy)
@@ -69,7 +69,7 @@ class CoordinateMapperTests: XCTestCase {
 
     func testGetDisplayLength() {
         mapper = CoordinateMapper(
-            width: 10, height: 20, displayWidth: 100, displayHeight: 40
+            targetDisplayWidth: 10, targetDisplayHeight: 20, onScreenDisplayWidth: 100, onScreenDisplayHeight: 40
         )
 
         let displayLength = mapper.getDisplayLength(ofLogicalLength: 0.1)
@@ -78,7 +78,7 @@ class CoordinateMapperTests: XCTestCase {
 
     func testGetLogicalLength() {
         mapper = CoordinateMapper(
-            width: 10, height: 20, displayWidth: 100, displayHeight: 40
+            targetDisplayWidth: 10, targetDisplayHeight: 20, onScreenDisplayWidth: 100, onScreenDisplayHeight: 40
         )
 
         let logicalLength = mapper.getLogicalLength(ofDisplayLength: 20)
