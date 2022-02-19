@@ -51,12 +51,15 @@ class CoordinateMapper {
     ///   - targetDisplayHeight: The intended display height of the game when played on this device.
     ///   - onScreenDisplayWidth: The on screen display width of a view in which to render the game.
     ///   - onScreenDisplayHeight: The on screen display height of an arbitrary view in which to render the game.
-    /// - Remark: This constructor is used in the designer view. The target display dimensions are that of the entire screen,
-    /// since the game is to take up the entire screen space when played. However, the designer view has other stuff, like
-    /// a palette and persistence menu. As a result, the designer view of the game cannot take up the entire screen.
+    /// - Remark: This constructor is used in the designer view.
+    /// The target display dimensions are that of the entire screen,
+    /// since the game is to take up the entire screen space when played.
+    /// However, the designer view has other stuff, like a palette and persistence menu.
+    /// As a result, the designer view of the game cannot take up the entire screen.
     /// Hence, onScreenDisplay dimensions give the maximum available screen space with that can hold the level view.
-    /// The CoordinateMapper is then responsible for resizing the on screen display dimensions to fit the target display dimensions.
-    /// The remaining part of the maximum available screen space unused, due to differing aspect ratios, can then be letterboxed.
+    /// The CoordinateMapper is then responsible for resizing the on screen display dimensions
+    /// to fit the target display dimensions. The remaining part of the maximum available screen space unused,
+    /// due to differing aspect ratios, can then be letterboxed.
     convenience init(
         targetDisplayWidth: Double,
         targetDisplayHeight: Double,

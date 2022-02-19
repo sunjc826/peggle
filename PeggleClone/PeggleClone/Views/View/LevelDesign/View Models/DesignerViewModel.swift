@@ -235,9 +235,7 @@ class DesignerViewModel {
             return
         }
 
-        let scaledGameObject = oldGameObject.withScale(
-            scale: scale
-        )
+        let scaledGameObject = oldGameObject.withScale(scale: scale)
 
         gameLevel?.updateGameObject(old: oldGameObject, with: scaledGameObject)
     }
@@ -247,9 +245,7 @@ class DesignerViewModel {
             return
         }
 
-        let rotatedGameObject = oldGameObject.withRotation(
-            rotation: Double(rotation)
-        )
+        let rotatedGameObject = oldGameObject.withRotation(rotation: Double(rotation))
 
         gameLevel?.updateGameObject(old: oldGameObject, with: rotatedGameObject)
     }

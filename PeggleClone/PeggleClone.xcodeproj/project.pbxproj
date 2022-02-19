@@ -178,6 +178,7 @@
 		E586262727AD8719009964BF /* Collision+Resolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = E586262627AD8719009964BF /* Collision+Resolution.swift */; };
 		E587678C27BFE26400E49356 /* OscillationLocalityButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E587678B27BFE26400E49356 /* OscillationLocalityButton.swift */; };
 		E588D23D27B813CF0009F1DA /* CoordinateMapperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E588D23C27B813CF0009F1DA /* CoordinateMapperTests.swift */; };
+		E59005CD27C149B800824F92 /* Audio.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59005CC27C149B800824F92 /* Audio.swift */; };
 		E590099627A92E9200E764B5 /* EditableGameEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = E590099527A92E9200E764B5 /* EditableGameEntity.swift */; };
 		E5AAA5A9279989AC0092EE3D /* LinkedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AAA5A8279989AC0092EE3D /* LinkedList.swift */; };
 		E5BA4E3127A9322B00C4A576 /* GameLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BA4E3027A9322B00C4A576 /* GameLevel.swift */; };
@@ -403,6 +404,7 @@
 		E586262627AD8719009964BF /* Collision+Resolution.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collision+Resolution.swift"; sourceTree = "<group>"; };
 		E587678B27BFE26400E49356 /* OscillationLocalityButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OscillationLocalityButton.swift; sourceTree = "<group>"; };
 		E588D23C27B813CF0009F1DA /* CoordinateMapperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinateMapperTests.swift; sourceTree = "<group>"; };
+		E59005CC27C149B800824F92 /* Audio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Audio.swift; sourceTree = "<group>"; };
 		E590099527A92E9200E764B5 /* EditableGameEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableGameEntity.swift; sourceTree = "<group>"; };
 		E5AAA5A8279989AC0092EE3D /* LinkedList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkedList.swift; sourceTree = "<group>"; };
 		E5BA4E3027A9322B00C4A576 /* GameLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameLevel.swift; sourceTree = "<group>"; };
@@ -558,6 +560,7 @@
 			children = (
 				E5636DD2279BB203006428E8 /* LoggerWrapper.swift */,
 				E5636DD6279C07CF006428E8 /* Storage.swift */,
+				E59005CC27C149B800824F92 /* Audio.swift */,
 			);
 			path = "General Utils";
 			sourceTree = "<group>";
@@ -1061,6 +1064,13 @@
 			path = Collision;
 			sourceTree = "<group>";
 		};
+		E59005CE27C153DD00824F92 /* Audio */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Audio;
+			sourceTree = "<group>";
+		};
 		E590099427A92E0500E764B5 /* Data Structures */ = {
 			isa = PBXGroup;
 			children = (
@@ -1124,6 +1134,7 @@
 		E5DC46F627B7EC7000851C51 /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				E59005CE27C153DD00824F92 /* Audio */,
 				E5DC46F727B7EC8000851C51 /* Settings.swift */,
 				E5815F7D27BB8FA30041E5F8 /* GameData.swift */,
 			);
@@ -1348,6 +1359,7 @@
 				E571C08C27AE75AD009459CE /* ShapeDrawable.swift in Sources */,
 				E5FACBDC27BBC6DA0013B53E /* PegTypeButtonViewModel.swift in Sources */,
 				E56B868827A4495200D475BF /* ShapeTransformViewController.swift in Sources */,
+				E59005CD27C149B800824F92 /* Audio.swift in Sources */,
 				E519D56F2798009600BCE59D /* DesignerMainViewController.swift in Sources */,
 				E56958CA27BF273100AF360B /* Peg+RigidBody.swift in Sources */,
 				E578D30827BD465F0080B2DA /* AbstractObstacleViewModel.swift in Sources */,

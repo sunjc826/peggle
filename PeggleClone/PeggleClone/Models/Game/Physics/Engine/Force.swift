@@ -34,9 +34,9 @@ extension Force {
         switch self {
         case .gravity(gravitationalAcceleration: let gravitationalAcceleration):
             return CGVector(dx: 0, dy: gravitationalAcceleration)
-        case .restoring(
-            springConstant: let springConstant,
-            centerOfOscillation: let centerOfOscillation
+        case let .restoring(
+            springConstant: springConstant,
+            centerOfOscillation: centerOfOscillation
         ):
             let displacement = CGVector(from: centerOfOscillation, to: rigidBody.center)
             let restoringForce = displacement.reverse().scaleBy(factor: springConstant * rigidBody.inverseMass)
