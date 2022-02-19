@@ -15,7 +15,7 @@ final class GameLevel {
 
     let physicsEngine: AbstractPhysicsEngine
     var coordinateMapper: PhysicsCoordinateMapper
-    var playArea: PlayArea
+    @Published var playArea: PlayArea
     let cannon: Cannon
     var balls: [Ball] = []
     let pegs: PegContainer
@@ -43,15 +43,14 @@ final class GameLevel {
         special: SpecialType
     ) where T.Element == Peg {
         self.coordinateMapper = coordinateMapper
-        self.playArea = coordinateMapper.getPlayArea()
+        let playArea = coordinateMapper.getPlayArea()
+        self.playArea = playArea
         assert(emptyPegsContainer.isEmpty)
         self.pegs = PegContainer(pegs: emptyPegsContainer)
         let cannonPosition = CGPoint(x: playArea.boundingBox.center.x, y: 0)
         self.cannon = Cannon(position: cannonPosition)
-        let boundary = Boundary(playArea: playArea)
         self.physicsEngine = PhysicsEngine(
             coordinateMapper: coordinateMapper,
-            boundary: boundary,
             rigidBodies: SetObject<RigidBodyObject>(),
             neighborFinder: QuadTree(bounds: playArea.boundingBox),
             collisionResolver: Collision()
@@ -67,7 +66,7 @@ final class GameLevel {
             physicsCoordinateMapperConfigurable: coordinateMapper.getPhysicsConfigurable()
         )
         playArea = coordinateMapper.getPlayArea()
-
+        physicsEngine.coordinateMapper = coordinateMapper
         for persistablePeg in incomingLevel.pegs {
             let peg = Peg.fromPersistable(persistablePeg: persistablePeg)
             addPeg(peg: peg)

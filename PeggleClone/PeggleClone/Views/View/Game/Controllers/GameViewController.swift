@@ -15,6 +15,14 @@ class GameViewController: UIViewController, Storyboardable {
     var vLetterBoxes: [LetterBoxView] = []
     private var displayLink: CADisplayLink?
 
+    var maximumScrollOffset: Double {
+        guard let scrollvGame = scrollvGame, let vGame = vGame else {
+            fatalError("should not be nil")
+        }
+
+        return vGame.frame.height - scrollvGame.frame.height
+    }
+
     var didBackToLevelSelect: (() -> Void)?
 
     var viewModel: GameViewModel?
@@ -215,6 +223,7 @@ extension GameViewController {
         vBall.translatesAutoresizingMaskIntoConstraints = true
         vGame.addSubview(vBall)
         ballToViewMap[ball] = vBall
+        updateCameraBasedOnLowestBall()
     }
 
     func updateBallChild(oldBall: Ball, updatedBall: Ball) {
@@ -227,6 +236,7 @@ extension GameViewController {
         ballToViewMap[oldBall] = nil
         ballToViewMap[updatedBall] = vBall
         vBall.viewModel = viewModel.getBallViewModel(ball: updatedBall)
+        updateCameraBasedOnLowestBall()
     }
 
     func removeBallChild(ball: Ball) {
@@ -235,6 +245,27 @@ extension GameViewController {
         }
         vBall.removeFromSuperview()
         ballToViewMap[ball] = nil
+        updateCameraBasedOnLowestBall()
+    }
+
+    func updateCameraBasedOnLowestBall() {
+        guard let scrollvGame = scrollvGame else {
+            fatalError("should not be nil")
+        }
+
+        let vLowestBall = ballToViewMap.values.max { $0.center.y < $1.center.y }
+
+        guard let lowestYPosition = vLowestBall?.center.y else {
+            scrollvGame.setContentOffset(CGPoint.zero, animated: true)
+            return
+        }
+
+        let contentOffsetY = Double.minimum(
+            maximumScrollOffset,
+            Double.maximum(0, lowestYPosition - scrollvGame.frame.height / 2)
+        )
+
+        scrollvGame.setContentOffset(CGPoint(x: 0, y: contentOffsetY), animated: false)
     }
 
     func addPegChild(peg: Peg) {

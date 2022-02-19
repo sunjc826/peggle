@@ -1,7 +1,8 @@
 import Foundation
 import CoreGraphics
 typealias Predicate<T> = (T) -> Bool
-protocol AbstractPhysicsEngine {
+protocol AbstractPhysicsEngine: AnyObject {
+    var coordinateMapper: PhysicsCoordinateMapper { get set }
     func predict(for initialObject: RigidBodyObject, intervalSize dt: Double, numberOfIntervals: Int) -> [CGPoint]
     func simulateAll(time dt: Double)
     func remove(by predicate: Predicate<GameEntity>)

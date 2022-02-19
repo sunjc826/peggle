@@ -151,8 +151,7 @@ extension GameViewModel {
         guard let gameLevel = gameLevel else {
             fatalError("should not be nil")
         }
-        let vmGameplayArea = GameplayAreaViewModel(gameLevel: gameLevel)
-        vmGameplayArea.delegate = self
+        let vmGameplayArea = GameplayAreaViewModel(gameLevel: gameLevel, delegate: self)
         return vmGameplayArea
     }
 

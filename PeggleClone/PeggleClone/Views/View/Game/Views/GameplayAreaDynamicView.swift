@@ -65,7 +65,6 @@ extension GameplayAreaDynamicView {
                 guard let self = self, let baseCannonTransform = self.baseCannonTransform else {
                     return
                 }
-
                 self.ivCannon.transform = baseCannonTransform.rotated(by: cannonAngle)
                 self.vCannonLine.setNeedsDisplay()
             }
@@ -74,6 +73,17 @@ extension GameplayAreaDynamicView {
         viewModel.cannonPosition
             .removeDuplicates()
             .assign(to: \.ivCannon.center, on: self)
+            .store(in: &subscriptions)
+
+        viewModel.$displayHeight
+            .compactMap { $0 }
+            .sink { [weak self] displayHeight in
+                guard let self = self else {
+                    return
+                }
+                self.frame = self.frame.withHeight(height: displayHeight)
+                self.ivBackground.frame = self.bounds
+            }
             .store(in: &subscriptions)
     }
 }

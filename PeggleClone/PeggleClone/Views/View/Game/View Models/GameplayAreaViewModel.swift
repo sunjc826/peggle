@@ -16,6 +16,8 @@ class GameplayAreaViewModel {
 
     let gameLevel: GameLevel
 
+    @Published var displayHeight: Double?
+
     var cannonAnglePublisher: AnyPublisher<Double, Never> {
         cannonAngle.eraseToAnyPublisher()
     }
@@ -34,8 +36,9 @@ class GameplayAreaViewModel {
     var totalScore: PassthroughSubject<Int, Never> = PassthroughSubject()
     var pegStatViewModels: [PegStatViewModel] = []
 
-    init(gameLevel: GameLevel) {
+    init(gameLevel: GameLevel, delegate: GameplayAreaViewModelDelegate) {
         self.gameLevel = gameLevel
+        self.delegate = delegate
         setupBindings()
         pegStatViewModels = pegs.map { peg in
             let pegCountPublisher = gameLevel.pegs.$pegCounts.compactMap { pegCount in
@@ -57,6 +60,13 @@ class GameplayAreaViewModel {
             .store(in: &subscriptions)
         gameLevel.$numBalls.sink { [weak self] in self?.ballsLeft.send($0) }.store(in: &subscriptions)
         gameLevel.totalScore.sink { [weak self] in self?.totalScore.send($0) }.store(in: &subscriptions)
+        gameLevel.$playArea.sink { [weak self] playArea in
+            guard let self = self, let delegate = self.delegate else {
+                fatalError("should not be nil")
+            }
+            self.displayHeight = delegate.getDisplayLength(of: playArea.height)
+        }
+        .store(in: &subscriptions)
     }
 }
 

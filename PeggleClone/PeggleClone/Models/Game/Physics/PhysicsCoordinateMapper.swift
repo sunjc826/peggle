@@ -58,6 +58,16 @@ class PhysicsCoordinateMapper: CoordinateMapper {
     }
 }
 
+extension PhysicsCoordinateMapper {
+    func getBoundary() -> Boundary {
+        Boundary(playArea: getPlayArea())
+    }
+
+    func getBoundingBox() -> BoundingBox {
+        getPlayArea().boundingBox
+    }
+}
+
 struct PhysicsCoordinateMapperConfigurable {
     var onScreenDisplayWidth: Double
     var onScreenDisplayHeight: Double

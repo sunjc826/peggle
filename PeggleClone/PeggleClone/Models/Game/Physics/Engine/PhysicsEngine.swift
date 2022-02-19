@@ -6,7 +6,12 @@ private let accelerationDueToGravity = CGVector(dx: 0, dy: Settings.Physics.sign
 
 /// Convention: Just like the GUI, the y axis points downward.
 class PhysicsEngine: AbstractPhysicsEngine {
-    let coordinateMapper: PhysicsCoordinateMapper
+    var coordinateMapper: PhysicsCoordinateMapper {
+        didSet {
+            boundary = coordinateMapper.getBoundary()
+            neighborFinder.resize(with: coordinateMapper.getBoundingBox(), entities: rigidBodies)
+        }
+    }
     var boundary: Boundary
     var rigidBodies: AnyContainer<RigidBodyObject>
     var changeableRigidBodies: Set<RigidBodyObject> = []
@@ -22,13 +27,12 @@ class PhysicsEngine: AbstractPhysicsEngine {
 
     init<T, S>(
         coordinateMapper: PhysicsCoordinateMapper,
-        boundary: Boundary,
         rigidBodies: T,
         neighborFinder: S,
         collisionResolver: CollisionResolver
     ) where T: Container, T.Element == RigidBodyObject, S: NeighborFinder, S.Element == RigidBodyObject {
         self.coordinateMapper = coordinateMapper
-        self.boundary = boundary
+        self.boundary = coordinateMapper.getBoundary()
         self.rigidBodies = AnyContainer(container: rigidBodies)
         self.neighborFinder = AnyNeighborFinder(neighborFinder: neighborFinder)
         self.collisionResolver = collisionResolver
