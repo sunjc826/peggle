@@ -130,6 +130,7 @@ extension GameLevel {
 
     func handleGameOver(isWon: Bool) {
         let endOfGameStatistics = GameRoundStats(
+            peggleMaster: peggleMaster,
             isWon: isWon,
             score: pegs.pegScores.values.reduce(0, +),
             compulsoryPegsHit: pegs.pegHits[.compulsory]!,

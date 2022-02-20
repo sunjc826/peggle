@@ -1,5 +1,6 @@
 import Foundation
 import Combine
+import AVFoundation
 
 class GameEndViewModel {
     let stats: GameRoundStats
@@ -8,7 +9,11 @@ class GameEndViewModel {
         stats.isWon ? "Congratulations! Nipahh" : "See you next time..."
     }
 
+    var audio: AVAudioPlayer?
+
     init(stats: GameRoundStats) {
         self.stats = stats
+        audio = Audio().getCongrats(for: stats.peggleMaster)
+        audio?.prepareToPlay()
     }
 }

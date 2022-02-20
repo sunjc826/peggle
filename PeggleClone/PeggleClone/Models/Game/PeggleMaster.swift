@@ -5,7 +5,7 @@ struct PeggleMaster {
     let name: String
     let title: String
     let description: String
-    let special: SpecialType
+    var special: SpecialType
 }
 
 extension PeggleMaster: Equatable {}

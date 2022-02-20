@@ -8,11 +8,14 @@ class GameplayAreaStaticView: UIView {
         }
     }
 
-    init() {
+    override init(frame: CGRect) {
         svInfo = UIStackView()
-        super.init(frame: CGRect.zero)
+        super.init(frame: frame)
+        svInfo.translatesAutoresizingMaskIntoConstraints = false
+        svInfo.axis = .vertical
         addSubview(svInfo)
         backgroundColor = UIColor.clear
+        isUserInteractionEnabled = false
     }
 
     @available(*, unavailable)
@@ -21,16 +24,17 @@ class GameplayAreaStaticView: UIView {
     }
 
     private func setupWithViewModel() {
+        setupConstraints()
         setupViewsWithViewModel()
     }
 
     func setupConstraints() {
         let constraints = [
             svInfo.topAnchor.constraint(equalTo: self.topAnchor, constant: 30.0),
-            svInfo.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 30.0),
-            svInfo.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.3),
+            svInfo.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -100.0),
+            svInfo.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.1),
             svInfo.widthAnchor.constraint(greaterThanOrEqualToConstant: 50),
-            svInfo.heightAnchor.constraint(equalTo: superview!.heightAnchor, multiplier: 0.2)
+            svInfo.heightAnchor.constraint(lessThanOrEqualTo: superview!.heightAnchor, multiplier: 0.2)
         ]
         constraints.forEach { $0.isActive = true }
     }

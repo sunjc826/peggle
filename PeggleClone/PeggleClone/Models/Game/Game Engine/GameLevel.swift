@@ -20,7 +20,15 @@ final class GameLevel {
     var balls: [Ball] = []
     let pegs: PegContainer
     var obstacles: Set<Obstacle> = []
-    var special: SpecialType
+    var peggleMaster: PeggleMaster
+    var special: SpecialType {
+        get {
+            peggleMaster.special
+        }
+        set {
+            peggleMaster.special = newValue
+        }
+    }
 
     @Published var numBalls: Int = GameLevel.startingBalls
     @Published var gamePhase: GamePhase = .disabled
@@ -40,7 +48,7 @@ final class GameLevel {
     init<T: Container>(
         coordinateMapper: PhysicsCoordinateMapper,
         emptyPegsContainer: T,
-        special: SpecialType
+        peggleMaster: PeggleMaster
     ) where T.Element == Peg {
         self.coordinateMapper = coordinateMapper
         let playArea = coordinateMapper.getPlayArea()
@@ -55,7 +63,7 @@ final class GameLevel {
             neighborFinder: QuadTree(bounds: playArea.boundingBox),
             collisionResolver: Collision()
         )
-        self.special = special
+        self.peggleMaster = peggleMaster
         setupBindings()
         setupCallbacks()
     }

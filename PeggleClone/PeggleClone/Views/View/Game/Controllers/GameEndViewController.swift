@@ -19,6 +19,12 @@ class GameEndViewController: UIViewController {
             }
 
             lblGameStatus.text = viewModel.gameStatusText
+
+            guard let audio = viewModel.audio else {
+                return
+            }
+
+            audio.play()
         }
     }
 

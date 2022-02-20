@@ -1,6 +1,7 @@
 import Foundation
 
 struct GameRoundStats {
+    let peggleMaster: PeggleMaster
     let isWon: Bool
     let score: Int
     let compulsoryPegsHit: Int

@@ -70,7 +70,7 @@ class GameViewModel {
         gameLevel = GameLevel(
             coordinateMapper: coordinateMapper,
             emptyPegsContainer: SetObject<Peg>(),
-            special: peggleMaster.special
+            peggleMaster: peggleMaster
         )
         let rect = CGRect(
             x: 0,

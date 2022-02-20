@@ -8,6 +8,7 @@ class GameViewController: UIViewController, Storyboardable {
     @IBOutlet private var cvGameEnd: UIView!
 
     var scrollvGame: GameLevelScrollView?
+    var vStaticGame: GameplayAreaStaticView?
     var vGame: GameplayAreaDynamicView? {
         scrollvGame?.vGame
     }
@@ -42,11 +43,14 @@ class GameViewController: UIViewController, Storyboardable {
         setupViews()
         setupModels()
         registerEventHandlers()
-        guard let vGame = vGame, let viewModel = viewModel else {
+        guard let vStaticGame = vStaticGame, let vGame = vGame, let viewModel = viewModel else {
             fatalError("should not be nil")
         }
 
-        vGame.viewModel = viewModel.getGameplayAreaViewModel()
+        // view model is shared between static and dynamic views
+        let vmGameplayArea = viewModel.getGameplayAreaViewModel()
+        vStaticGame.viewModel = vmGameplayArea
+        vGame.viewModel = vmGameplayArea
         viewModel.startNewGame()
         startTimer()
     }
@@ -89,16 +93,20 @@ class GameViewController: UIViewController, Storyboardable {
                     return
                 }
 
-                if self.scrollvGame == nil {
+                if self.vStaticGame == nil && self.scrollvGame == nil {
+                    self.vStaticGame = GameplayAreaStaticView(frame: actualDisplayDimensions)
                     self.scrollvGame = GameLevelScrollView(frame: actualDisplayDimensions)
                 } else {
+                    self.vStaticGame?.frame = actualDisplayDimensions
                     self.scrollvGame?.frame = actualDisplayDimensions
                 }
 
-                guard let scrollvGame = self.scrollvGame else {
+                guard let vStaticGame = self.vStaticGame,
+                      let scrollvGame = self.scrollvGame else {
                     fatalError("should not be nil")
                 }
 
+                vStaticGame.center.x = self.vWithinSafeArea.frame.midX
                 scrollvGame.center.x = self.vWithinSafeArea.frame.midX
 
                 for vLetterBox in self.vLetterBoxes {
@@ -109,8 +117,11 @@ class GameViewController: UIViewController, Storyboardable {
 
                 self.addLetterBoxes()
                 self.vWithinSafeArea.addSubview(scrollvGame)
+                self.vWithinSafeArea.addSubview(vStaticGame)
                 scrollvGame.setNeedsLayout()
                 scrollvGame.setNeedsDisplay()
+                vStaticGame.setNeedsLayout()
+                vStaticGame.setNeedsDisplay()
             }
             .store(in: &subscriptions)
     }

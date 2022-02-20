@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E50742AD27C1EB920014E84F /* congratulations in Resources */ = {isa = PBXBuildFile; fileRef = E50742AC27C1EB920014E84F /* congratulations */; };
 		E519D56B2798009600BCE59D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E519D56A2798009600BCE59D /* AppDelegate.swift */; };
 		E519D56D2798009600BCE59D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E519D56C2798009600BCE59D /* SceneDelegate.swift */; };
 		E519D56F2798009600BCE59D /* DesignerMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E519D56E2798009600BCE59D /* DesignerMainViewController.swift */; };
@@ -229,6 +230,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E50742AC27C1EB920014E84F /* congratulations */ = {isa = PBXFileReference; lastKnownFileType = folder; name = congratulations; path = ../../../../audio_assets/congratulations; sourceTree = "<group>"; };
 		E519D5672798009600BCE59D /* PeggleClone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PeggleClone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E519D56A2798009600BCE59D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E519D56C2798009600BCE59D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -404,7 +406,7 @@
 		E586262627AD8719009964BF /* Collision+Resolution.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collision+Resolution.swift"; sourceTree = "<group>"; };
 		E587678B27BFE26400E49356 /* OscillationLocalityButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OscillationLocalityButton.swift; sourceTree = "<group>"; };
 		E588D23C27B813CF0009F1DA /* CoordinateMapperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinateMapperTests.swift; sourceTree = "<group>"; };
-		E59005CC27C149B800824F92 /* Audio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Audio.swift; sourceTree = "<group>"; };
+		E59005CC27C149B800824F92 /* Audio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Audio.swift; path = "PeggleClone/General Utils/Audio.swift"; sourceTree = SOURCE_ROOT; };
 		E590099527A92E9200E764B5 /* EditableGameEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableGameEntity.swift; sourceTree = "<group>"; };
 		E5AAA5A8279989AC0092EE3D /* LinkedList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkedList.swift; sourceTree = "<group>"; };
 		E5BA4E3027A9322B00C4A576 /* GameLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameLevel.swift; sourceTree = "<group>"; };
@@ -1067,6 +1069,7 @@
 		E59005CE27C153DD00824F92 /* Audio */ = {
 			isa = PBXGroup;
 			children = (
+				E50742AC27C1EB920014E84F /* congratulations */,
 			);
 			path = Audio;
 			sourceTree = "<group>";
@@ -1267,6 +1270,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E50742AD27C1EB920014E84F /* congratulations in Resources */,
 				E519D5772798009700BCE59D /* LaunchScreen.storyboard in Resources */,
 				E519D5742798009700BCE59D /* Assets.xcassets in Resources */,
 				E519D5722798009600BCE59D /* Main.storyboard in Resources */,
