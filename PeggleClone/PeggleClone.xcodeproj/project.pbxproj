@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		E50742AD27C1EB920014E84F /* congratulations in Resources */ = {isa = PBXBuildFile; fileRef = E50742AC27C1EB920014E84F /* congratulations */; };
+		E50742AF27C1F5E30014E84F /* sound_effects in Resources */ = {isa = PBXBuildFile; fileRef = E50742AE27C1F5E30014E84F /* sound_effects */; };
+		E50742B127C1F63F0014E84F /* SoundEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50742B027C1F63F0014E84F /* SoundEffect.swift */; };
 		E519D56B2798009600BCE59D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E519D56A2798009600BCE59D /* AppDelegate.swift */; };
 		E519D56D2798009600BCE59D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E519D56C2798009600BCE59D /* SceneDelegate.swift */; };
 		E519D56F2798009600BCE59D /* DesignerMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E519D56E2798009600BCE59D /* DesignerMainViewController.swift */; };
@@ -171,6 +173,7 @@
 		E580667C27A7D64E00F73DAA /* RigidBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = E580667B27A7D64E00F73DAA /* RigidBody.swift */; };
 		E5815F7C27BB8C6C0041E5F8 /* PeggleMaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5815F7B27BB8C6C0041E5F8 /* PeggleMaster.swift */; };
 		E5815F7E27BB8FA30041E5F8 /* GameData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5815F7D27BB8FA30041E5F8 /* GameData.swift */; };
+		E58182A827C268C8003DC147 /* GameEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58182A727C268C8003DC147 /* GameEvent.swift */; };
 		E582E26827AADBA700BBA471 /* GamePegView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E582E26727AADBA700BBA471 /* GamePegView.swift */; };
 		E582E26B27AAEA4A00BBA471 /* RigidBodyObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = E582E26A27AAEA4A00BBA471 /* RigidBodyObject.swift */; };
 		E585FD0D27B4C39700748C2E /* AbstractPhysicsEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = E585FD0C27B4C39700748C2E /* AbstractPhysicsEngine.swift */; };
@@ -231,6 +234,8 @@
 
 /* Begin PBXFileReference section */
 		E50742AC27C1EB920014E84F /* congratulations */ = {isa = PBXFileReference; lastKnownFileType = folder; name = congratulations; path = ../../../../audio_assets/congratulations; sourceTree = "<group>"; };
+		E50742AE27C1F5E30014E84F /* sound_effects */ = {isa = PBXFileReference; lastKnownFileType = folder; name = sound_effects; path = ../../../../audio_assets/sound_effects; sourceTree = "<group>"; };
+		E50742B027C1F63F0014E84F /* SoundEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundEffect.swift; sourceTree = "<group>"; };
 		E519D5672798009600BCE59D /* PeggleClone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PeggleClone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E519D56A2798009600BCE59D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E519D56C2798009600BCE59D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -398,6 +403,7 @@
 		E580667B27A7D64E00F73DAA /* RigidBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RigidBody.swift; sourceTree = "<group>"; };
 		E5815F7B27BB8C6C0041E5F8 /* PeggleMaster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeggleMaster.swift; sourceTree = "<group>"; };
 		E5815F7D27BB8FA30041E5F8 /* GameData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameData.swift; sourceTree = "<group>"; };
+		E58182A727C268C8003DC147 /* GameEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameEvent.swift; sourceTree = "<group>"; };
 		E582E26727AADBA700BBA471 /* GamePegView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamePegView.swift; sourceTree = "<group>"; };
 		E582E26A27AAEA4A00BBA471 /* RigidBodyObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RigidBodyObject.swift; sourceTree = "<group>"; };
 		E585FD0C27B4C39700748C2E /* AbstractPhysicsEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractPhysicsEngine.swift; sourceTree = "<group>"; };
@@ -843,6 +849,7 @@
 				E57B6C9B27BA807600522F3F /* GameLevel+PhysicsEngineCallbacks.swift */,
 				E572B90827B76DC4008E72A6 /* GamePhase.swift */,
 				E56E5A1927BB408100723D6F /* SpecialType.swift */,
+				E58182A727C268C8003DC147 /* GameEvent.swift */,
 			);
 			path = "Game Engine";
 			sourceTree = "<group>";
@@ -1069,6 +1076,7 @@
 		E59005CE27C153DD00824F92 /* Audio */ = {
 			isa = PBXGroup;
 			children = (
+				E50742AE27C1F5E30014E84F /* sound_effects */,
 				E50742AC27C1EB920014E84F /* congratulations */,
 			);
 			path = Audio;
@@ -1140,6 +1148,7 @@
 				E59005CE27C153DD00824F92 /* Audio */,
 				E5DC46F727B7EC8000851C51 /* Settings.swift */,
 				E5815F7D27BB8FA30041E5F8 /* GameData.swift */,
+				E50742B027C1F63F0014E84F /* SoundEffect.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -1273,6 +1282,7 @@
 				E50742AD27C1EB920014E84F /* congratulations in Resources */,
 				E519D5772798009700BCE59D /* LaunchScreen.storyboard in Resources */,
 				E519D5742798009700BCE59D /* Assets.xcassets in Resources */,
+				E50742AF27C1F5E30014E84F /* sound_effects in Resources */,
 				E519D5722798009600BCE59D /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1344,6 +1354,7 @@
 				E57B6C7E27BA343D00522F3F /* UIView+Transform.swift in Sources */,
 				E571C08E27AEB703009459CE /* PaletteViewModel.swift in Sources */,
 				E5773CB427B50F42009F5793 /* GameplayAreaViewModel.swift in Sources */,
+				E50742B127C1F63F0014E84F /* SoundEffect.swift in Sources */,
 				E569732E27A37F270000BF18 /* Obstacle.swift in Sources */,
 				E56D8DC627BC844E00B36BF4 /* Force.swift in Sources */,
 				E5BA4E3327A9369700C4A576 /* PhysicsEngine.swift in Sources */,
@@ -1479,6 +1490,7 @@
 				E5636DD7279C07CF006428E8 /* Storage.swift in Sources */,
 				E57B6C9027BA686100522F3F /* PegType.swift in Sources */,
 				E5E580E427C11FFD00392E28 /* GameplayAreaView.swift in Sources */,
+				E58182A827C268C8003DC147 /* GameEvent.swift in Sources */,
 				E569732327A375F00000BF18 /* CGPoint.swift in Sources */,
 				E5710F6E27B344E3004ACED4 /* LevelSelectViewModel.swift in Sources */,
 				E571C08227AE346B009459CE /* CenteredPolygonObject.swift in Sources */,

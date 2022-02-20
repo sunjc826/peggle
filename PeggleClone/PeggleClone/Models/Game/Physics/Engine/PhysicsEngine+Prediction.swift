@@ -64,14 +64,14 @@ extension PhysicsEngine {
         }
         switch rigidBody.leftWallBehavior {
         case .collide:
-            if rigidBody.boundingBox.left <= boundary.left {
+            if rigidBody.boundingBox.minX <= boundary.minX {
                 reflectX(rigidBody)
             }
         case .fallThrough:
             break
         case .wrapAround:
-            if rigidBody.boundingBox.right <= boundary.left {
-                rigidBody.nextTeleportLocation = CGPoint(x: boundary.right, y: rigidBody.center.x)
+            if rigidBody.boundingBox.maxX <= boundary.minX {
+                rigidBody.nextTeleportLocation = CGPoint(x: boundary.maxX, y: rigidBody.center.x)
             }
         }
     }
@@ -82,14 +82,14 @@ extension PhysicsEngine {
         }
         switch rigidBody.rightWallBehavior {
         case .collide:
-            if rigidBody.boundingBox.right >= boundary.right {
+            if rigidBody.boundingBox.maxX >= boundary.maxX {
                 reflectX(rigidBody)
             }
         case .fallThrough:
             break
         case .wrapAround:
-            if rigidBody.boundingBox.left >= boundary.right {
-                rigidBody.nextTeleportLocation = CGPoint(x: boundary.left, y: rigidBody.center.x)
+            if rigidBody.boundingBox.minX >= boundary.maxX {
+                rigidBody.nextTeleportLocation = CGPoint(x: boundary.minX, y: rigidBody.center.x)
             }
         }
     }
@@ -100,14 +100,14 @@ extension PhysicsEngine {
         }
         switch rigidBody.topWallBehavior {
         case .collide:
-            if rigidBody.boundingBox.top <= boundary.top {
+            if rigidBody.boundingBox.minY <= boundary.minY {
                 reflectY(rigidBody)
             }
         case .fallThrough:
             break
         case .wrapAround:
-            if rigidBody.boundingBox.bottom <= boundary.top {
-                rigidBody.nextTeleportLocation = CGPoint(x: rigidBody.center.x, y: boundary.bottom)
+            if rigidBody.boundingBox.maxY <= boundary.minY {
+                rigidBody.nextTeleportLocation = CGPoint(x: rigidBody.center.x, y: boundary.maxY)
             }
         }
     }
@@ -118,14 +118,14 @@ extension PhysicsEngine {
         }
         switch rigidBody.bottomWallBehavior {
         case .collide:
-            if rigidBody.boundingBox.bottom >= boundary.bottom {
+            if rigidBody.boundingBox.maxY >= boundary.maxY {
                 reflectY(rigidBody)
             }
         case .fallThrough:
             break
         case .wrapAround:
-            if rigidBody.boundingBox.top >= boundary.bottom {
-                rigidBody.nextTeleportLocation = CGPoint(x: rigidBody.center.x, y: boundary.top)
+            if rigidBody.boundingBox.minY >= boundary.maxY {
+                rigidBody.nextTeleportLocation = CGPoint(x: rigidBody.center.x, y: boundary.minY)
             }
         }
     }

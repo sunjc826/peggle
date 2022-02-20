@@ -301,22 +301,29 @@ extension DesignerViewController {
 // MARK: Image processing
 extension DesignerViewController {
     private func hideAllNonPegsSubviews() {
-        lblEditModeHeader.isHidden = true
-        lblEditMode.isHidden = true
-        btnChangeEditMode.isHidden = true
-        btnRemoveInconsistentPegs.isHidden = true
-
-        guard let vcShapeTransform = vcShapeTransform else {
+        guard let viewModel = viewModel else {
             fatalError("should not be nil")
         }
-        vcShapeTransform.view.isHidden = true
+        viewModel.deselectGameObject()
+        let subviewsToHide: [UIView?] = [
+            lblEditModeHeader,
+            lblEditMode,
+            btnChangeEditMode,
+            btnRemoveInconsistentPegs,
+            btnToggleAllowScrollResize
+        ]
+        subviewsToHide.forEach { $0?.isHidden = true }
     }
 
     private func showAllNonPegsSubviews() {
-        lblEditModeHeader.isHidden = false
-        lblEditMode.isHidden = false
-        btnChangeEditMode.isHidden = false
-        btnRemoveInconsistentPegs.isHidden = false
+        let subviewsToShow: [UIView?] = [
+            lblEditModeHeader,
+            lblEditMode,
+            btnChangeEditMode,
+            btnRemoveInconsistentPegs,
+            btnToggleAllowScrollResize
+        ]
+        subviewsToShow.forEach { $0?.isHidden = false }
     }
 
     var imageData: Data {

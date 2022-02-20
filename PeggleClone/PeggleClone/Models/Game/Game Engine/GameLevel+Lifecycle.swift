@@ -53,9 +53,15 @@ extension GameLevel {
         } else if numBalls == 0 {
             handleGameOver(isWon: false)
         } else {
-            gamePhase = .disabled
+            gamePhase = .waitingForNewRound
             countdownToNewRound()
         }
+
+        if !didAnyBallHitAnyPegInLastRound {
+            gameEvents.send(.nothingHit)
+        }
+
+        didAnyBallHitAnyPegInLastRound = false
     }
 
     func doGameEnd() {
@@ -113,7 +119,6 @@ extension GameLevel {
             guard let peg = entity as? Peg else {
                 return false
             }
-
             return peg.hasCollided
         }
     }

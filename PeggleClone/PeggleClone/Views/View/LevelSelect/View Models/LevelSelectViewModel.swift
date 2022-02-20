@@ -34,7 +34,7 @@ extension LevelSelectViewModel: LevelSelectCellViewModelDelegate {
             try pngStorage.delete(filename: levelName)
             shouldReload = true
         } catch {
-            logger.error(error.localizedDescription)
+            globalLogger.error(error.localizedDescription)
         }
         shouldReload = false
     }

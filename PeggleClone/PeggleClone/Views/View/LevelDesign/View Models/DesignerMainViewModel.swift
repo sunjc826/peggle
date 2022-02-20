@@ -82,7 +82,7 @@ class DesignerMainViewModel {
             }
 
         } catch {
-            logger.error("\(error)")
+            globalLogger.error("\(error)")
         }
     }
 
@@ -124,7 +124,7 @@ class DesignerMainViewModel {
 
             gameLevel?.hydrate(with: decodedGameLevel)
         } catch {
-            logger.error("\(error)")
+            globalLogger.error("\(error)")
         }
 
     }

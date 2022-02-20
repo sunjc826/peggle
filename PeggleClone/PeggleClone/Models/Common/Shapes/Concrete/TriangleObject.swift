@@ -52,4 +52,12 @@ class TriangleObject: TransformablePolygonObject {
         try super.init(from: decoder)
         assert(sides == 3)
     }
+
+    static func getCentroid(of vertices: [CGPoint]) -> CGPoint {
+        assert(vertices.count == 3)
+        return CGPoint(
+            x: (vertices[0].x + vertices[1].x + vertices[2].x) / 3,
+            y: (vertices[0].y + vertices[1].y + vertices[2].y) / 3
+        )
+    }
 }

@@ -30,7 +30,7 @@ class LevelSelectCellViewModel {
                     self.backgroundImage = image
                 }
             } catch {
-                logger.error(error.localizedDescription)
+                globalLogger.error(error.localizedDescription)
             }
         }
     }

@@ -13,7 +13,7 @@ class GameEndViewModel {
 
     init(stats: GameRoundStats) {
         self.stats = stats
-        audio = Audio().getCongrats(for: stats.peggleMaster)
+        audio = globalAudio.getCongrats(for: stats.peggleMaster)
         audio?.prepareToPlay()
     }
 }

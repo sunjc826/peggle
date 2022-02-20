@@ -62,7 +62,7 @@ class QuadTree<T>: NeighborFinder where T: Equatable, T: HasBoundingBox, T: AnyO
             guard isLeaf else {
                 fatalError("Only a leaf node can be split")
             }
-            logger.debug("QuadTreeNodes at depth \(self.depth + 1) produced")
+            globalLogger.debug("QuadTreeNodes at depth \(self.depth + 1) produced")
             children = Array(repeatingFactory: { QuadTreeNode(depth: depth + 1, tree: tree) }, count: branchFactor)
         }
 
@@ -73,12 +73,12 @@ class QuadTree<T>: NeighborFinder where T: Equatable, T: HasBoundingBox, T: AnyO
             var subdivisionIndex: Int?
 
             let horizontalMidpoint = ownBoundingBox.center.y
-            let isInTopHalf = objectBoundingBox.bottom < horizontalMidpoint
-            let isInBottomHalf = objectBoundingBox.top > horizontalMidpoint
+            let isInTopHalf = objectBoundingBox.maxY < horizontalMidpoint
+            let isInBottomHalf = objectBoundingBox.minY > horizontalMidpoint
 
             let verticalMidpoint = ownBoundingBox.center.x
-            let isInLeftHalf = objectBoundingBox.right < verticalMidpoint
-            let isInRightHalf = objectBoundingBox.left > verticalMidpoint
+            let isInLeftHalf = objectBoundingBox.maxX < verticalMidpoint
+            let isInRightHalf = objectBoundingBox.minX > verticalMidpoint
 
             if isInTopHalf && isInLeftHalf {
                 subdivisionIndex = ChildIndex.topLeft.rawValue
@@ -101,12 +101,12 @@ class QuadTree<T>: NeighborFinder where T: Equatable, T: HasBoundingBox, T: AnyO
             var subdivisionOverlappingIndices: Set<Int> = [0, 1, 2, 3]
 
             let horizontalMidpoint = ownBoundingBox.center.y
-            let isInTopHalf = objectBoundingBox.bottom < horizontalMidpoint
-            let isInBottomHalf = objectBoundingBox.top > horizontalMidpoint
+            let isInTopHalf = objectBoundingBox.maxY < horizontalMidpoint
+            let isInBottomHalf = objectBoundingBox.minY > horizontalMidpoint
 
             let verticalMidpoint = ownBoundingBox.center.x
-            let isInLeftHalf = objectBoundingBox.right < verticalMidpoint
-            let isInRightHalf = objectBoundingBox.left > verticalMidpoint
+            let isInLeftHalf = objectBoundingBox.maxX < verticalMidpoint
+            let isInRightHalf = objectBoundingBox.minX > verticalMidpoint
 
             if isInTopHalf {
                 subdivisionOverlappingIndices.remove(ChildIndex.bottomLeft.rawValue

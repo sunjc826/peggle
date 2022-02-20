@@ -48,4 +48,4 @@ class LoggerWrapper {
 }
 
 /// Global logger object for the application.
-let logger = LoggerWrapper()
+let globalLogger = LoggerWrapper()

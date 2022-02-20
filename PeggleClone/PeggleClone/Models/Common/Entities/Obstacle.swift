@@ -47,13 +47,15 @@ extension Obstacle {
         guard let triangle = copy.shape as? TriangleObject else {
             fatalError("unexpected type")
         }
-
+        let centroid = TriangleObject.getCentroid(of: vertices)
+        triangle.center = centroid
         let polarVerticesRelativeToOwnCenterBeforeTransform =
             vertices.map { triangle.inverseTransform(vertex: $0) }
         triangle.polarVerticesRelativeToOwnCenterBeforeTransform =
             polarVerticesRelativeToOwnCenterBeforeTransform
         return copy
     }
+
 }
 
 // MARK: Persistable

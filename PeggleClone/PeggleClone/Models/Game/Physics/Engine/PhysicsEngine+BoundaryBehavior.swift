@@ -15,18 +15,18 @@ extension PhysicsEngine {
         }
         switch rigidBody.leftWallBehavior {
         case .collide:
-            if rigidBody.boundingBox.left <= boundary.left {
+            if rigidBody.boundingBox.minX <= boundary.minX {
                 reflectX(rigidBody)
                 bodiesMarkedForCalculationUpdates.insert(rigidBody)
             }
         case .fallThrough:
-            if rigidBody.boundingBox.right <= boundary.left {
+            if rigidBody.boundingBox.maxX <= boundary.minX {
                 bodiesMarkedForDeletion.insert(rigidBody)
             }
         case .wrapAround:
-            if rigidBody.boundingBox.right <= boundary.left {
+            if rigidBody.boundingBox.maxX <= boundary.minX {
                 rigidBody.hasWrappedAroundMostRecently = true
-                rigidBody.nextTeleportLocation = CGPoint(x: boundary.right, y: rigidBody.center.x)
+                rigidBody.nextTeleportLocation = CGPoint(x: boundary.maxX, y: rigidBody.center.x)
                 bodiesMarkedForCalculationUpdates.insert(rigidBody)
             }
         }
@@ -38,18 +38,18 @@ extension PhysicsEngine {
         }
         switch rigidBody.rightWallBehavior {
         case .collide:
-            if rigidBody.boundingBox.right >= boundary.right {
+            if rigidBody.boundingBox.maxX >= boundary.maxX {
                 reflectX(rigidBody)
                 bodiesMarkedForCalculationUpdates.insert(rigidBody)
             }
         case .fallThrough:
-            if rigidBody.boundingBox.left >= boundary.right {
+            if rigidBody.boundingBox.minX >= boundary.maxX {
                 bodiesMarkedForDeletion.insert(rigidBody)
             }
         case .wrapAround:
-            if rigidBody.boundingBox.left >= boundary.right {
+            if rigidBody.boundingBox.minX >= boundary.maxX {
                 rigidBody.hasWrappedAroundMostRecently = true
-                rigidBody.nextTeleportLocation = CGPoint(x: boundary.left, y: rigidBody.center.x)
+                rigidBody.nextTeleportLocation = CGPoint(x: boundary.minX, y: rigidBody.center.x)
                 bodiesMarkedForCalculationUpdates.insert(rigidBody)
             }
         }
@@ -61,18 +61,18 @@ extension PhysicsEngine {
         }
         switch rigidBody.topWallBehavior {
         case .collide:
-            if rigidBody.boundingBox.top <= boundary.top {
+            if rigidBody.boundingBox.minY <= boundary.minY {
                 reflectY(rigidBody)
                 bodiesMarkedForCalculationUpdates.insert(rigidBody)
             }
         case .fallThrough:
-            if rigidBody.boundingBox.bottom <= boundary.top {
+            if rigidBody.boundingBox.maxY <= boundary.minY {
                 bodiesMarkedForDeletion.insert(rigidBody)
             }
         case .wrapAround:
-            if rigidBody.boundingBox.bottom <= boundary.top {
+            if rigidBody.boundingBox.maxY <= boundary.minY {
                 rigidBody.hasWrappedAroundMostRecently = true
-                rigidBody.nextTeleportLocation = CGPoint(x: rigidBody.center.x, y: boundary.bottom)
+                rigidBody.nextTeleportLocation = CGPoint(x: rigidBody.center.x, y: boundary.maxY)
                 bodiesMarkedForCalculationUpdates.insert(rigidBody)
             }
         }
@@ -84,18 +84,18 @@ extension PhysicsEngine {
         }
         switch rigidBody.bottomWallBehavior {
         case .collide:
-            if rigidBody.boundingBox.bottom >= boundary.bottom {
+            if rigidBody.boundingBox.maxY >= boundary.maxY {
                 reflectY(rigidBody)
                 bodiesMarkedForCalculationUpdates.insert(rigidBody)
             }
         case .fallThrough:
-            if rigidBody.boundingBox.top >= boundary.bottom {
+            if rigidBody.boundingBox.minY >= boundary.maxY {
                 bodiesMarkedForDeletion.insert(rigidBody)
             }
         case .wrapAround:
-            if rigidBody.boundingBox.top >= boundary.bottom {
+            if rigidBody.boundingBox.minY >= boundary.maxY {
                 rigidBody.hasWrappedAroundMostRecently = true
-                rigidBody.nextTeleportLocation = CGPoint(x: rigidBody.center.x, y: boundary.top)
+                rigidBody.nextTeleportLocation = CGPoint(x: rigidBody.center.x, y: boundary.minY)
                 bodiesMarkedForCalculationUpdates.insert(rigidBody)
             }
         }

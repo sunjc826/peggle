@@ -93,37 +93,42 @@ class GameViewController: UIViewController, Storyboardable {
                     return
                 }
 
-                if self.vStaticGame == nil && self.scrollvGame == nil {
-                    self.vStaticGame = GameplayAreaStaticView(frame: actualDisplayDimensions)
-                    self.scrollvGame = GameLevelScrollView(frame: actualDisplayDimensions)
-                } else {
-                    self.vStaticGame?.frame = actualDisplayDimensions
-                    self.scrollvGame?.frame = actualDisplayDimensions
-                }
-
-                guard let vStaticGame = self.vStaticGame,
-                      let scrollvGame = self.scrollvGame else {
-                    fatalError("should not be nil")
-                }
-
-                vStaticGame.center.x = self.vWithinSafeArea.frame.midX
-                scrollvGame.center.x = self.vWithinSafeArea.frame.midX
-
-                for vLetterBox in self.vLetterBoxes {
-                    vLetterBox.removeFromSuperview()
-                }
-
-                self.vLetterBoxes.removeAll()
-
-                self.addLetterBoxes()
-                self.vWithinSafeArea.addSubview(scrollvGame)
-                self.vWithinSafeArea.addSubview(vStaticGame)
-                scrollvGame.setNeedsLayout()
-                scrollvGame.setNeedsDisplay()
-                vStaticGame.setNeedsLayout()
-                vStaticGame.setNeedsDisplay()
+                self.updateDimensions(actualDisplayDimensions: actualDisplayDimensions)
             }
             .store(in: &subscriptions)
+
+        viewModel.audioEffectPublisher.sink { audioEffect in
+            DispatchQueue.global(qos: .background).async { [audioEffect] in
+                audioEffect?.play()
+            }
+        }.store(in: &subscriptions)
+    }
+
+    func updateDimensions(actualDisplayDimensions: CGRect) {
+        if self.vStaticGame == nil && self.scrollvGame == nil {
+            self.vStaticGame = GameplayAreaStaticView(frame: actualDisplayDimensions)
+            self.scrollvGame = GameLevelScrollView(frame: actualDisplayDimensions)
+        } else {
+            self.vStaticGame?.frame = actualDisplayDimensions
+            self.scrollvGame?.frame = actualDisplayDimensions
+        }
+
+        guard let vStaticGame = self.vStaticGame, let scrollvGame = self.scrollvGame else {
+            fatalError("should not be nil")
+        }
+
+        vStaticGame.center.x = self.vWithinSafeArea.frame.midX
+        scrollvGame.center.x = self.vWithinSafeArea.frame.midX
+
+        self.vLetterBoxes.forEach { $0.removeFromSuperview() }
+        self.vLetterBoxes.removeAll()
+        self.addLetterBoxes()
+        self.vWithinSafeArea.addSubview(scrollvGame)
+        self.vWithinSafeArea.addSubview(vStaticGame)
+        scrollvGame.setNeedsLayout()
+        scrollvGame.setNeedsDisplay()
+        vStaticGame.setNeedsLayout()
+        vStaticGame.setNeedsDisplay()
     }
 
     func addLetterBoxes() {

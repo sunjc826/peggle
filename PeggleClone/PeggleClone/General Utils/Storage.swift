@@ -37,7 +37,7 @@ class Storage {
             let filenames = jsonUrls.map { $0.deletingPathExtension().lastPathComponent }
             return (jsonUrls, filenames)
         } catch {
-            logger.error(error.localizedDescription)
+            globalLogger.error(error.localizedDescription)
         }
         return ([], [])
     }
@@ -74,7 +74,7 @@ extension Storage {
         do {
             return try getAllFiles(in: getDefaultDirectory())
         } catch {
-            logger.error(error.localizedDescription)
+            globalLogger.error(error.localizedDescription)
         }
         return ([], [])
     }

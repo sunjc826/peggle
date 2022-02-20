@@ -33,6 +33,7 @@ final class GameLevel {
     @Published var numBalls: Int = GameLevel.startingBalls
     @Published var gamePhase: GamePhase = .disabled
     var totalScore: PassthroughSubject<Int, Never> = PassthroughSubject()
+    var didAnyBallHitAnyPegInLastRound = false
 
     var didAddBallCallbacks: [UnaryFunction<Ball>] = []
     var didUpdateBallCallbacks: [BinaryFunction<Ball>] = []
@@ -44,6 +45,7 @@ final class GameLevel {
     var didUpdateObstacleCallbacks: [BinaryFunction<Obstacle>] = []
     var didRemoveObstacleCallbacks: [UnaryFunction<Obstacle>] = []
     var gameDidEndCallbacks: [UnaryFunction<Bool>] = []
+    var gameEvents: PassthroughSubject<GameEvent, Never> = PassthroughSubject()
 
     init<T: Container>(
         coordinateMapper: PhysicsCoordinateMapper,
@@ -98,6 +100,8 @@ final class GameLevel {
             doStuck()
         case .cleanup:
             doCleanUp()
+        case .waitingForNewRound:
+            break
         case .gameEnd(stats: _):
             return
         case .disabled:
@@ -105,7 +109,7 @@ final class GameLevel {
         }
 
         switch gamePhase {
-        case .beginning, .shootBallWhenReady, .ongoing, .stuck, .cleanup:
+        case .beginning, .shootBallWhenReady, .ongoing, .stuck, .cleanup, .waitingForNewRound:
             physicsEngine.simulateAll(time: GameLevel.targetSecondsPerFrame)
         case .gameEnd(stats: _), .disabled:
             return

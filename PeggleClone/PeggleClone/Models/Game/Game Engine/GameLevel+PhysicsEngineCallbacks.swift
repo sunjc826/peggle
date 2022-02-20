@@ -14,6 +14,10 @@ extension GameLevel {
                 gamePhase = .stuck
             }
 
+            if updatedRigidBody.consecutiveCollisionCount == 1 {
+                gameEvents.send(.ballCollision)
+            }
+
             let updatedBall = oldBall
                 .withCenter(center: updatedPosition) // ball does not need to rotate
             updatedRigidBody.associatedEntity = updatedBall
@@ -28,6 +32,7 @@ extension GameLevel {
                 .withRotation(rotation: updatedRotation)
             if hasCollidedInLastUpdate {
                 updatedPeg = updatedPeg.withHasCollided(hasCollided: true)
+                didAnyBallHitAnyPegInLastRound = true
             }
 
             updatedRigidBody.associatedEntity = updatedPeg
@@ -75,8 +80,9 @@ extension GameLevel {
     /// - Remark: All modifications of rigid bodies are mutating,
     /// instead of the non-mutating approach taken almost everywhere else.
     func handleHitSpecialPeg(oldSpecialPeg: Peg, updatedSpecialPeg: Peg) {
+        gameEvents.send(.specialPegHit)
         guard let updatedPegRigidBody = updatedSpecialPeg.rigidBody else {
-            logger.error("cannot find rigid body")
+            globalLogger.error("cannot find rigid body")
             return
         }
         switch special {
@@ -122,6 +128,7 @@ extension GameLevel {
     }
 
     func addMultiball(updatedSpecialPeg: Peg) {
+        gameEvents.send(.ballMultiply)
         let ball: Ball
         let directionVector: CGVector
         switch updatedSpecialPeg.shape {
@@ -153,6 +160,7 @@ extension GameLevel {
     /// - Remark: A more general implementation would involve explicitly tracking what types of forces an object can be
     /// affected by.
     func setMoonGravity() {
+        gameEvents.send(.gravityLowered)
         let moonGravity: Force = .gravity(
             gravitationalAcceleration: coordinateMapper.getPhysicalLength(
                 ofLogicalLength: Settings.Physics.signedMagnitudeOfAccelerationDueToGravity / 6
@@ -192,6 +200,7 @@ extension GameLevel {
         let entity = rigidBody.associatedEntity
         switch entity {
         case let ball as Ball:
+            gameEvents.send(.ballFallthrough)
             removeBall(ball: ball)
         case let peg as Peg:
             removePeg(peg: peg)

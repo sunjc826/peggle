@@ -1,5 +1,6 @@
 import UIKit
 import Combine
+import AVFoundation
 
 private let rotationRateSecondsTillTarget = 1.5
 
@@ -32,6 +33,11 @@ class GameViewModel {
         gameLevel?.cannon
     }
 
+    var audioEffectPublisher: AnyPublisher<AVAudioPlayer?, Never> {
+        audioEffect.eraseToAnyPublisher()
+    }
+    private var audioEffect: PassthroughSubject<AVAudioPlayer?, Never> = PassthroughSubject()
+
     init(peggleMaster: PeggleMaster?) {
         self.peggleMaster = peggleMaster ?? GameData.defaultPeggleMaster
     }
@@ -58,6 +64,37 @@ class GameViewModel {
             .compactMap { $0 }
             .sink { [weak self] in self?.gameEndViewModel.send($0) }
             .store(in: &subscriptions)
+
+        gameLevel.gameEvents
+            .sink { [weak self] gameEvent in
+                guard let self = self else {
+                    return
+                }
+
+                self.addSoundEffect(dueTo: gameEvent)
+            }
+            .store(in: &subscriptions)
+    }
+
+    func addSoundEffect(dueTo gameEvent: GameEvent) {
+        switch gameEvent {
+        case .nothingHit:
+            audioEffect.send(GameData.AudioEffects.ahahaEffect)
+        case .gravityLowered:
+            break
+        case .specialPegHit:
+            audioEffect.send(GameData.AudioEffects.wheeEffect)
+        case .ballCollision:
+            audioEffect.send(GameData.AudioEffects.boingEffect)
+        case .ballFallthrough:
+            break
+        case .ballWrapAround:
+            break
+        case .ballMultiply:
+            break
+        case .ballIntoBucket:
+            audioEffect.send(GameData.AudioEffects.thunkEffect)
+        }
     }
 
     func setDimensions(width: Double, height: Double) {
@@ -100,7 +137,7 @@ class GameViewModel {
                 rect
             )
         } catch {
-            logger.error("\(error)")
+            globalLogger.error("\(error)")
         }
     }
 

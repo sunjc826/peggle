@@ -297,11 +297,11 @@ final class DesignerGameLevel {
             guard let self = self else {
                 return
             }
-            logger.info("recalculating game objects")
+            globalLogger.info("recalculating game objects")
             self.neighborFinder.resize(with: boundingBox, entities: self.gameObjects)
             DispatchQueue.main.async { [weak self] in
                 self?.isLoading.send(false)
-                logger.info("recalculating done")
+                globalLogger.info("recalculating done")
             }
         }
     }

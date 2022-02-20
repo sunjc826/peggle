@@ -3,9 +3,9 @@ import CoreGraphics
 
 protocol Rectangle: TransformablePolygon, CustomDebugStringConvertible {
     var halfWidth: Double { get }
-
     var halfHeight: Double { get }
-
+    var width: Double { get }
+    var height: Double { get }
 }
 
 extension Rectangle {
@@ -13,22 +13,30 @@ extension Rectangle {
         4
     }
 
+    var halfWidth: Double {
+        width / 2
+    }
+
+    var halfHeight: Double {
+        height / 2
+    }
+
     var width: Double { halfWidth * 2 }
     var height: Double { halfHeight * 2 }
 
-    var left: Double {
+    var minX: Double {
         center.x - halfWidth
     }
 
-    var right: Double {
+    var maxX: Double {
         center.x + halfWidth
     }
 
-    var top: Double {
+    var minY: Double {
         center.y - halfHeight
     }
 
-    var bottom: Double {
+    var maxY: Double {
         center.y + halfHeight
     }
 
@@ -67,8 +75,8 @@ extension Rectangle {
     var debugDescription: String {
         """
             dimensions: \(width) * \(height)
-            x: \(left) - \(right)
-            y: \(top) - \(bottom)
+            x: \(minX) - \(maxX)
+            y: \(minY) - \(maxY)
 
             """
     }

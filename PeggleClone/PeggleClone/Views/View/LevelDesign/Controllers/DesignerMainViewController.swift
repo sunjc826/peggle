@@ -78,7 +78,7 @@ extension DesignerMainViewController: StorageViewControllerDelegate {
         } catch TransitionError.inconsistent {
             attemptingToSegueWithInconsistentLevel()
         } catch {
-            logger.error("unexpected error")
+            globalLogger.error("unexpected error")
         }
         didLevelSelect?()
     }
@@ -109,7 +109,7 @@ extension DesignerMainViewController: StorageViewControllerDelegate {
         } catch TransitionError.inconsistent {
             attemptingToSegueWithInconsistentLevel()
         } catch {
-            logger.error("unexpected error")
+            globalLogger.error("unexpected error")
             return
         }
 

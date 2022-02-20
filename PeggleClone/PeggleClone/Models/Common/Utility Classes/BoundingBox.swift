@@ -10,24 +10,24 @@ class BoundingBox: Rectangle {
     var halfWidth: Double
     var halfHeight: Double
 
-    /// The horizontal distance between the center and left extreme.
+    /// The horizontal distance between the center of mass of underlying object and left extreme.
     var leftWidth: Double {
-        centerOfMassOfUnderlyingObject.x - left
+        centerOfMassOfUnderlyingObject.x - minX
     }
 
-    /// The horizontal distance between the center and the right extreme.
+    /// The horizontal distance between the center of mass of underlying object and the right extreme.
     var rightWidth: Double {
-        right - centerOfMassOfUnderlyingObject.x
+        maxX - centerOfMassOfUnderlyingObject.x
     }
 
-    /// The vertical distance between the center and the top extreme.
+    /// The vertical distance between the center of mass of underlying object and the top extreme.
     var topHeight: Double {
-        centerOfMassOfUnderlyingObject.y - top
+        centerOfMassOfUnderlyingObject.y - minY
     }
 
-    /// The vertical distance between the center and the bottom extreme.
+    /// The vertical distance between the center of mass of underlying object and the bottom extreme.
     var bottomHeight: Double {
-        bottom - centerOfMassOfUnderlyingObject.y
+        maxY - centerOfMassOfUnderlyingObject.y
     }
 
     /// Center of mass of bounding box
@@ -64,13 +64,13 @@ class BoundingBox: Rectangle {
         self.halfHeight = height / 2
     }
 
+    // Remark: In the case of a resizable triangle (i.e. obstacle), centerOfMassOfUnderlyingObject
+    // may not correspond with the centroid.
     convenience init(centerOfMassOfUnderlyingObject: CGPoint,
                      leftWidth: Double,
                      rightWidth: Double,
                      topHeight: Double,
                      bottomHeight: Double) {
-        // TODO: Reshaping triangle can break orientation
-        assert(leftWidth >= 0 && rightWidth >= 0 && topHeight >= 0 && bottomHeight >= 0)
         let width = leftWidth + rightWidth
         let height = topHeight + bottomHeight
         let centerX = centerOfMassOfUnderlyingObject.x - leftWidth + width / 2
@@ -98,19 +98,19 @@ class BoundingBox: Rectangle {
     }
 
     func contains(point: CGPoint) -> Bool {
-        left <= point.x && point.x <= right && top <= point.y && point.y <= bottom
+        minX <= point.x && point.x <= maxX && minY <= point.y && point.y <= maxY
     }
 
     func contains(boundingBox: BoundingBox) -> Bool {
-        left <= boundingBox.left && boundingBox.right <= right && top <= boundingBox.top && boundingBox.bottom <= bottom
+        minX <= boundingBox.minX && boundingBox.maxX <= maxX && minY <= boundingBox.minY && boundingBox.maxY <= maxY
     }
 
     func containsStrictly(point: CGPoint) -> Bool {
-        left < point.x && point.x < right && top < point.y && point.y < bottom
+        minX < point.x && point.x < maxX && minY < point.y && point.y < maxY
     }
 
     func containsStrictly(boundingBox: BoundingBox) -> Bool {
-        left < boundingBox.left && boundingBox.right < right && top < boundingBox.top && boundingBox.bottom < bottom
+        minX < boundingBox.minX && boundingBox.maxX < maxX && minY < boundingBox.minY && boundingBox.maxY < maxY
     }
 }
 

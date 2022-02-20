@@ -34,7 +34,7 @@ class GamePegView: UIView {
         } else if viewModel.shouldDrawPolygon {
             drawPolygonalPeg(in: rect)
         } else {
-            logger.error("nothing to draw")
+            globalLogger.error("nothing to draw")
         }
     }
 

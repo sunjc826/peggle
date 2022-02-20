@@ -32,7 +32,7 @@ class OscillationLocalityButton: UIView {
         backgroundColor = UIColor.clear
         layer.cornerRadius = 0.5 * bounds.size.width
         clipsToBounds = true
-        layer.borderWidth = 5
+        layer.borderWidth = 1
         layer.borderColor = UIColor.black.cgColor
         registerEventHandlers()
     }
