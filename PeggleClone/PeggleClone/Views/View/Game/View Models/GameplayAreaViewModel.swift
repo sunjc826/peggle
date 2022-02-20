@@ -27,11 +27,11 @@ class GameplayAreaViewModel {
     }
     var cannonPosition: PassthroughSubject<CGPoint, Never> = PassthroughSubject()
     var ballsLeftPublisher: AnyPublisher<Int, Never> {
-        ballsLeft.eraseToAnyPublisher()
+        ballsLeft.prepend(gameLevel.numBalls).eraseToAnyPublisher()
     }
     var ballsLeft: PassthroughSubject<Int, Never> = PassthroughSubject()
     var totalScorePublisher: AnyPublisher<Int, Never> {
-        totalScore.eraseToAnyPublisher()
+        totalScore.prepend(0).eraseToAnyPublisher()
     }
     var totalScore: PassthroughSubject<Int, Never> = PassthroughSubject()
     var pegStatViewModels: [PegStatViewModel] = []
@@ -59,7 +59,7 @@ class GameplayAreaViewModel {
             }
             .store(in: &subscriptions)
         gameLevel.$numBalls.sink { [weak self] in self?.ballsLeft.send($0) }.store(in: &subscriptions)
-        gameLevel.totalScore.sink { [weak self] in self?.totalScore.send($0) }.store(in: &subscriptions)
+        gameLevel.totalScore.prepend(0).sink { [weak self] in self?.totalScore.send($0) }.store(in: &subscriptions)
         gameLevel.$coordinateMapper.sink { [weak self] coordinateMapper in
             guard let self = self else {
                 fatalError("should not be nil")

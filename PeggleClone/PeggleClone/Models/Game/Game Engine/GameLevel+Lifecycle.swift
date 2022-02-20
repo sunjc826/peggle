@@ -42,8 +42,13 @@ extension GameLevel {
             return
         }
 
-        if special == .moonTourist {
+        switch special {
+        case .moonTourist:
             setRegularGravity()
+        case .spooky(activeCount: _):
+            special = .spooky(activeCount: 0)
+        default:
+            break
         }
 
         cleanupAfterBallDisappears()

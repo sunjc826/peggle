@@ -1,8 +1,7 @@
 import Foundation
 import AVFoundation
 
-private let compressedAudioExtension = "mp3"
-private let uncompressedAudioExtension = "wav"
+private let extensions = ["wav", "mp3"]
 private let congratulationsDirectory = "congratulations"
 private let soundEffectsDirectory = "sound_effects"
 
@@ -16,22 +15,24 @@ class Audio {
             globalLogger.error(error.localizedDescription)
         }
     }
-
-    func getAudioPlayer(forProjectFile filename: String) -> AVAudioPlayer? {
-        guard let url = Bundle.main.url(forResource: filename, withExtension: uncompressedAudioExtension) else {
-            return nil
-        }
-        return try? AVAudioPlayer(contentsOf: url)
-    }
 }
 
 extension Audio {
     func getCongrats(for peggleMaster: PeggleMaster) -> AVAudioPlayer? {
-        guard let url = Bundle.main.url(
-            forResource: peggleMaster.id,
-            withExtension: uncompressedAudioExtension,
-            subdirectory: congratulationsDirectory
-        ) else {
+        var url: URL?
+        for ext in extensions {
+            url = Bundle.main.url(
+                forResource: peggleMaster.id,
+                withExtension: ext,
+                subdirectory: congratulationsDirectory
+            )
+
+            if url != nil {
+                break
+            }
+        }
+
+        guard let url = url else {
             return nil
         }
 
@@ -41,11 +42,20 @@ extension Audio {
     }
 
     func getSoundEffect(for soundEffect: SoundEffect) -> AVAudioPlayer? {
-        guard let url = Bundle.main.url(
-            forResource: soundEffect.rawValue,
-            withExtension: compressedAudioExtension,
-            subdirectory: soundEffectsDirectory
-        ) else {
+        var url: URL?
+        for ext in extensions {
+            url = Bundle.main.url(
+                forResource: soundEffect.rawValue,
+                withExtension: ext,
+                subdirectory: soundEffectsDirectory
+            )
+
+            if url != nil {
+                break
+            }
+        }
+
+        guard let url = url else {
             return nil
         }
 
