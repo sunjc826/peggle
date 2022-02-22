@@ -2,7 +2,6 @@ import Foundation
 import CoreGraphics
 
 final class CircleObject: Circle, Codable {
-    static var defaultRadius: Double = 0.05
     var center: CGPoint
     var radiusBeforeTransform: Double
     var scale: Double = 1
@@ -18,7 +17,7 @@ final class CircleObject: Circle, Codable {
     convenience init() {
         self.init(
             center: CGPoint.zero,
-            radiusBeforeTransform: CircleObject.defaultRadius
+            radiusBeforeTransform: Settings.Peg.RegularPolygonalOrCircular.radius
         )
     }
 

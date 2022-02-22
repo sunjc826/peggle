@@ -29,7 +29,11 @@ class TriangleObject: TransformablePolygonObject {
     }
 
     convenience init(center: CGPoint) {
-        let regularTriangle = RegularPolygonObject(center: center, sides: 3)
+        let regularTriangle = RegularPolygonObject(
+            center: center,
+            radiusBeforeTransform: Settings.Obstacle.Designer.regularTriangleRadius,
+            sides: 3)
+
         let polarVertices = regularTriangle.polarVerticesRelativeToOwnCenterBeforeTransform
         self.init(
             center: center,

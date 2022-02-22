@@ -143,13 +143,7 @@ extension GameLevel {
 
         switch special {
         case .smallBombs, .blackHole, .iHatePeople:
-            for peg in pegs {
-                guard let rigidBody = peg.rigidBody else {
-                    continue
-                }
-                rigidBody.configuration.canTranslate = true
-                physicsEngine.recategorizeRigidBody(rigidBody)
-            }
+            enablePegTranslation()
         default:
             break
         }
@@ -173,7 +167,17 @@ extension GameLevel {
             special = .superDuperGuide(activeCount: activeCount + 2)
         }
     }
-    
+
+    private func enablePegTranslation() {
+        for peg in pegs {
+            guard let rigidBody = peg.rigidBody else {
+                continue
+            }
+            rigidBody.configuration.canTranslate = true
+            physicsEngine.recategorizeRigidBody(rigidBody)
+        }
+    }
+
     private func addSpooky(previousActiveCount: Int) {
         assert(balls.count == 1)
         let ball = balls.first

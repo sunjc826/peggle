@@ -2,7 +2,6 @@ import Foundation
 import CoreGraphics
 
 final class RegularPolygonObject: RegularPolygon, Codable {
-    static let defaultRadius: Double = 0.05
     var center: CGPoint
     var radiusBeforeTransform: Double
     var sides: Int
@@ -20,7 +19,7 @@ final class RegularPolygonObject: RegularPolygon, Codable {
     convenience init(center: CGPoint, sides: Int) {
         self.init(
             center: center,
-            radiusBeforeTransform: RegularPolygonObject.defaultRadius,
+            radiusBeforeTransform: Settings.Peg.RegularPolygonalOrCircular.radius,
             sides: sides
         )
     }

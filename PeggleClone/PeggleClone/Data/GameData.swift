@@ -8,7 +8,7 @@ struct GameData {
             name: "Beatrice",
             title: "The Endless Witch",
             description: """
-                The territory lord of Rokkenjima welcomes you to this 'video' game.
+                The territory lord of Rokkenjima welcomes you to this 'video' game-board.
                 No one else is more apt to start off this game with.
                 """,
             special: .spooky()

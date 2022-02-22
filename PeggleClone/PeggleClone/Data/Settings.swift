@@ -27,6 +27,9 @@ struct Settings {
     }
 
     struct Obstacle {
+        struct Designer {
+            static let regularTriangleRadius: Double = 0.1
+        }
         static let easeOfOscillation: Springiness = .ludicrouslySpringy
         static let uniformDensity: Double = 1
         static let elasticity: Double = 0.7
@@ -35,11 +38,18 @@ struct Settings {
     }
 
     struct Peg {
+        struct Designer {
+            static let scaleRange: ClosedRange<Float> = 0.5...10.0
+        }
         static let uniformDensity: Double = 1
         static let elasticity: Double = 0.7
         static let canTranslate = false
         struct Polygonal {
             static let canRotate = true
+        }
+
+        struct RegularPolygonalOrCircular {
+            static let radius = 0.02
         }
 
         struct Special {

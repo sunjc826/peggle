@@ -2,7 +2,7 @@ import UIKit
 import Combine
 
 class ShapeTransformViewModel {
-    var scaleRange: ClosedRange<Float> = 0.1...3.0
+    var scaleRange: ClosedRange<Float> = Settings.Peg.Designer.scaleRange
     var rotateRange: ClosedRange<Float> = 0...2 * Float.pi
 
     var scaleMinValue: Float {
