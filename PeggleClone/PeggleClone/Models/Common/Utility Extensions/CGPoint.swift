@@ -36,13 +36,13 @@ extension CGPoint {
     }
 
     /// Returns a translated point translated by the given amount in the x coordinate.
-    func translateX(x: Double) -> CGPoint {
-        translate(dx: x, dy: 0)
+    func translateX(dx: Double) -> CGPoint {
+        translate(dx: dx, dy: 0)
     }
 
     /// Returns a translated point translated by the given amount in the y coordinate.
-    func translateY(y: Double) -> CGPoint {
-        translate(dx: 0, dy: y)
+    func translateY(dy: Double) -> CGPoint {
+        translate(dx: 0, dy: dy)
     }
 
     /// Returns a scaled point scaled by the given `factor` equally in both x and y coordinates about the origin.
@@ -77,7 +77,7 @@ extension CGPoint {
 
 extension CGPoint {
     static func middle(point: CGPoint, otherPoint: CGPoint) -> CGPoint {
-        CGPoint(x: point.x + otherPoint.x, y: point.y + otherPoint.y)
+        CGPoint(x: (point.x + otherPoint.x) / 2, y: (point.y + otherPoint.y) / 2)
     }
 }
 

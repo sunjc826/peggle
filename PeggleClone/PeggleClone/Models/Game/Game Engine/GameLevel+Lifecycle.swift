@@ -90,7 +90,7 @@ extension GameLevel {
                 ofPhysicalLength: Settings.Physics.signedMagnitudeOfAccelerationDueToGravity
             )
         )
-        let gravity = ForceObject(forceType: gravityType, forcePosition: .center)
+        let gravity = Force(forceType: gravityType, forcePosition: .center)
         rigidBody.longTermDelta.persistentForces.append(gravity)
         let predictedPositions = physicsEngine.predict(
             for: rigidBody,
@@ -115,7 +115,7 @@ extension GameLevel {
 
     func removeStuckEntities() {
         physicsEngine.remove { (rigidBody: RigidBody) in
-            !(rigidBody.associatedEntity is Ball) &&
+            !(rigidBody.associatedEntity is Ball && rigidBody.associatedEntity is BucketComponent) &&
             rigidBody.miscProperties.consecutiveCollisionCount > GameLevel.consecutiveCollisionThreshold
         }
     }
@@ -165,5 +165,9 @@ extension GameLevel {
         for obstacle in obstacles {
             removeObstacle(obstacle: obstacle)
         }
+    }
+
+    func getFreeBall() {
+        numBalls += 1
     }
 }

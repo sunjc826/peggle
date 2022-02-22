@@ -12,7 +12,7 @@ enum TeleportSetting {
     case by(vector: CGVector)
 }
 
-class TeleportObject {
+class Teleport {
     let teleportType: TeleportType
     let teleportSetting: TeleportSetting
     init(teleportType: TeleportType, teleportSetting: TeleportSetting) {

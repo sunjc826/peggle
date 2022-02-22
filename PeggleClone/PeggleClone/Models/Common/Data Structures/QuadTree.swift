@@ -144,9 +144,9 @@ class QuadTree<T>: NeighborFinder where T: Equatable, T: HasBoundingBox, T: AnyO
             case ChildIndex.topLeft.rawValue:
                 topLeft = parentBoundingBox.topLeft
             case ChildIndex.topRight.rawValue:
-                topLeft = parentBoundingBox.topLeft.translateX(x: ownBoundingBoxWidth)
+                topLeft = parentBoundingBox.topLeft.translateX(dx: ownBoundingBoxWidth)
             case ChildIndex.bottomLeft.rawValue:
-                topLeft = parentBoundingBox.topLeft.translateY(y: ownBoundingBoxHeight)
+                topLeft = parentBoundingBox.topLeft.translateY(dy: ownBoundingBoxHeight)
             case ChildIndex.bottomRight.rawValue:
                 topLeft = parentBoundingBox.topLeft.translate(dx: ownBoundingBoxWidth, dy: ownBoundingBoxHeight)
             default:

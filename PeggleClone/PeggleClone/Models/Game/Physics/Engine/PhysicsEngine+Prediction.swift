@@ -17,10 +17,10 @@ extension PhysicsEngine {
         predictResolveBoundaryCollisions(rigidBody: rigidBody)
         predictResolveCollisions(rigidBody: rigidBody)
 
-        rigidBody.longTermDelta.persistentForces.forEach { rigidBody.addForce(force: $0) }
+        rigidBody.longTermDelta.persistentForces.forEach { rigidBody.addForce($0) }
         rigidBody.physicsEngineReports.teleports.forEach { rigidBody.addTeleport($0) }
-        rigidBody.physicsEngineReports.forces.forEach { rigidBody.addForce(force: $0) }
-        rigidBody.physicsEngineReports.impulses.forEach { rigidBody.addImpulseAtPosition(impulse: $0) }
+        rigidBody.physicsEngineReports.forces.forEach { rigidBody.addForce($0) }
+        rigidBody.physicsEngineReports.impulses.forEach { rigidBody.addImpulse($0) }
 
         let (newPosition, newLinearVelocity) = rigidBody.getUpdatedLinearData(time: dt)
 
@@ -68,7 +68,7 @@ extension PhysicsEngine {
             break
         case .wrapAround:
             if rigidBody.boundingBox.maxX <= boundary.minX {
-                let teleport = TeleportObject(
+                let teleport = Teleport(
                     teleportType: .wallWrapAround,
                     teleportSetting: .to(point: CGPoint(x: boundary.maxX, y: rigidBody.center.x))
                 )
@@ -90,7 +90,7 @@ extension PhysicsEngine {
             break
         case .wrapAround:
             if rigidBody.boundingBox.minX >= boundary.maxX {
-                let teleport = TeleportObject(
+                let teleport = Teleport(
                     teleportType: .wallWrapAround,
                     teleportSetting: .to(point: CGPoint(x: boundary.minX, y: rigidBody.center.x))
                 )
@@ -112,7 +112,7 @@ extension PhysicsEngine {
             break
         case .wrapAround:
             if rigidBody.boundingBox.maxY <= boundary.minY {
-                let teleport = TeleportObject(
+                let teleport = Teleport(
                     teleportType: .wallWrapAround,
                     teleportSetting: .to(point: CGPoint(x: rigidBody.center.x, y: boundary.maxY))
                 )
@@ -134,7 +134,7 @@ extension PhysicsEngine {
             break
         case .wrapAround:
             if rigidBody.boundingBox.minY >= boundary.maxY {
-                let teleport = TeleportObject(
+                let teleport = Teleport(
                     teleportType: .wallWrapAround,
                     teleportSetting: .to(point: CGPoint(x: rigidBody.center.x, y: boundary.minY))
                 )

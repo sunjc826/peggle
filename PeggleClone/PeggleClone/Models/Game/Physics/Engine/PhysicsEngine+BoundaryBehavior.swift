@@ -28,7 +28,7 @@ extension PhysicsEngine {
             }
         case .wrapAround:
             if rigidBody.boundingBox.maxX <= boundary.minX {
-                let teleport = TeleportObject(
+                let teleport = Teleport(
                     teleportType: .wallWrapAround,
                     teleportSetting: .to(point: CGPoint(x: boundary.maxX, y: rigidBody.center.x))
                 )
@@ -54,7 +54,7 @@ extension PhysicsEngine {
             }
         case .wrapAround:
             if rigidBody.boundingBox.minX >= boundary.maxX {
-                let teleport = TeleportObject(
+                let teleport = Teleport(
                     teleportType: .wallWrapAround,
                     teleportSetting: .to(point: CGPoint(x: boundary.minX, y: rigidBody.center.x))
                 )
@@ -80,7 +80,7 @@ extension PhysicsEngine {
             }
         case .wrapAround:
             if rigidBody.boundingBox.maxY <= boundary.minY {
-                let teleport = TeleportObject(
+                let teleport = Teleport(
                     teleportType: .wallWrapAround,
                     teleportSetting: .to(point: CGPoint(x: rigidBody.center.x, y: boundary.maxY))
                 )
@@ -106,7 +106,7 @@ extension PhysicsEngine {
             }
         case .wrapAround:
             if rigidBody.boundingBox.minY >= boundary.maxY {
-                let teleport = TeleportObject(
+                let teleport = Teleport(
                     teleportType: .wallWrapAround,
                     teleportSetting: .to(point: CGPoint(x: rigidBody.center.x, y: boundary.minY))
                 )
@@ -124,7 +124,7 @@ extension PhysicsEngine {
                     (1 + rigidBody.physicalProperties.elasticity)
                     * rigidBody.physicalProperties.mass
             )
-        let impulse = ImpulseObject(
+        let impulse = Impulse(
             impulseType: .wallCollision(impulseVector: impulseVector),
             impulsePosition: .center)
         rigidBody.physicsEngineReports.impulses.append(impulse)
@@ -138,7 +138,7 @@ extension PhysicsEngine {
                     (1 + rigidBody.physicalProperties.elasticity)
                 * rigidBody.physicalProperties.mass
             )
-        let impulse = ImpulseObject(
+        let impulse = Impulse(
             impulseType: .wallCollision(impulseVector: impulseVector),
             impulsePosition: .center
         )

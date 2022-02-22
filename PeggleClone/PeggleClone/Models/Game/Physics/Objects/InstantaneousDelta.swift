@@ -9,6 +9,7 @@ class InstantaneousDelta {
     var angularImpulseIgnoringTorque: Double = 0
     var shouldRegisterCollision = false
     var changeToWrapAroundCount: CounterChange = .doNothing
+    var shouldDelete = false
 }
 
 enum CounterChange {

@@ -2,13 +2,13 @@ import Foundation
 import CoreGraphics
 
 extension Bucket {
-    func getRigidBodies() -> [RigidBody] {
-        let leftRigidBody = left.toRigidBody()
-        leftRigidBody.associatedEntity = left
-        let rightRigidBody = right.toRigidBody()
-        rightRigidBody.associatedEntity = right
-        let receiverRigidBody = receiver.toRigidBody()
-        receiverRigidBody.associatedEntity = receiver
+    func getRigidBodies(initialVelocity: CGVector) -> [RigidBody] {
+        let leftRigidBody = leftSide.toRigidBody(initialVelocity: initialVelocity)
+        leftSide.rigidBody = leftRigidBody
+        let rightRigidBody = rightSide.toRigidBody(initialVelocity: initialVelocity)
+        rightSide.rigidBody = rightRigidBody
+        let receiverRigidBody = receiver.toRigidBody(initialVelocity: initialVelocity)
+        receiver.rigidBody = receiverRigidBody
         return [
             leftRigidBody,
             rightRigidBody,
@@ -18,40 +18,61 @@ extension Bucket {
 }
 
 extension BucketLeftSide {
-    func toRigidBody() -> RigidBody {
+    func toRigidBody(initialVelocity: CGVector) -> RigidBody {
         let physicalProperties = PhysicalProperties(backingShape: shape, uniformDensity: 1, elasticity: 1)
-        let configuration = ConfigurationForPhysicsEngine(canTranslate: true, canRotate: false)
+        let configuration = ConfigurationForPhysicsEngine(
+            canTranslate: true,
+            canRotate: false,
+            leftWallBehavior: .collide,
+            rightWallBehavior: .collide,
+            topWallBehavior: .collide,
+            bottomWallBehavior: .collide
+        )
         return RigidBody(
             physicalProperties: physicalProperties,
             associatedEntity: self,
             configuration: configuration,
-            longTermDelta: LongTermDelta()
+            longTermDelta: LongTermDelta(linearVelocity: initialVelocity)
         )
     }
 }
 
 extension BucketRightSide {
-    func toRigidBody() -> RigidBody {
+    func toRigidBody(initialVelocity: CGVector) -> RigidBody {
         let physicalProperties = PhysicalProperties(backingShape: shape, uniformDensity: 1, elasticity: 1)
-        let configuration = ConfigurationForPhysicsEngine(canTranslate: true, canRotate: false)
+        let configuration = ConfigurationForPhysicsEngine(
+            canTranslate: true,
+            canRotate: false,
+            leftWallBehavior: .collide,
+            rightWallBehavior: .collide,
+            topWallBehavior: .collide,
+            bottomWallBehavior: .collide
+        )
         return RigidBody(
             physicalProperties: physicalProperties,
             associatedEntity: self,
             configuration: configuration,
-            longTermDelta: LongTermDelta()
+            longTermDelta: LongTermDelta(linearVelocity: initialVelocity)
         )
     }
 }
 
 extension BucketReceiver {
-    func toRigidBody() -> RigidBody {
+    func toRigidBody(initialVelocity: CGVector) -> RigidBody {
         let physicalProperties = PhysicalProperties(backingShape: shape, uniformDensity: 1, elasticity: 1)
-        let configuration = ConfigurationForPhysicsEngine(canTranslate: true, canRotate: false)
+        let configuration = ConfigurationForPhysicsEngine(
+            canTranslate: true,
+            canRotate: false,
+            leftWallBehavior: .collide,
+            rightWallBehavior: .collide,
+            topWallBehavior: .collide,
+            bottomWallBehavior: .collide
+        )
         return RigidBody(
             physicalProperties: physicalProperties,
             associatedEntity: self,
             configuration: configuration,
-            longTermDelta: LongTermDelta()
+            longTermDelta: LongTermDelta(linearVelocity: initialVelocity)
         )
     }
 }

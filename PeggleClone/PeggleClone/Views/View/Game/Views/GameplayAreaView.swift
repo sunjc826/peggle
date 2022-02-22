@@ -1,5 +1,3 @@
 import UIKit
 
-class GameplayAreaView: UIView {
-
-}
+class GameplayAreaView: UIView {}

@@ -29,12 +29,15 @@ extension PhysicsEngine {
         neighborFinder.insert(entity: rigidBody)
     }
 
+    func updateWithoutFurtherProcessing(oldRigidBody: RigidBody, with updatedRigidBody: RigidBody) {
+        removeWithoutFurtherProcessing(rigidBody: oldRigidBody)
+        addWithoutFurtherProcessing(rigidBody: updatedRigidBody)
+    }
+
     func removeWithoutFurtherProcessing(rigidBody: RigidBody) {
         rigidBodies.remove(rigidBody)
-        if rigidBody.configuration.canTranslate || rigidBody.configuration.canRotate {
-            changeableRigidBodies.remove(rigidBody)
-        }
-
+        changeableRigidBodies.remove(rigidBody)
+        bodiesMarkedForNotification.remove(rigidBody)
         neighborFinder.remove(entity: rigidBody)
     }
 }

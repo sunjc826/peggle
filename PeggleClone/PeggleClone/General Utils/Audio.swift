@@ -9,7 +9,7 @@ class Audio {
     init() {
         do {
             try AVAudioSession.sharedInstance().setCategory(.ambient, mode: .default)
-            try AVAudioSession.sharedInstance().setActive(true)
+            try AVAudioSession.sharedInstance().setActive(true, options: .notifyOthersOnDeactivation)
 
         } catch {
             globalLogger.error(error.localizedDescription)

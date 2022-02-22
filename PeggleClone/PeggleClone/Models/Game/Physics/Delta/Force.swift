@@ -18,7 +18,7 @@ enum ForcePosition {
     case point(CGPoint)
 }
 
-class ForceObject {
+class Force {
     let forceType: ForceType
     let forcePosition: ForcePosition
     init(forceType: ForceType, forcePosition: ForcePosition) {
@@ -27,7 +27,7 @@ class ForceObject {
     }
 }
 
-extension ForceObject {
+extension Force {
     func getForceVector(rigidBody: RigidBody) -> CGVector {
         switch forceType {
         case .gravity(gravitationalAcceleration: let gravitationalAcceleration):

@@ -98,9 +98,16 @@ class GameViewController: UIViewController, Storyboardable {
             .store(in: &subscriptions)
 
         viewModel.audioEffectPublisher.sink { audioEffect in
-            DispatchQueue.global(qos: .background).async { [audioEffect] in
-                audioEffect?.play()
+            guard let audioEffect = audioEffect else {
+                return
             }
+
+            if audioEffect.isPlaying {
+                audioEffect.pause()
+            }
+            audioEffect.currentTime = 0
+            audioEffect.play()
+
         }.store(in: &subscriptions)
     }
 

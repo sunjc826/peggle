@@ -81,9 +81,15 @@ extension GameplayAreaViewModel {
         vmCannonLine.delegate = self
         return vmCannonLine
     }
+
+    func getBucketViewModel() -> BucketViewModel {
+        let vmBucket = BucketViewModel(bucket: gameLevel.bucket)
+        vmBucket.delegate = self
+        return vmBucket
+    }
 }
 
-extension GameplayAreaViewModel: CannonLineViewModelDelegate {
+extension GameplayAreaViewModel: CannonLineViewModelDelegate, BucketViewModelDelegate {
     func getDisplayCoords(of logicalCoords: CGPoint) -> CGPoint {
         guard let delegate = delegate else {
             fatalError("should not be nil")

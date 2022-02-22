@@ -41,14 +41,14 @@ class CGPointTests: XCTestCase {
 
     func testTranslateX() {
         let point = CGPoint(x: 0, y: 0)
-        let translatedPoint = point.translateX(x: 1)
+        let translatedPoint = point.translateX(dx: 1)
         XCTAssertEqual(translatedPoint.x, 1)
         XCTAssertEqual(translatedPoint.y, 0)
     }
 
     func testTranslateY() {
         let point = CGPoint(x: 0, y: 0)
-        let translatedPoint = point.translateY(y: 1)
+        let translatedPoint = point.translateY(dy: 1)
         XCTAssertEqual(translatedPoint.x, 0)
         XCTAssertEqual(translatedPoint.y, 1)
     }

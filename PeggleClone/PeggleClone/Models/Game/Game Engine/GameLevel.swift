@@ -64,7 +64,10 @@ final class GameLevel {
         let cannonPosition = CGPoint(x: playArea.boundingBox.center.x, y: 0)
         self.cannon = Cannon(position: cannonPosition)
         self.bucket = Bucket(
-            position: CGPoint(x: playArea.boundingBox.center.x, y: playArea.boundingBox.maxY - Settings.Bucket.distanceFromBottomOfPlayArea)
+            position: CGPoint(
+                x: playArea.boundingBox.center.x,
+                y: playArea.boundingBox.maxY - Settings.Bucket.distanceFromBottomOfPlayArea
+            )
         )
         self.physicsEngine = PhysicsEngine(
             coordinateMapper: coordinateMapper,
@@ -85,6 +88,7 @@ final class GameLevel {
         )
         playArea = coordinateMapper.getPlayArea()
         physicsEngine.coordinateMapper = coordinateMapper
+        addBucket(bucket: bucket)
         for persistablePeg in incomingLevel.pegs {
             let peg = Peg.fromPersistable(persistablePeg: persistablePeg)
             addPeg(peg: peg)

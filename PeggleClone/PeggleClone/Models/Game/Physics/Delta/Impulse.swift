@@ -6,7 +6,7 @@ enum ImpulseType {
     case collision(impulseVector: CGVector, dueTo: RigidBody)
 }
 
-class ImpulseObject {
+class Impulse {
     let impulseType: ImpulseType
     let impulsePosition: ForcePosition
     init(impulseType: ImpulseType, impulsePosition: ForcePosition) {

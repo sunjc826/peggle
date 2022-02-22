@@ -10,6 +10,7 @@ protocol AbstractPhysicsEngine: AnyObject {
     func remove(by predicate: Predicate<RigidBody>)
     func add(rigidBody: RigidBody)
     func update(oldRigidBody: RigidBody, with updatedRigidBody: RigidBody)
+    func updateWithoutFurtherProcessing(oldRigidBody: RigidBody, with updatedRigidBody: RigidBody)
     func remove(rigidBody: RigidBody)
     func registerDidUpdateCallback(callback: @escaping BinaryFunction<RigidBody>)
     func registerDidRemoveCallback(callback: @escaping UnaryFunction<RigidBody>)

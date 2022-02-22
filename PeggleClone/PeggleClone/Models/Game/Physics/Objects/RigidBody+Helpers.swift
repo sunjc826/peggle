@@ -14,41 +14,41 @@ extension RigidBody {
         backingShape.areaMomentOfInertia
     }
 
-    func addTeleport(_ teleport: TeleportObject) {
-        instanteneousDelta.nextTeleportLocation = teleport.getTeleportLocation(rigidBody: self)
+    func addTeleport(_ teleport: Teleport) {
+        instantaneousDelta.nextTeleportLocation = teleport.getTeleportLocation(rigidBody: self)
     }
 
-    func addTorque(torque: Double) {
-        instanteneousDelta.torque += torque
+    func addTorque(_ torque: Double) {
+        instantaneousDelta.torque += torque
     }
 
-    func addForce(force: ForceObject) {
+    func addForce(_ force: Force) {
         let forceVector = force.getForceVector(rigidBody: self)
-        instanteneousDelta.force = instanteneousDelta.force.add(with: forceVector)
+        instantaneousDelta.force = instantaneousDelta.force.add(with: forceVector)
         switch force.forcePosition {
         case .center:
             break
         case .point(let position):
-            addTorque(torque: CGVector.crossProductSignedMagnitude(
+            addTorque(CGVector.crossProductSignedMagnitude(
                 vector: CGVector(from: center, to: position),
                 otherVector: forceVector
             ))
         }
     }
 
-    func addAngularImpulse(angularImpulse: Double) {
-        instanteneousDelta.angularImpulseIgnoringTorque += angularImpulse
+    func addAngularImpulse(_ angularImpulse: Double) {
+        instantaneousDelta.angularImpulseIgnoringTorque += angularImpulse
     }
 
-    func addImpulseAtPosition(impulse: ImpulseObject) {
+    func addImpulse(_ impulse: Impulse) {
         let impulseVector = impulse.getImpulseVector(rigidBody: self)
-        instanteneousDelta.impulseIgnoringForce = instanteneousDelta.impulseIgnoringForce.add(with: impulseVector)
+        instantaneousDelta.impulseIgnoringForce = instantaneousDelta.impulseIgnoringForce.add(with: impulseVector)
 
         switch impulse.impulsePosition {
         case .center:
             break
         case .point(let position):
-            addAngularImpulse(angularImpulse: CGVector.crossProductSignedMagnitude(
+            addAngularImpulse(CGVector.crossProductSignedMagnitude(
                 vector: CGVector(from: center, to: position),
                 otherVector: impulseVector
             ))
@@ -61,12 +61,12 @@ extension RigidBody {
     func getUpdatedLinearData(time dt: Double) -> (newPosition: CGPoint, newLinearVelocity: CGVector) {
         assert(dt >= 0, "Time does not go backward")
         var newPosition = center
-        if let unwrappedTeleportLocation = instanteneousDelta.nextTeleportLocation {
+        if let unwrappedTeleportLocation = instantaneousDelta.nextTeleportLocation {
             newPosition = unwrappedTeleportLocation
         }
-        let linearAcceleration = instanteneousDelta.force.scaleBy(factor: physicalProperties.inverseMass)
+        let linearAcceleration = instantaneousDelta.force.scaleBy(factor: physicalProperties.inverseMass)
         let deltaLinearVelocityDueToAcceleration = linearAcceleration.scaleBy(factor: dt)
-        let deltaLinearVelocityDueToImpulseIgnoringAcceleration = instanteneousDelta
+        let deltaLinearVelocityDueToImpulseIgnoringAcceleration = instantaneousDelta
             .impulseIgnoringForce
             .scaleBy(factor: physicalProperties.inverseMass)
 
@@ -82,10 +82,10 @@ extension RigidBody {
 
     func getUpdatedAngularData(time dt: Double) -> (newAngle: Double, newAngularVelocity: Double) {
         assert(dt >= 0, "Time does not go backward")
-        let angularAcceleration = instanteneousDelta.torque * physicalProperties.inverseMomentOfInertia
+        let angularAcceleration = instantaneousDelta.torque * physicalProperties.inverseMomentOfInertia
         let deltaAngularVelocityDueToAcceleration = angularAcceleration * dt
         let deltaAngularVelocityDueToImpulseIgnoringAcceleration =
-            instanteneousDelta.angularImpulseIgnoringTorque * physicalProperties.inverseMomentOfInertia
+            instantaneousDelta.angularImpulseIgnoringTorque * physicalProperties.inverseMomentOfInertia
 
         let deltaAngularVelocity = deltaAngularVelocityDueToAcceleration +
             deltaAngularVelocityDueToImpulseIgnoringAcceleration

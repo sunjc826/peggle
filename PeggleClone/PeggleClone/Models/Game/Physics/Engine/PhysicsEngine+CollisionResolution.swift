@@ -62,15 +62,15 @@ extension PhysicsEngine {
             impulseVector = normalOfIntersection.scaleBy(factor: signedMagnitudeOfImpulse)
         }
 
-        let impulse: ImpulseObject
+        let impulse: Impulse
 
         if let presentPenetrationPoint = penetrationPoint {
-            impulse = ImpulseObject(
+            impulse = Impulse(
                 impulseType: .collision(impulseVector: impulseVector, dueTo: otherRigidBody),
                 impulsePosition: .point(presentPenetrationPoint)
             )
         } else {
-            impulse = ImpulseObject(
+            impulse = Impulse(
                 impulseType: .collision(impulseVector: impulseVector, dueTo: otherRigidBody),
                 impulsePosition: .center
             )
@@ -87,7 +87,7 @@ extension PhysicsEngine {
         let normalOfIntersection = collisionData.normalizedNormalOfIntersection
         let depthOfIntersection = collisionData.depthOfIntersectionAlongNormal
         let teleportationVector = normalOfIntersection.reverse().scaleBy(factor: depthOfIntersection)
-        let teleport = TeleportObject(
+        let teleport = Teleport(
             teleportType: .collision(dueTo: otherRigidBody),
             teleportSetting: .by(vector: teleportationVector)
         )

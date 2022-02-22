@@ -1,9 +1,9 @@
 import Foundation
 import CoreGraphics
 class PhysicsEngineReports {
-    var teleports: [TeleportObject] = []
-    var forces: [ForceObject] = []
-    var impulses: [ImpulseObject] = []
+    var teleports: [Teleport] = []
+    var forces: [Force] = []
+    var impulses: [Impulse] = []
 
     // MARK: Other misc flags
 

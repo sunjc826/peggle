@@ -6,7 +6,7 @@ final class RigidBody: HasBoundingBox, Equatable, Hashable {
     var physicalProperties: PhysicalProperties
     var configuration: ConfigurationForPhysicsEngine
     var physicsEngineReports = PhysicsEngineReports()
-    var instanteneousDelta = InstantaneousDelta()
+    var instantaneousDelta = InstantaneousDelta()
     var longTermDelta: LongTermDelta
     var localizedForceEmitter: LocalizedRadialForceEmitter?
     var miscProperties = MiscProperties()
@@ -83,7 +83,6 @@ final class RigidBody: HasBoundingBox, Equatable, Hashable {
 
     /// Copies some properties of a given rigid body.
     /// - warning: Only some of the properties are copied,
-    /// in particular the physical properties of acceleration and impulse are not.
     convenience init(instance: RigidBody) {
         self.init(
             physicalProperties: PhysicalProperties(instance: instance.physicalProperties),

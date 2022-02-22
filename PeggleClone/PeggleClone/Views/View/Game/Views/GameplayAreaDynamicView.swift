@@ -3,10 +3,13 @@ import Combine
 
 private let cannonImage = #imageLiteral(resourceName: "cannon")
 private let backgroundImage = #imageLiteral(resourceName: "background")
+private let bucketImage = #imageLiteral(resourceName: "bucket")
+
 class GameplayAreaDynamicView: UIView {
     var ivCannon: UIImageView
     var ivBackground: UIImageView
     var vCannonLine: CannonLineView
+    var ivBucket: BucketView
 
     var viewModel: GameplayAreaViewModel? {
         didSet {
@@ -21,10 +24,12 @@ class GameplayAreaDynamicView: UIView {
         ivBackground = UIImageView(image: backgroundImage)
         ivCannon = UIImageView(image: cannonImage)
         vCannonLine = CannonLineView()
+        ivBucket = BucketView(image: bucketImage)
         super.init(frame: frame)
         addSubview(ivBackground)
         addSubview(ivCannon)
         addSubview(vCannonLine)
+        addSubview(ivBucket)
         ivBackground.frame = bounds
         ivBackground.contentMode = .scaleAspectFill
         ivCannon.frame = CGRect(x: 0, y: 0, width: 150, height: 150)
@@ -52,6 +57,7 @@ extension GameplayAreaDynamicView {
             fatalError("should not be nil")
         }
         vCannonLine.viewModel = viewModel.getCannonLineViewModel()
+        ivBucket.viewModel = viewModel.getBucketViewModel()
     }
 
     private func setupBindingsWithViewModel() {

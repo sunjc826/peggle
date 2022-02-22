@@ -37,19 +37,19 @@ extension PhysicsEngine {
 
         switch emitter.forceType {
         case .explosion:
-            let explosiveForce = ForceObject(
+            let explosiveForce = Force(
                 forceType: .explosion(emitter: emitter, direction: direction),
                 forcePosition: .center
             )
             neighbor.physicsEngineReports.forces.append(explosiveForce)
         case .attraction:
-            let attractiveForce = ForceObject(
+            let attractiveForce = Force(
                 forceType: .attraction(emitter: emitter, direction: direction),
                 forcePosition: .center
             )
             neighbor.physicsEngineReports.forces.append(attractiveForce)
         case .replusion:
-            let repulsiveForce = ForceObject(
+            let repulsiveForce = Force(
                 forceType: .repulsion(emitter: emitter, direction: direction),
                 forcePosition: .center
             )

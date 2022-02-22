@@ -4,9 +4,9 @@ import CoreGraphics
 class LongTermDelta {
     var linearVelocity: CGVector
     var angularVelocity: Double
-    var persistentForces: [ForceObject]
+    var persistentForces: [Force]
 
-    init(linearVelocity: CGVector = CGVector.zero, angularVelocity: Double = 0, persistentForces: [ForceObject] = []) {
+    init(linearVelocity: CGVector = CGVector.zero, angularVelocity: Double = 0, persistentForces: [Force] = []) {
         self.linearVelocity = linearVelocity
         self.angularVelocity = angularVelocity
         self.persistentForces = persistentForces

@@ -4,64 +4,120 @@ import CoreGraphics
 extension GameLevel {
     func physicsEngineDidUpdate(oldRigidBody: RigidBody, updatedRigidBody: RigidBody) {
         let oldEntity = oldRigidBody.associatedEntity
-        let updatedPosition = updatedRigidBody.center
-        let updatedRotation = updatedRigidBody.rotation
-
         switch oldEntity {
         case let oldBall as Ball:
-            if updatedRigidBody.miscProperties.consecutiveCollisionCount > GameLevel.consecutiveCollisionThreshold {
-                gamePhase = .stuck
-            }
-
-            if updatedRigidBody.miscProperties.consecutiveCollisionCount == 1 {
-                gameEvents.send(.ballCollision)
-            }
-
-            let updatedBall = Ball(instance: oldBall)
-            updatedBall.center = updatedPosition
-            updatedRigidBody.associatedEntity = updatedBall
-            updatedBall.rigidBody = updatedRigidBody
-            if case .spooky(activeCount: _) = special {
-                updateSpookyStatus(oldBall: oldBall, updatedBall: updatedBall)
-            }
-            updateBall(oldBall: oldBall, with: updatedBall)
+            physicsEngineDidUpdateBall(
+                oldBall: oldBall,
+                oldRigidBody: oldRigidBody,
+                updatedRigidBody: updatedRigidBody
+            )
         case let oldPeg as Peg:
-            let updatedPeg = Peg(instance: oldPeg)
-            updatedPeg.shape.center = updatedPosition
-            updatedPeg.shape.rotation = updatedRotation
-            if updatedRigidBody.miscProperties.consecutiveCollisionCount > 0 {
-                updatedPeg.hasCollided = true
-                didAnyBallHitAnyPegInLastRound = true
-            }
-
-            updatedRigidBody.associatedEntity = updatedPeg
-            updatedPeg.rigidBody = updatedRigidBody
-
-            // Is first time collision with special
-            if updatedPeg.hasCollided && updatedPeg.pegType == .special && !oldPeg.hasCollided {
-                physicsEngine.registerDidFinishAllUpdatesCallback(callback: { [weak self] in
-                    guard let self = self else {
-                        return
-                    }
-
-                    self.handleHitSpecialPeg(oldSpecialPeg: oldPeg, updatedSpecialPeg: updatedPeg)
-                }, temp: true)
-            }
-
-            updatePeg(oldPeg: oldPeg, with: updatedPeg)
+            physicsEngineDidUpdatePeg(
+                oldPeg: oldPeg,
+                oldRigidBody: oldRigidBody,
+                updatedRigidBody: updatedRigidBody
+            )
         case let oldObstacle as Obstacle:
-            let updatedObstacle = Obstacle(instance: oldObstacle)
-            updatedObstacle.shape.center = updatedPosition
-            updatedObstacle.shape.rotation = updatedRotation
-            updatedRigidBody.associatedEntity = updatedObstacle
-            updatedObstacle.rigidBody = updatedRigidBody
-            updateObstacle(oldObstacle: oldObstacle, with: updatedObstacle)
+            physicsEngineDidUpdateObstacle(
+                oldObstacle: oldObstacle,
+                oldRigidBody: oldRigidBody,
+                updatedRigidBody: updatedRigidBody
+            )
+        case let bucketComponent as AbstractBucketComponentObject:
+            physicsEngineDidUpdateBucket(
+                oldBucketComponent: bucketComponent,
+                oldRigidBody: oldRigidBody,
+                updatedRigidBody: updatedRigidBody
+            )
         default:
             break
         }
     }
 
-    func updateSpookyStatus(oldBall: Ball, updatedBall: Ball) {
+    func physicsEngineDidUpdateBall(oldBall: Ball, oldRigidBody: RigidBody, updatedRigidBody: RigidBody) {
+        let updatedPosition = updatedRigidBody.center
+        if updatedRigidBody.miscProperties.consecutiveCollisionCount > GameLevel.consecutiveCollisionThreshold {
+            gamePhase = .stuck
+        }
+
+        if updatedRigidBody.miscProperties.consecutiveCollisionCount == 1 {
+            gameEvents.send(.ballCollision)
+        }
+
+        let updatedBall = Ball(instance: oldBall)
+        updatedBall.center = updatedPosition
+        updatedRigidBody.associatedEntity = updatedBall
+        updatedBall.rigidBody = updatedRigidBody
+        if case .spooky(activeCount: _) = special {
+            updateSpookyStatus(oldBall: oldBall, updatedBall: updatedBall)
+        }
+        updateBall(oldBall: oldBall, with: updatedBall)
+    }
+
+    func physicsEngineDidUpdatePeg(oldPeg: Peg, oldRigidBody: RigidBody, updatedRigidBody: RigidBody) {
+        let updatedPosition = updatedRigidBody.center
+        let updatedRotation = updatedRigidBody.rotation
+        let updatedPeg = Peg(instance: oldPeg)
+        updatedPeg.shape.center = updatedPosition
+        updatedPeg.shape.rotation = updatedRotation
+        if updatedRigidBody.miscProperties.consecutiveCollisionCount > 0 {
+            updatedPeg.hasCollided = true
+            didAnyBallHitAnyPegInLastRound = true
+        }
+
+        updatedRigidBody.associatedEntity = updatedPeg
+        updatedPeg.rigidBody = updatedRigidBody
+
+        if isFirstTimeCollisionWithSpecial(oldPeg: oldPeg, updatedPeg: updatedPeg) {
+            physicsEngine.registerDidFinishAllUpdatesCallback(callback: { [weak self] in
+                guard let self = self else {
+                    return
+                }
+
+                self.handleHitSpecialPeg(oldSpecialPeg: oldPeg, updatedSpecialPeg: updatedPeg)
+            }, temp: true)
+        }
+
+        updatePeg(oldPeg: oldPeg, with: updatedPeg)
+    }
+
+    func physicsEngineDidUpdateObstacle(oldObstacle: Obstacle, oldRigidBody: RigidBody, updatedRigidBody: RigidBody) {
+        let updatedPosition = updatedRigidBody.center
+        let updatedRotation = updatedRigidBody.rotation
+        let updatedObstacle = Obstacle(instance: oldObstacle)
+        updatedObstacle.shape.center = updatedPosition
+        updatedObstacle.shape.rotation = updatedRotation
+        updatedRigidBody.associatedEntity = updatedObstacle
+        updatedObstacle.rigidBody = updatedRigidBody
+        updateObstacle(oldObstacle: oldObstacle, with: updatedObstacle)
+    }
+
+    func physicsEngineDidUpdateBucket(
+        oldBucketComponent: AbstractBucketComponentObject,
+        oldRigidBody: RigidBody,
+        updatedRigidBody: RigidBody
+    ) {
+        let updatedPosition = updatedRigidBody.center
+        oldBucketComponent.shape.center = updatedPosition
+        oldBucketComponent.rigidBody = updatedRigidBody
+
+        guard let parent = oldBucketComponent.parent else {
+            fatalError("should not be nil")
+        }
+
+        guard oldBucketComponent === parent.receiver else {
+            return
+        }
+
+        // only 1 component of the bucket should update the bucket's position
+        parent.position = updatedPosition
+    }
+
+    private func isFirstTimeCollisionWithSpecial(oldPeg: Peg, updatedPeg: Peg) -> Bool {
+        updatedPeg.hasCollided && updatedPeg.pegType == .special && !oldPeg.hasCollided
+    }
+
+    private func updateSpookyStatus(oldBall: Ball, updatedBall: Ball) {
         guard let updatedRigidBody = updatedBall.rigidBody else {
             fatalError("should not be nil")
         }
@@ -81,7 +137,7 @@ extension GameLevel {
         }
     }
 
-    func handleHitSpecialPeg(oldSpecialPeg: Peg, updatedSpecialPeg: Peg) {
+    private func handleHitSpecialPeg(oldSpecialPeg: Peg, updatedSpecialPeg: Peg) {
         gameEvents.send(.specialPegHit)
         guard let updatedPegRigidBody: RigidBody = updatedSpecialPeg.rigidBody else {
             globalLogger.error("cannot find rigid body")
@@ -129,7 +185,7 @@ extension GameLevel {
         }
     }
 
-    func addMultiball(updatedSpecialPeg: Peg) {
+    private func addMultiball(updatedSpecialPeg: Peg) {
         gameEvents.send(.ballMultiply)
         let ball: Ball
         let directionVector: CGVector
@@ -167,7 +223,7 @@ extension GameLevel {
             )
         )
 
-        let moonGravity = ForceObject(
+        let moonGravity = Force(
             forceType: moonGravityType,
             forcePosition: .center
         )
@@ -190,7 +246,7 @@ extension GameLevel {
             )
         )
 
-        let regularGravity = ForceObject(
+        let regularGravity = Force(
             forceType: regularGravityType,
             forcePosition: .center
         )

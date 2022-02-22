@@ -53,8 +53,8 @@ class PhysicsEngine: AbstractPhysicsEngine {
 
     func simulateAll(time dt: Double) {
         calculateWithoutApplyingResults()
-        cleanup()
         notifyDelegate()
+        cleanup()
         applyResults(time: dt)
         runCallbacksAfterAllUpdates()
     }
@@ -76,6 +76,9 @@ extension PhysicsEngine {
 
         for rigidBody in bodiesMarkedForNotification {
             delegate.notify(changedRigidBody: rigidBody)
+            if rigidBody.instantaneousDelta.shouldDelete {
+                bodiesMarkedForDeletion.insert(rigidBody)
+            }
         }
     }
 
@@ -92,7 +95,7 @@ extension PhysicsEngine {
         for rigidBody in bodiesToUpdate {
             let updatedRigidBody = RigidBody(instance: rigidBody)
 
-            if rigidBody.instanteneousDelta.shouldRegisterCollision {
+            if rigidBody.instantaneousDelta.shouldRegisterCollision {
                 updatedRigidBody.miscProperties.consecutiveCollisionCount =
                     rigidBody.miscProperties.consecutiveCollisionCount + 1
             } else {
@@ -100,7 +103,7 @@ extension PhysicsEngine {
             }
 
             updatedRigidBody.miscProperties.wrapAroundCount.updateWith(
-                counterChange: rigidBody.instanteneousDelta.changeToWrapAroundCount
+                counterChange: rigidBody.instantaneousDelta.changeToWrapAroundCount
             )
 
             if let localizedForceEmitter = rigidBody.localizedForceEmitter {
@@ -112,7 +115,7 @@ extension PhysicsEngine {
             }
 
             for force in rigidBody.longTermDelta.persistentForces {
-                updatedRigidBody.addForce(force: force)
+                updatedRigidBody.addForce(force)
             }
 
             if rigidBody.configuration.canTranslate {

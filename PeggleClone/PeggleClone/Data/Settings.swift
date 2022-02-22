@@ -71,7 +71,7 @@ struct Settings {
     }
 
     struct Cannon {
-        static let defaultEjectionSpeed: Double = 0.20
+        static let defaultEjectionSpeed: Double = 0.35
     }
 
     struct Bucket {
@@ -79,6 +79,7 @@ struct Settings {
         static let height: Double = 0.15
         static let thickness: Double = 0.05
         static let distanceFromBottomOfPlayArea = 0.20
+        static let xVelocity: Double = 0.01
     }
 
     enum Alpha: Double {
