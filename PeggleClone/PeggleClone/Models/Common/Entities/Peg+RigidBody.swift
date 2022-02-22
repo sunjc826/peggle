@@ -2,29 +2,37 @@ import Foundation
 import CoreGraphics
 
 extension Peg {
-    func toRigidBody() -> RigidBodyObject {
+    func toRigidBody() -> RigidBody {
+        let physicalProperties: PhysicalProperties
+        let configuration: ConfigurationForPhysicsEngine
         switch shape {
         case let circle as CircleObject:
-            return RigidBodyObject(
+            physicalProperties = PhysicalProperties(
                 backingShape: circle,
-                associatedEntity: self,
-                canTranslate: Settings.Peg.canTranslate,
-                canRotate: false,
                 uniformDensity: Settings.Peg.uniformDensity,
                 elasticity: Settings.Peg.elasticity
             )
-
+            configuration = ConfigurationForPhysicsEngine(
+                canTranslate: Settings.Peg.canTranslate,
+                canRotate: false
+            )
         case let polygon as TransformablePolygonObject:
-            return RigidBodyObject(
+            physicalProperties = PhysicalProperties(
                 backingShape: polygon,
-                associatedEntity: self,
-                canTranslate: Settings.Peg.canTranslate,
-                canRotate: Settings.Peg.Polygonal.canRotate,
                 uniformDensity: Settings.Peg.uniformDensity,
                 elasticity: Settings.Peg.elasticity
             )
+            configuration = ConfigurationForPhysicsEngine(
+                canTranslate: Settings.Peg.canTranslate, canRotate: Settings.Peg.Polygonal.canRotate)
         default:
             fatalError(shapeCastingMessage)
         }
+
+        return RigidBody(
+            physicalProperties: physicalProperties,
+            associatedEntity: self,
+            configuration: configuration,
+            longTermDelta: LongTermDelta()
+        )
     }
 }

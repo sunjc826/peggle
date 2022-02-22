@@ -3,7 +3,7 @@ import CoreGraphics
 
 /// Represents an indestructible object. It does not interact with any pegs and only interacts with the ball.
 /// Due to being dynamically resizable, to ensure convexity its shape is restricted to that of a triangle.
-final class Obstacle: GameObject {
+final class Obstacle: EditableGameObject {
     var radiusOfOscillation: Double
 
     init(shape: TriangleObject, radiusOfOscillation: Double, isConcrete: Bool) {

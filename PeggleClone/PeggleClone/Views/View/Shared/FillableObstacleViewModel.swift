@@ -1,7 +1,7 @@
 import UIKit
 
 class FillableObstacleViewModel: AbstractObstacleViewModel, AbstractFillableGameObjectViewModel {
-    var gameObject: GameObject {
+    var gameObject: EditableGameObject {
         obstacle
     }
 

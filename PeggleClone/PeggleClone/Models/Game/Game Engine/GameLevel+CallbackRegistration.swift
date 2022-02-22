@@ -37,6 +37,18 @@ extension GameLevel {
         didRemoveObstacleCallbacks.append(callback)
     }
 
+    func registerDidAddBucketCallback(callback: @escaping UnaryFunction<Bucket>) {
+        didAddBucketCallbacks.append(callback)
+    }
+
+    func registerDidUpdateBucketCallback(callback: @escaping BinaryFunction<Bucket>) {
+        didUpdateBucketCallbacks.append(callback)
+    }
+
+    func registerDidRemoveBucketCallback(callback: @escaping UnaryFunction<Bucket>) {
+        didRemoveBucketCallbacks.append(callback)
+    }
+
     func registerGameDidEndCallback(callback: @escaping UnaryFunction<Bool>) {
         gameDidEndCallbacks.append(callback)
     }

@@ -25,7 +25,7 @@ class ShapeTransformViewModel {
     @Published var rotateValue: Float = 0
     @Published var shouldShowRotate = false
 
-    func updateWith(gameObject: GameObject) {
+    func updateWith(gameObject: EditableGameObject) {
         scaleValue = Float(gameObject.shape.scale)
         rotateValue = Float(gameObject.shape.rotation)
         shouldShowRotate = !(gameObject.shape is Circle)

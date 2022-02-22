@@ -1,18 +1,15 @@
 import Foundation
 import CoreGraphics
 
-class GameObject: EditableGameEntity, Hashable {
-    weak var rigidBody: RigidBodyObject?
-    var isConcrete = true
+class GameObject: GameEntity, Hashable {
+    weak var rigidBody: RigidBody?
     var shape: TransformableShape
 
-    init(shape: TransformableShape, isConcrete: Bool) {
+    init(shape: TransformableShape) {
         self.shape = shape
-        self.isConcrete = isConcrete
     }
 
     init(instance: GameObject) {
-        isConcrete = instance.isConcrete
         switch instance.shape {
         case let circle as CircleObject:
             shape = CircleObject(instance: circle)

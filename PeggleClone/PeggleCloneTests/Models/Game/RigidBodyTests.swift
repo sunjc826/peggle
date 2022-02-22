@@ -9,7 +9,7 @@ import XCTest
 @testable import PeggleClone
 
 class RigidBodyTests: XCTestCase {
-    var rigidBody: RigidBodyObject!
+    var rigidBody: RigidBody!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
@@ -19,7 +19,7 @@ class RigidBodyTests: XCTestCase {
             radiusBeforeTransform: 3
         )
 
-        rigidBody = RigidBodyObject(
+        rigidBody = RigidBody(
             backingShape: circle,
             associatedEntity: nil,
             isAffectedByGlobalForces: true,
@@ -43,7 +43,7 @@ class RigidBodyTests: XCTestCase {
     }
 
     func testInitWithInstance_valuesCopied() {
-        let copy = RigidBodyObject(instance: rigidBody)
+        let copy = RigidBody(instance: rigidBody)
 
         XCTAssert(copy.backingShape is Circle)
         XCTAssertEqual(copy.center, rigidBody.center)

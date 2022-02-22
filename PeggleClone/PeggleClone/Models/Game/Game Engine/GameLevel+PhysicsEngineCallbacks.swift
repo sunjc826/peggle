@@ -2,24 +2,23 @@ import Foundation
 import CoreGraphics
 
 extension GameLevel {
-    func physicsEngineDidUpdate(oldRigidBody: RigidBodyObject, updatedRigidBody: RigidBodyObject) {
+    func physicsEngineDidUpdate(oldRigidBody: RigidBody, updatedRigidBody: RigidBody) {
         let oldEntity = oldRigidBody.associatedEntity
         let updatedPosition = updatedRigidBody.center
         let updatedRotation = updatedRigidBody.rotation
-        let hasCollidedInLastUpdate = oldRigidBody.hasCollidedMostRecently
 
         switch oldEntity {
         case let oldBall as Ball:
-            if updatedRigidBody.consecutiveCollisionCount > GameLevel.consecutiveCollisionThreshold {
+            if updatedRigidBody.miscProperties.consecutiveCollisionCount > GameLevel.consecutiveCollisionThreshold {
                 gamePhase = .stuck
             }
 
-            if updatedRigidBody.consecutiveCollisionCount == 1 {
+            if updatedRigidBody.miscProperties.consecutiveCollisionCount == 1 {
                 gameEvents.send(.ballCollision)
             }
 
-            let updatedBall = oldBall
-                .withCenter(center: updatedPosition) // ball does not need to rotate
+            let updatedBall = Ball(instance: oldBall)
+            updatedBall.center = updatedPosition
             updatedRigidBody.associatedEntity = updatedBall
             updatedBall.rigidBody = updatedRigidBody
             if case .spooky(activeCount: _) = special {
@@ -27,11 +26,11 @@ extension GameLevel {
             }
             updateBall(oldBall: oldBall, with: updatedBall)
         case let oldPeg as Peg:
-            var updatedPeg = oldPeg
-                .withCenter(center: updatedPosition)
-                .withRotation(rotation: updatedRotation)
-            if hasCollidedInLastUpdate {
-                updatedPeg = updatedPeg.withHasCollided(hasCollided: true)
+            let updatedPeg = Peg(instance: oldPeg)
+            updatedPeg.shape.center = updatedPosition
+            updatedPeg.shape.rotation = updatedRotation
+            if updatedRigidBody.miscProperties.consecutiveCollisionCount > 0 {
+                updatedPeg.hasCollided = true
                 didAnyBallHitAnyPegInLastRound = true
             }
 
@@ -39,7 +38,7 @@ extension GameLevel {
             updatedPeg.rigidBody = updatedRigidBody
 
             // Is first time collision with special
-            if hasCollidedInLastUpdate && oldPeg.pegType == .special && !oldPeg.hasCollided {
+            if updatedPeg.hasCollided && updatedPeg.pegType == .special && !oldPeg.hasCollided {
                 physicsEngine.registerDidFinishAllUpdatesCallback(callback: { [weak self] in
                     guard let self = self else {
                         return
@@ -51,9 +50,9 @@ extension GameLevel {
 
             updatePeg(oldPeg: oldPeg, with: updatedPeg)
         case let oldObstacle as Obstacle:
-            let updatedObstacle = oldObstacle
-                .withCenter(center: updatedPosition)
-                .withRotation(rotation: updatedRotation)
+            let updatedObstacle = Obstacle(instance: oldObstacle)
+            updatedObstacle.shape.center = updatedPosition
+            updatedObstacle.shape.rotation = updatedRotation
             updatedRigidBody.associatedEntity = updatedObstacle
             updatedObstacle.rigidBody = updatedRigidBody
             updateObstacle(oldObstacle: oldObstacle, with: updatedObstacle)
@@ -63,25 +62,28 @@ extension GameLevel {
     }
 
     func updateSpookyStatus(oldBall: Ball, updatedBall: Ball) {
-        guard let oldRigidBody = oldBall.rigidBody, let updatedRigidBody = updatedBall.rigidBody else {
+        guard let updatedRigidBody = updatedBall.rigidBody else {
             fatalError("should not be nil")
         }
 
-        if oldRigidBody.hasWrappedAroundMostRecently {
-            guard case .spooky(activeCount: let activeCount) = special else {
-                fatalError("should be spooky")
-            }
-            if activeCount <= updatedRigidBody.wrapAroundCount {
-                updatedRigidBody.bottomWallBehavior = .fallThrough
-            }
+        guard case .spooky(activeCount: let activeCount) = special else {
+            fatalError("should be spooky")
+        }
+
+        guard activeCount > 0 else {
+            return
+        }
+
+        if activeCount <= updatedRigidBody.miscProperties.wrapAroundCount {
+            updatedRigidBody.configuration.bottomWallBehavior = .fallThrough
+            updatedRigidBody.miscProperties.wrapAroundCount = 0
+            special = .spooky(activeCount: 0)
         }
     }
 
-    /// - Remark: All modifications of rigid bodies are mutating,
-    /// instead of the non-mutating approach taken almost everywhere else.
     func handleHitSpecialPeg(oldSpecialPeg: Peg, updatedSpecialPeg: Peg) {
         gameEvents.send(.specialPegHit)
-        guard let updatedPegRigidBody = updatedSpecialPeg.rigidBody else {
+        guard let updatedPegRigidBody: RigidBody = updatedSpecialPeg.rigidBody else {
             globalLogger.error("cannot find rigid body")
             return
         }
@@ -94,7 +96,7 @@ extension GameLevel {
             guard let rigidBody = ball?.rigidBody else {
                 fatalError("should not be nil")
             }
-            rigidBody.bottomWallBehavior = .wrapAround
+            rigidBody.configuration.bottomWallBehavior = .wrapAround
             special = .spooky(activeCount: activeCount + 1)
         case .smallBombs:
             updatedPegRigidBody.localizedForceEmitter = LocalizedRadialForceEmitter(
@@ -157,46 +159,54 @@ extension GameLevel {
     }
 
     /// Reduces gravity for all objects affected by gravity, i.e. balls.
-    /// - Remark: A more general implementation would involve explicitly tracking what types of forces an object can be
-    /// affected by.
     func setMoonGravity() {
         gameEvents.send(.gravityLowered)
-        let moonGravity: Force = .gravity(
+        let moonGravityType: ForceType = .gravity(
             gravitationalAcceleration: coordinateMapper.getPhysicalLength(
                 ofLogicalLength: Settings.Physics.signedMagnitudeOfAccelerationDueToGravity / 6
             )
         )
 
+        let moonGravity = ForceObject(
+            forceType: moonGravityType,
+            forcePosition: .center
+        )
+
         for ball in balls {
-            ball.rigidBody?.persistentForces.removeAll(where: {
-                guard case .gravity = $0 else {
+            ball.rigidBody?.longTermDelta.persistentForces.removeAll(where: {
+                guard case .gravity = $0.forceType else {
                     return false
                 }
                 return true
             })
-            ball.rigidBody?.persistentForces.append(moonGravity)
+            ball.rigidBody?.longTermDelta.persistentForces.append(moonGravity)
         }
     }
 
     func setRegularGravity() {
-        let regularGravity: Force = .gravity(
+        let regularGravityType: ForceType = .gravity(
             gravitationalAcceleration: coordinateMapper.getPhysicalLength(
                 ofLogicalLength: Settings.Physics.signedMagnitudeOfAccelerationDueToGravity
             )
         )
 
+        let regularGravity = ForceObject(
+            forceType: regularGravityType,
+            forcePosition: .center
+        )
+
         for ball in balls {
-            ball.rigidBody?.persistentForces.removeAll(where: {
-                guard case .gravity = $0 else {
+            ball.rigidBody?.longTermDelta.persistentForces.removeAll(where: {
+                guard case .gravity = $0.forceType else {
                     return false
                 }
                 return true
             })
-            ball.rigidBody?.persistentForces.append(regularGravity)
+            ball.rigidBody?.longTermDelta.persistentForces.append(regularGravity)
         }
     }
 
-    func physicsEngineDidRemove(rigidBody: RigidBodyObject) {
+    func physicsEngineDidRemove(rigidBody: RigidBody) {
         let entity = rigidBody.associatedEntity
         switch entity {
         case let ball as Ball:

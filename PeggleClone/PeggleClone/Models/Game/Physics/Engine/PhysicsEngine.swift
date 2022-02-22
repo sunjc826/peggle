@@ -4,8 +4,13 @@ import CoreGraphics
 
 private let accelerationDueToGravity = CGVector(dx: 0, dy: Settings.Physics.signedMagnitudeOfAccelerationDueToGravity)
 
+protocol PhysicsEngineDelegate: AnyObject {
+    func notify(changedRigidBody: RigidBody)
+}
+
 /// Convention: Just like the GUI, the y axis points downward.
 class PhysicsEngine: AbstractPhysicsEngine {
+    weak var delegate: PhysicsEngineDelegate?
     var coordinateMapper: PhysicsCoordinateMapper {
         didSet {
             boundary = coordinateMapper.getBoundary()
@@ -13,15 +18,15 @@ class PhysicsEngine: AbstractPhysicsEngine {
         }
     }
     var boundary: Boundary
-    var rigidBodies: AnyContainer<RigidBodyObject>
-    var changeableRigidBodies: Set<RigidBodyObject> = []
-    var neighborFinder: AnyNeighborFinder<RigidBodyObject>
+    var rigidBodies: AnyContainer<RigidBody>
+    var changeableRigidBodies: Set<RigidBody> = []
+    var neighborFinder: AnyNeighborFinder<RigidBody>
     var collisionResolver: CollisionResolver
-    var bodiesMarkedForDeletion: Set<RigidBodyObject> = []
-    var bodiesMarkedForCalculationUpdates: Set<RigidBodyObject> = []
+    var bodiesMarkedForDeletion: Set<RigidBody> = []
+    var bodiesMarkedForNotification: Set<RigidBody> = []
 
-    var didUpdateCallbacks: [BinaryFunction<RigidBodyObject>] = []
-    var didRemoveCallbacks: [UnaryFunction<RigidBodyObject>] = []
+    var didUpdateCallbacks: [BinaryFunction<RigidBody>] = []
+    var didRemoveCallbacks: [UnaryFunction<RigidBody>] = []
     var didFinishAllUpdatesCallbacks: [Runnable] = []
     var didFinishAllUpdatesTempCallbacks: [Runnable] = []
 
@@ -30,7 +35,7 @@ class PhysicsEngine: AbstractPhysicsEngine {
         rigidBodies: T,
         neighborFinder: S,
         collisionResolver: CollisionResolver
-    ) where T: Container, T.Element == RigidBodyObject, S: NeighborFinder, S.Element == RigidBodyObject {
+    ) where T: Container, T.Element == RigidBody, S: NeighborFinder, S.Element == RigidBody {
         self.coordinateMapper = coordinateMapper
         self.boundary = coordinateMapper.getBoundary()
         self.rigidBodies = AnyContainer(container: rigidBodies)
@@ -40,7 +45,7 @@ class PhysicsEngine: AbstractPhysicsEngine {
         for rigidBody in rigidBodies {
             neighborFinder.insert(entity: rigidBody)
 
-            if rigidBody.canTranslate || rigidBody.canRotate {
+            if rigidBody.configuration.canTranslate || rigidBody.configuration.canRotate {
                 changeableRigidBodies.insert(rigidBody)
             }
         }
@@ -49,6 +54,7 @@ class PhysicsEngine: AbstractPhysicsEngine {
     func simulateAll(time dt: Double) {
         calculateWithoutApplyingResults()
         cleanup()
+        notifyDelegate()
         applyResults(time: dt)
         runCallbacksAfterAllUpdates()
     }
@@ -62,6 +68,17 @@ extension PhysicsEngine {
         }
     }
 
+    /// Notify of unconfirmed changes.
+    func notifyDelegate() {
+        guard let delegate = delegate else {
+            return
+        }
+
+        for rigidBody in bodiesMarkedForNotification {
+            delegate.notify(changedRigidBody: rigidBody)
+        }
+    }
+
     func cleanup() {
         for rigidBody in bodiesMarkedForDeletion {
             remove(rigidBody: rigidBody)
@@ -69,50 +86,54 @@ extension PhysicsEngine {
         bodiesMarkedForDeletion.removeAll()
     }
 
+    /// Commit changes.
     func applyResults(time dt: Double) {
-        let bodiesToUpdate = changeableRigidBodies.union(bodiesMarkedForCalculationUpdates)
+        let bodiesToUpdate = changeableRigidBodies.union(bodiesMarkedForNotification)
         for rigidBody in bodiesToUpdate {
-            var updatedRigidBody = rigidBody.hasCollidedMostRecently ?
-            rigidBody.withConsecutiveCollisionCount(count: rigidBody.consecutiveCollisionCount + 1) :
-            rigidBody.withConsecutiveCollisionCount(count: 0)
+            let updatedRigidBody = RigidBody(instance: rigidBody)
 
-            if rigidBody.hasWrappedAroundMostRecently {
-                updatedRigidBody = updatedRigidBody.withWrapAroundCount(count: rigidBody.wrapAroundCount + 1)
+            if rigidBody.instanteneousDelta.shouldRegisterCollision {
+                updatedRigidBody.miscProperties.consecutiveCollisionCount =
+                    rigidBody.miscProperties.consecutiveCollisionCount + 1
+            } else {
+                updatedRigidBody.miscProperties.consecutiveCollisionCount = 0
             }
+
+            updatedRigidBody.miscProperties.wrapAroundCount.updateWith(
+                counterChange: rigidBody.instanteneousDelta.changeToWrapAroundCount
+            )
 
             if let localizedForceEmitter = rigidBody.localizedForceEmitter {
                 if localizedForceEmitter.duration < dt {
                     updatedRigidBody.localizedForceEmitter = nil
                 } else {
-                    updatedRigidBody = updatedRigidBody.withLocalizedForceEmitter(
-                        emitter: localizedForceEmitter.withDuration(duration: localizedForceEmitter.duration - dt)
-                    )
+                    updatedRigidBody.localizedForceEmitter?.duration -= dt
                 }
             }
 
-            if rigidBody.canTranslate {
-                let (newPosition, newLinearVelocity) = rigidBody.getUpdatedLinearData(time: dt)
-                updatedRigidBody = updatedRigidBody.withPositionAndLinearVelocity(
-                    position: newPosition,
-                    linearVelocity: newLinearVelocity
-                )
+            for force in rigidBody.longTermDelta.persistentForces {
+                updatedRigidBody.addForce(force: force)
             }
 
-            if rigidBody.canRotate {
+            if rigidBody.configuration.canTranslate {
+                let (newPosition, newLinearVelocity) = rigidBody.getUpdatedLinearData(time: dt)
+                updatedRigidBody.center = newPosition
+                updatedRigidBody.longTermDelta.linearVelocity = newLinearVelocity
+            }
+
+            if rigidBody.configuration.canRotate {
                 let (newAngle, newAngularVelocity) = rigidBody.getUpdatedAngularData(time: dt)
-                updatedRigidBody = updatedRigidBody.withAngleAndAngularVelocity(
-                    angle: newAngle, angularVelocity: newAngularVelocity
-                )
+                updatedRigidBody.rotation = newAngle
+                updatedRigidBody.longTermDelta.angularVelocity = newAngularVelocity
             }
 
             update(oldRigidBody: rigidBody, with: updatedRigidBody)
         }
-        bodiesMarkedForCalculationUpdates.removeAll()
+        bodiesMarkedForNotification.removeAll()
     }
 
-    func simulate(rigidBody: RigidBodyObject) {
-        resolvePersistentForces(rigidBody: rigidBody)
-        if rigidBody.canTranslate {
+    func simulate(rigidBody: RigidBody) {
+        if rigidBody.configuration.canTranslate {
             resolveBoundaryCollisions(rigidBody: rigidBody)
         }
         resolveRigidBodyCollisions(rigidBody: rigidBody)
@@ -132,7 +153,7 @@ extension PhysicsEngine {
 
 extension PhysicsEngine {
     func remove(by predicate: Predicate<GameEntity>) {
-        var toRemove: [RigidBodyObject] = []
+        var toRemove: [RigidBody] = []
         for rigidBody in rigidBodies {
             guard let entity = rigidBody.associatedEntity else {
                 continue
@@ -149,7 +170,7 @@ extension PhysicsEngine {
     }
 
     func remove(by predicate: Predicate<RigidBody>) {
-        var toRemove: [RigidBodyObject] = []
+        var toRemove: [RigidBody] = []
         for rigidBody in rigidBodies {
 
             if predicate(rigidBody) {
@@ -159,22 +180,6 @@ extension PhysicsEngine {
 
         for rigidBody in toRemove {
             remove(rigidBody: rigidBody)
-        }
-    }
-}
-
-extension PhysicsEngine {
-//    func setGravity(physicalGravitationalAcceleration: Double) {
-//        globalAcceleration.first(where: { $0.accelerationType == .gravity })?.accelerationValue = coordinateMapper
-//            .getLogicalVector(
-//                ofPhysicalVector: CGVector(dx: 0, dy: physicalGravitationalAcceleration)
-//            )
-//    }
-
-    func resolvePersistentForces(rigidBody: RigidBodyObject) {
-        for force in rigidBody.persistentForces {
-            let acceleration = force.getAccelerationVector(rigidBody: rigidBody)
-            rigidBody.addAcceleration(acceleration: acceleration)
         }
     }
 }

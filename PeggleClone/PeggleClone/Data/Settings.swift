@@ -74,6 +74,13 @@ struct Settings {
         static let defaultEjectionSpeed: Double = 0.20
     }
 
+    struct Bucket {
+        static let distanceApart: Double = 0.10
+        static let height: Double = 0.15
+        static let thickness: Double = 0.05
+        static let distanceFromBottomOfPlayArea = 0.20
+    }
+
     enum Alpha: Double {
         case opaque = 1.0
         case almostOpaque = 0.7

@@ -1,7 +1,7 @@
 import UIKit
 
 extension DesignerViewController {
-    func addGameObjectChild(gameObject: GameObject) {
+    func addGameObjectChild(gameObject: EditableGameObject) {
         switch gameObject {
         case let peg as Peg:
             addPegChild(peg: peg)
@@ -41,7 +41,7 @@ extension DesignerViewController {
         pegToButtonMap[peg] = btnDesignerPeg
     }
 
-    func updateGameObjectChild(oldGameObject: GameObject, updatedGameObject: GameObject) {
+    func updateGameObjectChild(oldGameObject: EditableGameObject, updatedGameObject: EditableGameObject) {
         switch (oldGameObject, updatedGameObject) {
         case let (oldPeg as Peg, updatedPeg as Peg):
             updatePegChild(oldPeg: oldPeg, updatedPeg: updatedPeg)
@@ -80,7 +80,7 @@ extension DesignerViewController {
         viewModel.selectToEdit(viewModel: btnDesignerPeg.viewModel)
     }
 
-    func removeGameObjectChild(gameObject: GameObject) {
+    func removeGameObjectChild(gameObject: EditableGameObject) {
         switch gameObject {
         case let peg as Peg:
             removePegChild(peg: peg)

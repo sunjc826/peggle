@@ -75,6 +75,12 @@ extension CGPoint {
     }
 }
 
+extension CGPoint {
+    static func middle(point: CGPoint, otherPoint: CGPoint) -> CGPoint {
+        CGPoint(x: point.x + otherPoint.x, y: point.y + otherPoint.y)
+    }
+}
+
 // MARK: Hashable
 extension CGPoint: Hashable {
     public func hash(into hasher: inout Hasher) {

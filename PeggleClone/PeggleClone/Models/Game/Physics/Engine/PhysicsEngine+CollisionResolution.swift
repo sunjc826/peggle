@@ -2,7 +2,7 @@ import Foundation
 import CoreGraphics
 
 extension PhysicsEngine {
-    func resolveRigidBodyCollisions(rigidBody: RigidBodyObject) {
+    func resolveRigidBodyCollisions(rigidBody: RigidBody) {
         let potentialNeighbors = neighborFinder.retrievePotentialNeighbors(for: rigidBody)
 
         for neighbor in potentialNeighbors {
@@ -14,77 +14,84 @@ extension PhysicsEngine {
                 continue
             }
 
-            setCollisionStatus(to: rigidBody, and: neighbor)
             addCollisionResolutionTeleport(to: rigidBody, dueTo: neighbor, given: collisionData)
             addCollisionResolutionImpulse(to: rigidBody, dueTo: neighbor, given: collisionData)
-            bodiesMarkedForCalculationUpdates.insert(rigidBody)
-            bodiesMarkedForCalculationUpdates.insert(neighbor)
+
+            rigidBody.physicsEngineReports.collisionDetected = true
+            neighbor.physicsEngineReports.collisionDetected = true
+
+            bodiesMarkedForNotification.insert(rigidBody)
+            bodiesMarkedForNotification.insert(neighbor)
         }
     }
 
-    func setCollisionStatus(to rigidBody: RigidBodyObject, and otherRigidBody: RigidBodyObject) {
-        rigidBody.hasCollidedMostRecently = true
-        otherRigidBody.hasCollidedMostRecently = true
-    }
-
     func addCollisionResolutionImpulse(
-        to rigidBody: RigidBodyObject,
-        dueTo otherRigidBody: RigidBodyObject,
+        to rigidBody: RigidBody,
+        dueTo otherRigidBody: RigidBody,
         given collisionData: CollisionData
     ) {
-        assert(collisionData.isColliding)
-
         let normalOfIntersection = collisionData.normalizedNormalOfIntersection
         let penetrationPoint = collisionData.penetrationPoint
-        let impulse: CGVector
+        let impulseVector: CGVector
 
-        if otherRigidBody.canTranslate {
+        if otherRigidBody.configuration.canTranslate {
             let firstSignedMagnitudeOfTangentialVelocityToNormal =
-                normalOfIntersection.getProjectionOntoSelf(vector: rigidBody.linearVelocity)
+            normalOfIntersection.getProjectionOntoSelf(vector: rigidBody.longTermDelta.linearVelocity)
             let secondSignedMagnitudeOfTangentialVelocityToNormal =
-                normalOfIntersection.getProjectionOntoSelf(vector: otherRigidBody.linearVelocity)
+            normalOfIntersection.getProjectionOntoSelf(vector: otherRigidBody.longTermDelta.linearVelocity)
 
             let signedMagnitudeOfImpulse = getSignedMagnitudeOfImpulse(
                 firstBodySignedSpeed: firstSignedMagnitudeOfTangentialVelocityToNormal,
                 secondBodySignedSpeed: secondSignedMagnitudeOfTangentialVelocityToNormal,
-                firstBodyInverseMass: rigidBody.inverseMass,
-                secondBodyInverseMass: otherRigidBody.inverseMass,
-                elasticity: rigidBody.elasticity
+                firstBodyInverseMass: rigidBody.physicalProperties.inverseMass,
+                secondBodyInverseMass: otherRigidBody.physicalProperties.inverseMass,
+                elasticity: rigidBody.physicalProperties.elasticity
             )
 
-            impulse = normalOfIntersection.scaleBy(factor: signedMagnitudeOfImpulse)
+            impulseVector = normalOfIntersection.scaleBy(factor: signedMagnitudeOfImpulse)
 
         } else {
             let signedMagnitudeOfTangentialVelocityToNormal = normalOfIntersection
-                .getProjectionOntoSelf(vector: rigidBody.linearVelocity)
+                .getProjectionOntoSelf(vector: rigidBody.longTermDelta.linearVelocity)
             let signedMagnitudeOfImpulse = getSignedMagnitudeOfImpulseDueToImmobileBody(
                 translatingBodySignedSpeed: signedMagnitudeOfTangentialVelocityToNormal,
-                translatingBodyMass: rigidBody.mass,
-                elasticity: rigidBody.elasticity
+                translatingBodyMass: rigidBody.physicalProperties.mass,
+                elasticity: rigidBody.physicalProperties.elasticity
             )
 
-            impulse = normalOfIntersection.scaleBy(factor: signedMagnitudeOfImpulse)
+            impulseVector = normalOfIntersection.scaleBy(factor: signedMagnitudeOfImpulse)
         }
 
-        guard let presentPenetrationPoint = penetrationPoint else {
-            rigidBody.addImpulseTowardCenterOfMass(impulse: impulse)
-            return
+        let impulse: ImpulseObject
+
+        if let presentPenetrationPoint = penetrationPoint {
+            impulse = ImpulseObject(
+                impulseType: .collision(impulseVector: impulseVector, dueTo: otherRigidBody),
+                impulsePosition: .point(presentPenetrationPoint)
+            )
+        } else {
+            impulse = ImpulseObject(
+                impulseType: .collision(impulseVector: impulseVector, dueTo: otherRigidBody),
+                impulsePosition: .center
+            )
         }
 
-        rigidBody.addImpulseAtPosition(impulse: impulse, position: presentPenetrationPoint)
+        rigidBody.physicsEngineReports.impulses.append(impulse)
     }
 
     func addCollisionResolutionTeleport(
-        to rigidBody: RigidBodyObject,
-        dueTo otherRigidBody: RigidBodyObject,
+        to rigidBody: RigidBody,
+        dueTo otherRigidBody: RigidBody,
         given collisionData: CollisionData
     ) {
-        assert(collisionData.isColliding)
-
         let normalOfIntersection = collisionData.normalizedNormalOfIntersection
         let depthOfIntersection = collisionData.depthOfIntersectionAlongNormal
         let teleportationVector = normalOfIntersection.reverse().scaleBy(factor: depthOfIntersection)
-        rigidBody.teleport(by: teleportationVector)
+        let teleport = TeleportObject(
+            teleportType: .collision(dueTo: otherRigidBody),
+            teleportSetting: .by(vector: teleportationVector)
+        )
+        rigidBody.physicsEngineReports.teleports.append(teleport)
     }
 
     func getSignedMagnitudeOfImpulse(
@@ -132,7 +139,7 @@ extension PhysicsEngine {
                 otherConvexPolygon: otherPolygon
             )
         default:
-            fatalError("Cases should be covered")
+            fatalError("Unexpected type")
         }
     }
 }

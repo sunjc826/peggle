@@ -1,11 +1,11 @@
 import Foundation
 
 extension PhysicsEngine {
-    func registerDidUpdateCallback(callback: @escaping BinaryFunction<RigidBodyObject>) {
+    func registerDidUpdateCallback(callback: @escaping BinaryFunction<RigidBody>) {
         didUpdateCallbacks.append(callback)
     }
 
-    func registerDidRemoveCallback(callback: @escaping UnaryFunction<RigidBodyObject>) {
+    func registerDidRemoveCallback(callback: @escaping UnaryFunction<RigidBody>) {
         didRemoveCallbacks.append(callback)
     }
 

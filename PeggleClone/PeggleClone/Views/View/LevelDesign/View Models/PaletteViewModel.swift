@@ -22,7 +22,7 @@ class PaletteViewModel {
     var palettePegViewModels: [PalettePegButtonViewModel] = []
     var pegTypeViewModels: [PegTypeButtonViewModel] = []
 
-    var selectedGameObject: GameObject? {
+    var selectedGameObject: EditableGameObject? {
         if selectedPegInPalette != nil {
             return selectedPegInPalette
         }

@@ -7,7 +7,7 @@ protocol CoordinateMappableViewModelDelegate: AnyObject, CoordinateMappable {}
 
 protocol AbstractCoordinateMappableGameObjectViewModel {
     var delegate: CoordinateMappableViewModelDelegate? { get set }
-    var gameObject: GameObject { get }
+    var gameObject: EditableGameObject { get }
     var displayCoords: CGPoint { get }
     var displayFrame: CGRect { get }
     var alpha: Double { get }

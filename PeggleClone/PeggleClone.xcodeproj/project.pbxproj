@@ -63,7 +63,7 @@
 		E569733A27A3EB050000BF18 /* PaletteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E569733927A3EB050000BF18 /* PaletteViewController.swift */; };
 		E56B868627A430FC00D475BF /* StorageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56B868527A430FC00D475BF /* StorageViewController.swift */; };
 		E56B868827A4495200D475BF /* ShapeTransformViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56B868727A4495200D475BF /* ShapeTransformViewController.swift */; };
-		E56D8DC627BC844E00B36BF4 /* Force.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56D8DC527BC844E00B36BF4 /* Force.swift */; };
+		E56D8DC627BC844E00B36BF4 /* ForceObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56D8DC527BC844E00B36BF4 /* ForceObject.swift */; };
 		E56D8DC827BC95A900B36BF4 /* LocalizedRadialForceEmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56D8DC727BC95A900B36BF4 /* LocalizedRadialForceEmitter.swift */; };
 		E56D8DCA27BC9EEE00B36BF4 /* PhysicsEngine+CallbackRegistration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56D8DC927BC9EEE00B36BF4 /* PhysicsEngine+CallbackRegistration.swift */; };
 		E56D8DCC27BC9F1900B36BF4 /* PhysicsEngine+CRUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56D8DCB27BC9F1900B36BF4 /* PhysicsEngine+CRUD.swift */; };
@@ -118,7 +118,7 @@
 		E576BFCE27B88F890052A521 /* RigidBodyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E576BFCD27B88F890052A521 /* RigidBodyTests.swift */; };
 		E5773CB227B50934009F5793 /* PhysicsEngine+Prediction.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5773CB127B50934009F5793 /* PhysicsEngine+Prediction.swift */; };
 		E5773CB427B50F42009F5793 /* GameplayAreaViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5773CB327B50F42009F5793 /* GameplayAreaViewModel.swift */; };
-		E578D2FA27BD38040080B2DA /* GameObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = E578D2F927BD38040080B2DA /* GameObject.swift */; };
+		E578D2FA27BD38040080B2DA /* EditableGameObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = E578D2F927BD38040080B2DA /* EditableGameObject.swift */; };
 		E578D2FC27BD3CF00080B2DA /* TriangleObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = E578D2FB27BD3CF00080B2DA /* TriangleObject.swift */; };
 		E578D2FE27BD3F820080B2DA /* PersistableObstacle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E578D2FD27BD3F820080B2DA /* PersistableObstacle.swift */; };
 		E578D30027BD42750080B2DA /* DesignerObstacleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E578D2FF27BD42750080B2DA /* DesignerObstacleButton.swift */; };
@@ -170,12 +170,12 @@
 		E57E832127AFCC02006C3401 /* UIView+Animate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57E832027AFCC02006C3401 /* UIView+Animate.swift */; };
 		E57F03F027A62332002662DD /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57F03EF27A62332002662DD /* String.swift */; };
 		E57F03F227A623A2002662DD /* StringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57F03F127A623A2002662DD /* StringTests.swift */; };
-		E580667C27A7D64E00F73DAA /* RigidBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = E580667B27A7D64E00F73DAA /* RigidBody.swift */; };
+		E580667C27A7D64E00F73DAA /* RigidBody+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E580667B27A7D64E00F73DAA /* RigidBody+Helpers.swift */; };
 		E5815F7C27BB8C6C0041E5F8 /* PeggleMaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5815F7B27BB8C6C0041E5F8 /* PeggleMaster.swift */; };
 		E5815F7E27BB8FA30041E5F8 /* GameData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5815F7D27BB8FA30041E5F8 /* GameData.swift */; };
 		E58182A827C268C8003DC147 /* GameEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58182A727C268C8003DC147 /* GameEvent.swift */; };
 		E582E26827AADBA700BBA471 /* GamePegView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E582E26727AADBA700BBA471 /* GamePegView.swift */; };
-		E582E26B27AAEA4A00BBA471 /* RigidBodyObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = E582E26A27AAEA4A00BBA471 /* RigidBodyObject.swift */; };
+		E582E26B27AAEA4A00BBA471 /* RigidBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = E582E26A27AAEA4A00BBA471 /* RigidBody.swift */; };
 		E585FD0D27B4C39700748C2E /* AbstractPhysicsEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = E585FD0C27B4C39700748C2E /* AbstractPhysicsEngine.swift */; };
 		E586262227AD85D8009964BF /* CollisionResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = E586262127AD85D8009964BF /* CollisionResolver.swift */; };
 		E586262527AD870D009964BF /* Collision+Detection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E586262427AD870D009964BF /* Collision+Detection.swift */; };
@@ -205,6 +205,18 @@
 		E5EBE2EC27A05AF1006E9D1E /* ArrayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EBE2EB27A05AF1006E9D1E /* ArrayTests.swift */; };
 		E5EBE2EE27A05B01006E9D1E /* CollisionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EBE2ED27A05B01006E9D1E /* CollisionTests.swift */; };
 		E5EBE2F027A05B18006E9D1E /* BoundingBoxTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EBE2EF27A05B18006E9D1E /* BoundingBoxTests.swift */; };
+		E5EDF36E27C4959800434357 /* Bucket.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EDF36D27C4959800434357 /* Bucket.swift */; };
+		E5EDF37027C4972400434357 /* GameObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EDF36F27C4972400434357 /* GameObject.swift */; };
+		E5EDF37427C4A35800434357 /* Bucket+RigidBody.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EDF37327C4A35800434357 /* Bucket+RigidBody.swift */; };
+		E5EDF37627C4B58C00434357 /* PhysicsEngineReports.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EDF37527C4B58C00434357 /* PhysicsEngineReports.swift */; };
+		E5EDF37827C4D9F000434357 /* GameLevel+PhysicsEngineDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EDF37727C4D9F000434357 /* GameLevel+PhysicsEngineDelegate.swift */; };
+		E5EDF37B27C4DADE00434357 /* TeleportObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EDF37A27C4DADE00434357 /* TeleportObject.swift */; };
+		E5EDF37D27C4DAEE00434357 /* ImpulseObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EDF37C27C4DAEE00434357 /* ImpulseObject.swift */; };
+		E5EDF37F27C4E29100434357 /* LongTermDelta.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EDF37E27C4E29100434357 /* LongTermDelta.swift */; };
+		E5EDF38127C4E29C00434357 /* MiscProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EDF38027C4E29C00434357 /* MiscProperties.swift */; };
+		E5EDF38327C4E2A800434357 /* InstantaneousDelta.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EDF38227C4E2A800434357 /* InstantaneousDelta.swift */; };
+		E5EDF38527C4E2BA00434357 /* PhysicalProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EDF38427C4E2BA00434357 /* PhysicalProperties.swift */; };
+		E5EDF38727C4E31700434357 /* ConfigurationForPhysicsEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EDF38627C4E31700434357 /* ConfigurationForPhysicsEngine.swift */; };
 		E5FACBDA27BBC6B90013B53E /* PegTypeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FACBD927BBC6B90013B53E /* PegTypeButton.swift */; };
 		E5FACBDC27BBC6DA0013B53E /* PegTypeButtonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FACBDB27BBC6DA0013B53E /* PegTypeButtonViewModel.swift */; };
 		E5FB39C927AA16E4008CE4D2 /* UIViewController+Preview.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FB39C827AA16E4008CE4D2 /* UIViewController+Preview.swift */; };
@@ -293,7 +305,7 @@
 		E569733927A3EB050000BF18 /* PaletteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaletteViewController.swift; sourceTree = "<group>"; };
 		E56B868527A430FC00D475BF /* StorageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageViewController.swift; sourceTree = "<group>"; };
 		E56B868727A4495200D475BF /* ShapeTransformViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShapeTransformViewController.swift; sourceTree = "<group>"; };
-		E56D8DC527BC844E00B36BF4 /* Force.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Force.swift; sourceTree = "<group>"; };
+		E56D8DC527BC844E00B36BF4 /* ForceObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForceObject.swift; sourceTree = "<group>"; };
 		E56D8DC727BC95A900B36BF4 /* LocalizedRadialForceEmitter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizedRadialForceEmitter.swift; sourceTree = "<group>"; };
 		E56D8DC927BC9EEE00B36BF4 /* PhysicsEngine+CallbackRegistration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PhysicsEngine+CallbackRegistration.swift"; sourceTree = "<group>"; };
 		E56D8DCB27BC9F1900B36BF4 /* PhysicsEngine+CRUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PhysicsEngine+CRUD.swift"; sourceTree = "<group>"; };
@@ -348,7 +360,7 @@
 		E576BFCD27B88F890052A521 /* RigidBodyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RigidBodyTests.swift; sourceTree = "<group>"; };
 		E5773CB127B50934009F5793 /* PhysicsEngine+Prediction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PhysicsEngine+Prediction.swift"; sourceTree = "<group>"; };
 		E5773CB327B50F42009F5793 /* GameplayAreaViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameplayAreaViewModel.swift; sourceTree = "<group>"; };
-		E578D2F927BD38040080B2DA /* GameObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameObject.swift; sourceTree = "<group>"; };
+		E578D2F927BD38040080B2DA /* EditableGameObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableGameObject.swift; sourceTree = "<group>"; };
 		E578D2FB27BD3CF00080B2DA /* TriangleObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriangleObject.swift; sourceTree = "<group>"; };
 		E578D2FD27BD3F820080B2DA /* PersistableObstacle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistableObstacle.swift; sourceTree = "<group>"; };
 		E578D2FF27BD42750080B2DA /* DesignerObstacleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignerObstacleButton.swift; sourceTree = "<group>"; };
@@ -400,12 +412,12 @@
 		E57E832027AFCC02006C3401 /* UIView+Animate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Animate.swift"; sourceTree = "<group>"; };
 		E57F03EF27A62332002662DD /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		E57F03F127A623A2002662DD /* StringTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringTests.swift; sourceTree = "<group>"; };
-		E580667B27A7D64E00F73DAA /* RigidBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RigidBody.swift; sourceTree = "<group>"; };
+		E580667B27A7D64E00F73DAA /* RigidBody+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RigidBody+Helpers.swift"; sourceTree = "<group>"; };
 		E5815F7B27BB8C6C0041E5F8 /* PeggleMaster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeggleMaster.swift; sourceTree = "<group>"; };
 		E5815F7D27BB8FA30041E5F8 /* GameData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameData.swift; sourceTree = "<group>"; };
 		E58182A727C268C8003DC147 /* GameEvent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameEvent.swift; sourceTree = "<group>"; };
 		E582E26727AADBA700BBA471 /* GamePegView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamePegView.swift; sourceTree = "<group>"; };
-		E582E26A27AAEA4A00BBA471 /* RigidBodyObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RigidBodyObject.swift; sourceTree = "<group>"; };
+		E582E26A27AAEA4A00BBA471 /* RigidBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RigidBody.swift; sourceTree = "<group>"; };
 		E585FD0C27B4C39700748C2E /* AbstractPhysicsEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbstractPhysicsEngine.swift; sourceTree = "<group>"; };
 		E586262127AD85D8009964BF /* CollisionResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollisionResolver.swift; sourceTree = "<group>"; };
 		E586262427AD870D009964BF /* Collision+Detection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collision+Detection.swift"; sourceTree = "<group>"; };
@@ -435,6 +447,18 @@
 		E5EBE2EB27A05AF1006E9D1E /* ArrayTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrayTests.swift; sourceTree = "<group>"; };
 		E5EBE2ED27A05B01006E9D1E /* CollisionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollisionTests.swift; sourceTree = "<group>"; };
 		E5EBE2EF27A05B18006E9D1E /* BoundingBoxTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoundingBoxTests.swift; sourceTree = "<group>"; };
+		E5EDF36D27C4959800434357 /* Bucket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bucket.swift; sourceTree = "<group>"; };
+		E5EDF36F27C4972400434357 /* GameObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameObject.swift; sourceTree = "<group>"; };
+		E5EDF37327C4A35800434357 /* Bucket+RigidBody.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bucket+RigidBody.swift"; sourceTree = "<group>"; };
+		E5EDF37527C4B58C00434357 /* PhysicsEngineReports.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhysicsEngineReports.swift; sourceTree = "<group>"; };
+		E5EDF37727C4D9F000434357 /* GameLevel+PhysicsEngineDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameLevel+PhysicsEngineDelegate.swift"; sourceTree = "<group>"; };
+		E5EDF37A27C4DADE00434357 /* TeleportObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeleportObject.swift; sourceTree = "<group>"; };
+		E5EDF37C27C4DAEE00434357 /* ImpulseObject.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImpulseObject.swift; sourceTree = "<group>"; };
+		E5EDF37E27C4E29100434357 /* LongTermDelta.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LongTermDelta.swift; sourceTree = "<group>"; };
+		E5EDF38027C4E29C00434357 /* MiscProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiscProperties.swift; sourceTree = "<group>"; };
+		E5EDF38227C4E2A800434357 /* InstantaneousDelta.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstantaneousDelta.swift; sourceTree = "<group>"; };
+		E5EDF38427C4E2BA00434357 /* PhysicalProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhysicalProperties.swift; sourceTree = "<group>"; };
+		E5EDF38627C4E31700434357 /* ConfigurationForPhysicsEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationForPhysicsEngine.swift; sourceTree = "<group>"; };
 		E5FACBD927BBC6B90013B53E /* PegTypeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PegTypeButton.swift; sourceTree = "<group>"; };
 		E5FACBDB27BBC6DA0013B53E /* PegTypeButtonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PegTypeButtonViewModel.swift; sourceTree = "<group>"; };
 		E5FB39C827AA16E4008CE4D2 /* UIViewController+Preview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Preview.swift"; sourceTree = "<group>"; };
@@ -626,7 +650,8 @@
 			children = (
 				E569733127A37F6F0000BF18 /* GameEntity.swift */,
 				E590099527A92E9200E764B5 /* EditableGameEntity.swift */,
-				E578D2F927BD38040080B2DA /* GameObject.swift */,
+				E5EDF36F27C4972400434357 /* GameObject.swift */,
+				E578D2F927BD38040080B2DA /* EditableGameObject.swift */,
 				E5FB39D027AA6174008CE4D2 /* Ball.swift */,
 				E56958C727BF272000AF360B /* Ball+RigidBody.swift */,
 				E569732F27A37F4B0000BF18 /* Peg.swift */,
@@ -634,6 +659,8 @@
 				E57B6C8F27BA686100522F3F /* PegType.swift */,
 				E569732D27A37F270000BF18 /* Obstacle.swift */,
 				E56958CB27BF273F00AF360B /* Obstacle+RigidBody.swift */,
+				E5EDF36D27C4959800434357 /* Bucket.swift */,
+				E5EDF37327C4A35800434357 /* Bucket+RigidBody.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -850,6 +877,7 @@
 				E572B90827B76DC4008E72A6 /* GamePhase.swift */,
 				E56E5A1927BB408100723D6F /* SpecialType.swift */,
 				E58182A727C268C8003DC147 /* GameEvent.swift */,
+				E5EDF37727C4D9F000434357 /* GameLevel+PhysicsEngineDelegate.swift */,
 			);
 			path = "Game Engine";
 			sourceTree = "<group>";
@@ -1038,10 +1066,16 @@
 		E582E26927AAEA2D00BBA471 /* Objects */ = {
 			isa = PBXGroup;
 			children = (
-				E580667B27A7D64E00F73DAA /* RigidBody.swift */,
-				E582E26A27AAEA4A00BBA471 /* RigidBodyObject.swift */,
+				E582E26A27AAEA4A00BBA471 /* RigidBody.swift */,
+				E580667B27A7D64E00F73DAA /* RigidBody+Helpers.swift */,
 				E5FB39CE27AA5A79008CE4D2 /* Boundary.swift */,
 				E572B90627B76D91008E72A6 /* WallBehavior.swift */,
+				E5EDF37527C4B58C00434357 /* PhysicsEngineReports.swift */,
+				E5EDF37E27C4E29100434357 /* LongTermDelta.swift */,
+				E5EDF38027C4E29C00434357 /* MiscProperties.swift */,
+				E5EDF38227C4E2A800434357 /* InstantaneousDelta.swift */,
+				E5EDF38427C4E2BA00434357 /* PhysicalProperties.swift */,
+				E5EDF38627C4E31700434357 /* ConfigurationForPhysicsEngine.swift */,
 			);
 			path = Objects;
 			sourceTree = "<group>";
@@ -1057,7 +1091,6 @@
 				E573A02C27B163E2004B03EC /* PhysicsEngine+CollisionResolution.swift */,
 				E56D8DCD27BC9F7000B36BF4 /* PhysicsEngine+LocalizedRadialForce.swift */,
 				E5773CB127B50934009F5793 /* PhysicsEngine+Prediction.swift */,
-				E56D8DC527BC844E00B36BF4 /* Force.swift */,
 				E56D8DC727BC95A900B36BF4 /* LocalizedRadialForceEmitter.swift */,
 			);
 			path = Engine;
@@ -1127,6 +1160,7 @@
 		E5BB857427A76932008C927E /* Physics */ = {
 			isa = PBXGroup;
 			children = (
+				E5EDF37927C4DACD00434357 /* Delta */,
 				E582E26C27AAEA8400BBA471 /* Engine */,
 				E582E26927AAEA2D00BBA471 /* Objects */,
 				E572B91727B7BD80008E72A6 /* PhysicsCoordinateMapper.swift */,
@@ -1151,6 +1185,16 @@
 				E50742B027C1F63F0014E84F /* SoundEffect.swift */,
 			);
 			path = Data;
+			sourceTree = "<group>";
+		};
+		E5EDF37927C4DACD00434357 /* Delta */ = {
+			isa = PBXGroup;
+			children = (
+				E56D8DC527BC844E00B36BF4 /* ForceObject.swift */,
+				E5EDF37A27C4DADE00434357 /* TeleportObject.swift */,
+				E5EDF37C27C4DAEE00434357 /* ImpulseObject.swift */,
+			);
+			path = Delta;
 			sourceTree = "<group>";
 		};
 		E5FA1E922798F8B5002B6DED /* Models */ = {
@@ -1339,7 +1383,7 @@
 				E586262227AD85D8009964BF /* CollisionResolver.swift in Sources */,
 				E569732527A376110000BF18 /* CGVector.swift in Sources */,
 				E572B91827B7BD80008E72A6 /* PhysicsCoordinateMapper.swift in Sources */,
-				E580667C27A7D64E00F73DAA /* RigidBody.swift in Sources */,
+				E580667C27A7D64E00F73DAA /* RigidBody+Helpers.swift in Sources */,
 				E5815F7C27BB8C6C0041E5F8 /* PeggleMaster.swift in Sources */,
 				E57B6C9227BA6DD000522F3F /* PegContainer.swift in Sources */,
 				E5636DDA279C137F006428E8 /* LevelSelectCollectionViewController.swift in Sources */,
@@ -1356,7 +1400,7 @@
 				E5773CB427B50F42009F5793 /* GameplayAreaViewModel.swift in Sources */,
 				E50742B127C1F63F0014E84F /* SoundEffect.swift in Sources */,
 				E569732E27A37F270000BF18 /* Obstacle.swift in Sources */,
-				E56D8DC627BC844E00B36BF4 /* Force.swift in Sources */,
+				E56D8DC627BC844E00B36BF4 /* ForceObject.swift in Sources */,
 				E5BA4E3327A9369700C4A576 /* PhysicsEngine.swift in Sources */,
 				E586262527AD870D009964BF /* Collision+Detection.swift in Sources */,
 				E5354E39279A89A900ADF354 /* PalettePegButton.swift in Sources */,
@@ -1379,7 +1423,9 @@
 				E56958CA27BF273100AF360B /* Peg+RigidBody.swift in Sources */,
 				E578D30827BD465F0080B2DA /* AbstractObstacleViewModel.swift in Sources */,
 				E57B6CA227BA905300522F3F /* GameRoundStats.swift in Sources */,
+				E5EDF36E27C4959800434357 /* Bucket.swift in Sources */,
 				E5E580E227C11EF000392E28 /* GameplayAreaStaticView.swift in Sources */,
+				E5EDF37827C4D9F000434357 /* GameLevel+PhysicsEngineDelegate.swift in Sources */,
 				E56B868627A430FC00D475BF /* StorageViewController.swift in Sources */,
 				E5FB39C927AA16E4008CE4D2 /* UIViewController+Preview.swift in Sources */,
 				E578D2FC27BD3CF00080B2DA /* TriangleObject.swift in Sources */,
@@ -1388,6 +1434,7 @@
 				E519D56B2798009600BCE59D /* AppDelegate.swift in Sources */,
 				E5354E3B279A89EC00ADF354 /* DesignerPegButton.swift in Sources */,
 				E5FB39CF27AA5A79008CE4D2 /* Boundary.swift in Sources */,
+				E5EDF37627C4B58C00434357 /* PhysicsEngineReports.swift in Sources */,
 				E571C09227AEBC6C009459CE /* DesignerViewModel.swift in Sources */,
 				E545750D27A980A200F11F43 /* GameplayAreaDynamicView.swift in Sources */,
 				E5E580E627C123FC00392E28 /* CannonLineView.swift in Sources */,
@@ -1413,6 +1460,7 @@
 				E5BA4E3127A9322B00C4A576 /* GameLevel.swift in Sources */,
 				E587678C27BFE26400E49356 /* OscillationLocalityButton.swift in Sources */,
 				E5710F6B27B341E2004ACED4 /* LevelSelectCellViewModel.swift in Sources */,
+				E5EDF37B27C4DADE00434357 /* TeleportObject.swift in Sources */,
 				E5DCBC0D27B1128300D92638 /* DesignerPegButtonViewModel.swift in Sources */,
 				E57B6C9C27BA807600522F3F /* GameLevel+PhysicsEngineCallbacks.swift in Sources */,
 				E56D8DCC27BC9F1900B36BF4 /* PhysicsEngine+CRUD.swift in Sources */,
@@ -1430,10 +1478,12 @@
 				E5815F7E27BB8FA30041E5F8 /* GameData.swift in Sources */,
 				E57E832127AFCC02006C3401 /* UIView+Animate.swift in Sources */,
 				E5E580D027C0B4E500392E28 /* DesignerScrollView.swift in Sources */,
+				E5EDF37427C4A35800434357 /* Bucket+RigidBody.swift in Sources */,
 				E5DC46F827B7EC8000851C51 /* Settings.swift in Sources */,
 				E57B6C9E27BA87B200522F3F /* GameEndViewController.swift in Sources */,
 				E55837F9279D21E4006F4B1F /* BoundingBox.swift in Sources */,
 				E578D30E27BD4BDC0080B2DA /* AbstractFillableGameObjectViewModel.swift in Sources */,
+				E5EDF37F27C4E29100434357 /* LongTermDelta.swift in Sources */,
 				E57B6C7C27BA327700522F3F /* UIImage+Rotate.swift in Sources */,
 				E569731427A3717F0000BF18 /* Circle.swift in Sources */,
 				E57B6C9827BA7F9800522F3F /* GameLevel+CRUD.swift in Sources */,
@@ -1450,20 +1500,25 @@
 				E54612B927BE79A400AAD85A /* DesignerViewController+Callbacks.swift in Sources */,
 				E569731A27A371FA0000BF18 /* TransformableShape.swift in Sources */,
 				E578D2FE27BD3F820080B2DA /* PersistableObstacle.swift in Sources */,
+				E5EDF38327C4E2A800434357 /* InstantaneousDelta.swift in Sources */,
 				E56958D027BF2E4100AF360B /* GameObstacleView.swift in Sources */,
+				E5EDF38727C4E31700434357 /* ConfigurationForPhysicsEngine.swift in Sources */,
 				E572B8EF27B749FF008E72A6 /* PersistablePeg.swift in Sources */,
 				E578D30C27BD49DD0080B2DA /* PaletteObstacleButtonViewModel.swift in Sources */,
 				E571C09627AEC7A7009459CE /* AbstractPegViewModel.swift in Sources */,
 				E569733A27A3EB050000BF18 /* PaletteViewController.swift in Sources */,
+				E5EDF37D27C4DAEE00434357 /* ImpulseObject.swift in Sources */,
 				E5DC46F327B7DC1A00851C51 /* LetterBoxView.swift in Sources */,
 				E57B6C8A27BA617000522F3F /* FillablePegViewModel.swift in Sources */,
 				E55837F7279D21A5006F4B1F /* PlayArea.swift in Sources */,
 				E57E831D27AFB7DB006C3401 /* GamePegViewModel.swift in Sources */,
 				E5E580D827C104AF00392E28 /* UIView+LetterBoxing.swift in Sources */,
+				E5EDF37027C4972400434357 /* GameObject.swift in Sources */,
 				E57B6C8027BA536100522F3F /* ScoreboardView.swift in Sources */,
 				E578EEE527AAC42000A121F3 /* ErrorMessages.swift in Sources */,
 				E572B91427B7AFF2008E72A6 /* GameViewModel.swift in Sources */,
 				E519D56D2798009600BCE59D /* SceneDelegate.swift in Sources */,
+				E5EDF38127C4E29C00434357 /* MiscProperties.swift in Sources */,
 				E5773CB227B50934009F5793 /* PhysicsEngine+Prediction.swift in Sources */,
 				E5AAA5A9279989AC0092EE3D /* LinkedList.swift in Sources */,
 				E5E580D227C0C56F00392E28 /* PersistableCoordinateMapper.swift in Sources */,
@@ -1491,16 +1546,17 @@
 				E57B6C9027BA686100522F3F /* PegType.swift in Sources */,
 				E5E580E427C11FFD00392E28 /* GameplayAreaView.swift in Sources */,
 				E58182A827C268C8003DC147 /* GameEvent.swift in Sources */,
+				E5EDF38527C4E2BA00434357 /* PhysicalProperties.swift in Sources */,
 				E569732327A375F00000BF18 /* CGPoint.swift in Sources */,
 				E5710F6E27B344E3004ACED4 /* LevelSelectViewModel.swift in Sources */,
 				E571C08227AE346B009459CE /* CenteredPolygonObject.swift in Sources */,
 				E569732027A374CC0000BF18 /* PolarCoordinate.swift in Sources */,
 				E5FB39D327AA65B6008CE4D2 /* Cannon.swift in Sources */,
-				E578D2FA27BD38040080B2DA /* GameObject.swift in Sources */,
+				E578D2FA27BD38040080B2DA /* EditableGameObject.swift in Sources */,
 				E56958CC27BF273F00AF360B /* Obstacle+RigidBody.swift in Sources */,
 				E571C09427AEC76B009459CE /* PalettePegButtonViewModel.swift in Sources */,
 				E569731227A3714F0000BF18 /* Rectangle.swift in Sources */,
-				E582E26B27AAEA4A00BBA471 /* RigidBodyObject.swift in Sources */,
+				E582E26B27AAEA4A00BBA471 /* RigidBody.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

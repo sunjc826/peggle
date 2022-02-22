@@ -16,8 +16,8 @@ class DesignerViewModel {
     }
     private var isLoading: PassthroughSubject<Bool, Never> = PassthroughSubject()
 
-    @Published var previouslyEditedGameObject: GameObject?
-    @Published var gameObjectBeingEdited: GameObject?
+    @Published var previouslyEditedGameObject: EditableGameObject?
+    @Published var gameObjectBeingEdited: EditableGameObject?
     @Published var shouldShowShapeTransform = false
     @Published var gameLevel: DesignerGameLevel? {
         didSet {
@@ -28,7 +28,7 @@ class DesignerViewModel {
         }
     }
 
-    var selectedGameObjectInPalette: GameObject? {
+    var selectedGameObjectInPalette: EditableGameObject? {
         paletteViewModel.selectedGameObject
     }
 

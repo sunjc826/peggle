@@ -23,7 +23,7 @@ extension DesignerViewController {
         }
     }
 
-    func startEditingGameObject(gameObjectBeingEdited: GameObject?) {
+    func startEditingGameObject(gameObjectBeingEdited: EditableGameObject?) {
         guard let gameObjectBeingEdited = gameObjectBeingEdited else {
             return
         }

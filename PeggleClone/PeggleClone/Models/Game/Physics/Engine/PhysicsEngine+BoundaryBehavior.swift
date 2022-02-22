@@ -2,45 +2,51 @@ import Foundation
 import CoreGraphics
 
 extension PhysicsEngine {
-    func resolveBoundaryCollisions(rigidBody: RigidBodyObject) {
+    func resolveBoundaryCollisions(rigidBody: RigidBody) {
         resolveLeftBoundary(rigidBody)
         resolveRightBoundary(rigidBody)
         resolveTopBoundary(rigidBody)
         resolveBottomBoundary(rigidBody)
     }
 
-    func resolveLeftBoundary(_ rigidBody: RigidBodyObject) {
-        guard rigidBody.linearVelocity.dx < 0 else {
+    func resolveLeftBoundary(_ rigidBody: RigidBody) {
+        guard rigidBody.longTermDelta.linearVelocity.dx < 0 else {
             return
         }
-        switch rigidBody.leftWallBehavior {
+        switch rigidBody.configuration.leftWallBehavior {
         case .collide:
             if rigidBody.boundingBox.minX <= boundary.minX {
                 reflectX(rigidBody)
-                bodiesMarkedForCalculationUpdates.insert(rigidBody)
+                bodiesMarkedForNotification.insert(rigidBody)
             }
         case .fallThrough:
             if rigidBody.boundingBox.maxX <= boundary.minX {
+                // Remark: Deletion can also be designed as a notification, but for simplicity
+                // it will be executed straight away by the physics engine without consulting
+                // the game engine.
                 bodiesMarkedForDeletion.insert(rigidBody)
             }
         case .wrapAround:
             if rigidBody.boundingBox.maxX <= boundary.minX {
-                rigidBody.hasWrappedAroundMostRecently = true
-                rigidBody.nextTeleportLocation = CGPoint(x: boundary.maxX, y: rigidBody.center.x)
-                bodiesMarkedForCalculationUpdates.insert(rigidBody)
+                let teleport = TeleportObject(
+                    teleportType: .wallWrapAround,
+                    teleportSetting: .to(point: CGPoint(x: boundary.maxX, y: rigidBody.center.x))
+                )
+                rigidBody.physicsEngineReports.teleports.append(teleport)
+                bodiesMarkedForNotification.insert(rigidBody)
             }
         }
     }
 
-    func resolveRightBoundary(_ rigidBody: RigidBodyObject) {
-        guard rigidBody.linearVelocity.dx > 0 else {
+    func resolveRightBoundary(_ rigidBody: RigidBody) {
+        guard rigidBody.longTermDelta.linearVelocity.dx > 0 else {
             return
         }
-        switch rigidBody.rightWallBehavior {
+        switch rigidBody.configuration.rightWallBehavior {
         case .collide:
             if rigidBody.boundingBox.maxX >= boundary.maxX {
                 reflectX(rigidBody)
-                bodiesMarkedForCalculationUpdates.insert(rigidBody)
+                bodiesMarkedForNotification.insert(rigidBody)
             }
         case .fallThrough:
             if rigidBody.boundingBox.minX >= boundary.maxX {
@@ -48,22 +54,25 @@ extension PhysicsEngine {
             }
         case .wrapAround:
             if rigidBody.boundingBox.minX >= boundary.maxX {
-                rigidBody.hasWrappedAroundMostRecently = true
-                rigidBody.nextTeleportLocation = CGPoint(x: boundary.minX, y: rigidBody.center.x)
-                bodiesMarkedForCalculationUpdates.insert(rigidBody)
+                let teleport = TeleportObject(
+                    teleportType: .wallWrapAround,
+                    teleportSetting: .to(point: CGPoint(x: boundary.minX, y: rigidBody.center.x))
+                )
+                rigidBody.physicsEngineReports.teleports.append(teleport)
+                bodiesMarkedForNotification.insert(rigidBody)
             }
         }
     }
 
-    func resolveTopBoundary(_ rigidBody: RigidBodyObject) {
-        guard rigidBody.linearVelocity.dy < 0 else {
+    func resolveTopBoundary(_ rigidBody: RigidBody) {
+        guard rigidBody.longTermDelta.linearVelocity.dy < 0 else {
             return
         }
-        switch rigidBody.topWallBehavior {
+        switch rigidBody.configuration.topWallBehavior {
         case .collide:
             if rigidBody.boundingBox.minY <= boundary.minY {
                 reflectY(rigidBody)
-                bodiesMarkedForCalculationUpdates.insert(rigidBody)
+                bodiesMarkedForNotification.insert(rigidBody)
             }
         case .fallThrough:
             if rigidBody.boundingBox.maxY <= boundary.minY {
@@ -71,22 +80,25 @@ extension PhysicsEngine {
             }
         case .wrapAround:
             if rigidBody.boundingBox.maxY <= boundary.minY {
-                rigidBody.hasWrappedAroundMostRecently = true
-                rigidBody.nextTeleportLocation = CGPoint(x: rigidBody.center.x, y: boundary.maxY)
-                bodiesMarkedForCalculationUpdates.insert(rigidBody)
+                let teleport = TeleportObject(
+                    teleportType: .wallWrapAround,
+                    teleportSetting: .to(point: CGPoint(x: rigidBody.center.x, y: boundary.maxY))
+                )
+                rigidBody.physicsEngineReports.teleports.append(teleport)
+                bodiesMarkedForNotification.insert(rigidBody)
             }
         }
     }
 
-    func resolveBottomBoundary(_ rigidBody: RigidBodyObject) {
-        guard rigidBody.linearVelocity.dy > 0 else {
+    func resolveBottomBoundary(_ rigidBody: RigidBody) {
+        guard rigidBody.longTermDelta.linearVelocity.dy > 0 else {
             return
         }
-        switch rigidBody.bottomWallBehavior {
+        switch rigidBody.configuration.bottomWallBehavior {
         case .collide:
             if rigidBody.boundingBox.maxY >= boundary.maxY {
                 reflectY(rigidBody)
-                bodiesMarkedForCalculationUpdates.insert(rigidBody)
+                bodiesMarkedForNotification.insert(rigidBody)
             }
         case .fallThrough:
             if rigidBody.boundingBox.minY >= boundary.maxY {
@@ -94,24 +106,42 @@ extension PhysicsEngine {
             }
         case .wrapAround:
             if rigidBody.boundingBox.minY >= boundary.maxY {
-                rigidBody.hasWrappedAroundMostRecently = true
-                rigidBody.nextTeleportLocation = CGPoint(x: rigidBody.center.x, y: boundary.minY)
-                bodiesMarkedForCalculationUpdates.insert(rigidBody)
+                let teleport = TeleportObject(
+                    teleportType: .wallWrapAround,
+                    teleportSetting: .to(point: CGPoint(x: rigidBody.center.x, y: boundary.minY))
+                )
+                rigidBody.physicsEngineReports.teleports.append(teleport)
+                bodiesMarkedForNotification.insert(rigidBody)
             }
         }
     }
 
-    func reflectX(_ rigidBody: RigidBodyObject) {
-        let impulse = rigidBody.linearVelocity.restrictX()
+    func reflectX(_ rigidBody: RigidBody) {
+        let impulseVector = rigidBody.longTermDelta.linearVelocity.restrictX()
             .reverse()
-            .scaleBy(factor: (1 + rigidBody.elasticity) * rigidBody.mass)
-        rigidBody.addImpulseTowardCenterOfMass(impulse: impulse)
+            .scaleBy(
+                factor:
+                    (1 + rigidBody.physicalProperties.elasticity)
+                    * rigidBody.physicalProperties.mass
+            )
+        let impulse = ImpulseObject(
+            impulseType: .wallCollision(impulseVector: impulseVector),
+            impulsePosition: .center)
+        rigidBody.physicsEngineReports.impulses.append(impulse)
     }
 
-    func reflectY(_ rigidBody: RigidBodyObject) {
-        let impulse = rigidBody.linearVelocity.restrictY()
+    func reflectY(_ rigidBody: RigidBody) {
+        let impulseVector = rigidBody.longTermDelta.linearVelocity.restrictY()
             .reverse()
-            .scaleBy(factor: (1 + rigidBody.elasticity) * rigidBody.mass)
-        rigidBody.addImpulseTowardCenterOfMass(impulse: impulse)
+            .scaleBy(
+                factor:
+                    (1 + rigidBody.physicalProperties.elasticity)
+                * rigidBody.physicalProperties.mass
+            )
+        let impulse = ImpulseObject(
+            impulseType: .wallCollision(impulseVector: impulseVector),
+            impulsePosition: .center
+        )
+        rigidBody.physicsEngineReports.impulses.append(impulse)
     }
 }

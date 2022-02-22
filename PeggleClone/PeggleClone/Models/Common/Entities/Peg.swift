@@ -2,7 +2,7 @@ import Foundation
 import CoreGraphics
 
 /// Represents a destructible object.
-final class Peg: GameObject {
+final class Peg: EditableGameObject {
     var pegType: PegType
     var hasCollided = false
 

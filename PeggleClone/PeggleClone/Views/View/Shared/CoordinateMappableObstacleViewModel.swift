@@ -3,7 +3,7 @@ import Foundation
 class CoordinateMappableObstacleViewModel: AbstractObstacleViewModel, AbstractCoordinateMappableGameObjectViewModel {
     weak var delegate: CoordinateMappableViewModelDelegate?
 
-    var gameObject: GameObject {
+    var gameObject: EditableGameObject {
         obstacle
     }
 

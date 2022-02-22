@@ -8,12 +8,13 @@ extension GameLevel {
             logicalEjectionVelocity: ejectionVelocity
         )
         ball.rigidBody = rigidBody
-        let gravity: Force = .gravity(
+        let gravityType: ForceType = .gravity(
             gravitationalAcceleration: coordinateMapper.getLogicalLength(
                 ofPhysicalLength: Settings.Physics.signedMagnitudeOfAccelerationDueToGravity
             )
         )
-        rigidBody.persistentForces.append(gravity)
+        let gravity = ForceObject(forceType: gravityType, forcePosition: .center)
+        rigidBody.longTermDelta.persistentForces.append(gravity)
         physicsEngine.add(rigidBody: rigidBody)
         for callback in didAddBallCallbacks {
             callback(ball)
@@ -62,12 +63,13 @@ extension GameLevel {
     func addObstacle(obstacle: Obstacle) {
         obstacles.insert(obstacle)
         let rigidBody = obstacle.toRigidBody()
-        let restoringForce: Force = .restoring(
+        obstacle.rigidBody = rigidBody
+        let restoringForceType: ForceType = .restoring(
             springConstant: Settings.Obstacle.easeOfOscillation.rawValue / obstacle.radiusOfOscillation,
             centerOfOscillation: obstacle.shape.center
         )
-        rigidBody.persistentForces.append(restoringForce)
-        obstacle.rigidBody = rigidBody
+        let restoringForce = ForceObject(forceType: restoringForceType, forcePosition: .center)
+        rigidBody.longTermDelta.persistentForces.append(restoringForce)
         physicsEngine.add(rigidBody: rigidBody)
         for callback in didAddObstacleCallbacks {
             callback(obstacle)
@@ -89,4 +91,16 @@ extension GameLevel {
         }
     }
 
+    func addBucket(bucket: Bucket) {
+        let rigidBodies = bucket.getRigidBodies()
+        rigidBodies.forEach { physicsEngine.add(rigidBody: $0) }
+    }
+
+    func updateBucket(oldBucket: Bucket, with updatedBucket: Bucket) {
+
+    }
+
+    func removeBucket() {
+
+    }
 }

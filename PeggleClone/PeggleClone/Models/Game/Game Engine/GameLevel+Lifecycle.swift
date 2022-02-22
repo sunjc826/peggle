@@ -85,12 +85,13 @@ extension GameLevel {
     func getBallPrediction() -> [CGPoint] {
         let (ball, ejectionVelocity) = cannon.shootBall()
         let rigidBody = ball.toRigidBody(logicalEjectionVelocity: ejectionVelocity)
-        let gravity: Force = .gravity(
+        let gravityType: ForceType = .gravity(
             gravitationalAcceleration: coordinateMapper.getLogicalLength(
                 ofPhysicalLength: Settings.Physics.signedMagnitudeOfAccelerationDueToGravity
             )
         )
-        rigidBody.persistentForces.append(gravity)
+        let gravity = ForceObject(forceType: gravityType, forcePosition: .center)
+        rigidBody.longTermDelta.persistentForces.append(gravity)
         let predictedPositions = physicsEngine.predict(
             for: rigidBody,
             intervalSize: GameLevel.predictionTimeIntervalInSeconds,
@@ -115,7 +116,7 @@ extension GameLevel {
     func removeStuckEntities() {
         physicsEngine.remove { (rigidBody: RigidBody) in
             !(rigidBody.associatedEntity is Ball) &&
-            rigidBody.consecutiveCollisionCount > GameLevel.consecutiveCollisionThreshold
+            rigidBody.miscProperties.consecutiveCollisionCount > GameLevel.consecutiveCollisionThreshold
         }
     }
 

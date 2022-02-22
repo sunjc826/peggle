@@ -1,7 +1,7 @@
 import UIKit
 
 protocol AbstractFillableGameObjectViewModel {
-    var gameObject: GameObject { get }
+    var gameObject: EditableGameObject { get }
     var frame: CGRect { get }
     var shapeCenterInView: CGVector { get }
     var drawableVertices: [CGPoint] { get }

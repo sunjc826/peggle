@@ -1,11 +1,11 @@
 import Foundation
 
 extension PhysicsEngine {
-    func add(rigidBody: RigidBodyObject) {
+    func add(rigidBody: RigidBody) {
         addWithoutFurtherProcessing(rigidBody: rigidBody)
     }
 
-    func update(oldRigidBody: RigidBodyObject, with updatedRigidBody: RigidBodyObject) {
+    func update(oldRigidBody: RigidBody, with updatedRigidBody: RigidBody) {
         removeWithoutFurtherProcessing(rigidBody: oldRigidBody)
         addWithoutFurtherProcessing(rigidBody: updatedRigidBody)
         for callback in didUpdateCallbacks {
@@ -13,25 +13,25 @@ extension PhysicsEngine {
         }
     }
 
-    func remove(rigidBody: RigidBodyObject) {
+    func remove(rigidBody: RigidBody) {
         removeWithoutFurtherProcessing(rigidBody: rigidBody)
         for callback in didRemoveCallbacks {
             callback(rigidBody)
         }
     }
 
-    func addWithoutFurtherProcessing(rigidBody: RigidBodyObject) {
+    func addWithoutFurtherProcessing(rigidBody: RigidBody) {
         rigidBodies.insert(rigidBody)
-        if rigidBody.canTranslate || rigidBody.canRotate {
+        if rigidBody.configuration.canTranslate || rigidBody.configuration.canRotate {
             changeableRigidBodies.insert(rigidBody)
         }
 
         neighborFinder.insert(entity: rigidBody)
     }
 
-    func removeWithoutFurtherProcessing(rigidBody: RigidBodyObject) {
+    func removeWithoutFurtherProcessing(rigidBody: RigidBody) {
         rigidBodies.remove(rigidBody)
-        if rigidBody.canTranslate || rigidBody.canRotate {
+        if rigidBody.configuration.canTranslate || rigidBody.configuration.canRotate {
             changeableRigidBodies.remove(rigidBody)
         }
 

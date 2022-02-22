@@ -4,7 +4,7 @@ import Combine
 class CoordinateMappablePegViewModel: AbstractPegViewModel, AbstractCoordinateMappableGameObjectViewModel {
     weak var delegate: CoordinateMappableViewModelDelegate?
 
-    var gameObject: GameObject {
+    var gameObject: EditableGameObject {
         peg
     }
 

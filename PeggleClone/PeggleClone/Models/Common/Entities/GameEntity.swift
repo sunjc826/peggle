@@ -1,4 +1,4 @@
 import Foundation
 protocol GameEntity: AnyObject {
-    var rigidBody: RigidBodyObject? { get }
+    var rigidBody: RigidBody? { get }
 }

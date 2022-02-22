@@ -22,4 +22,8 @@ extension Double {
         assert(0 <= val && val < range)
         return val
     }
+
+    func toRadians() -> Double {
+        self / 180 * Double.pi
+    }
 }

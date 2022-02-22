@@ -2,7 +2,7 @@ import Foundation
 import CoreGraphics
 
 extension PhysicsEngine {
-    func emitLocalizedForce(rigidBody: RigidBodyObject) {
+    func emitLocalizedForce(rigidBody: RigidBody) {
         guard let localizedForceEmitter = rigidBody.localizedForceEmitter else {
             return
         }
@@ -21,33 +21,40 @@ extension PhysicsEngine {
                 continue
             }
             emitLocalizedForce(by: rigidBody, on: neighbor)
-            bodiesMarkedForCalculationUpdates.insert(neighbor)
         }
     }
 
-    func emitLocalizedForce(by rigidBody: RigidBodyObject, on neighbor: RigidBodyObject) {
-        guard let localizedForceEmitter = rigidBody.localizedForceEmitter else {
+    func emitLocalizedForce(by rigidBody: RigidBody, on neighbor: RigidBody) {
+        guard let emitter = rigidBody.localizedForceEmitter else {
             return
         }
 
         let direction = CGVector(from: rigidBody.center, to: neighbor.center)
         let distance = direction.norm
-
-        guard distance <= localizedForceEmitter.maximumRadius else {
+        guard distance <= emitter.maximumRadius else {
             return
         }
 
-        let repulsiveForce = direction.scaleBy(factor: localizedForceEmitter.baseMagnitude / (distance * distance))
-
-        switch localizedForceEmitter.forceType {
+        switch emitter.forceType {
         case .explosion:
-            neighbor.addForceTowardCenterOfMass(force: repulsiveForce)
-            neighbor.hasCollidedMostRecently = true
+            let explosiveForce = ForceObject(
+                forceType: .explosion(emitter: emitter, direction: direction),
+                forcePosition: .center
+            )
+            neighbor.physicsEngineReports.forces.append(explosiveForce)
         case .attraction:
-            let attractiveForce = repulsiveForce.reverse()
-            neighbor.addForceTowardCenterOfMass(force: attractiveForce)
+            let attractiveForce = ForceObject(
+                forceType: .attraction(emitter: emitter, direction: direction),
+                forcePosition: .center
+            )
+            neighbor.physicsEngineReports.forces.append(attractiveForce)
         case .replusion:
-            neighbor.addForceTowardCenterOfMass(force: repulsiveForce)
+            let repulsiveForce = ForceObject(
+                forceType: .repulsion(emitter: emitter, direction: direction),
+                forcePosition: .center
+            )
+            neighbor.physicsEngineReports.forces.append(repulsiveForce)
         }
+        bodiesMarkedForNotification.insert(neighbor)
     }
 }

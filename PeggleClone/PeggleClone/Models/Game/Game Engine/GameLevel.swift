@@ -17,6 +17,7 @@ final class GameLevel {
     @Published var coordinateMapper: PhysicsCoordinateMapper
     var playArea: PlayArea
     let cannon: Cannon
+    let bucket: Bucket
     var balls: [Ball] = []
     let pegs: PegContainer
     var obstacles: Set<Obstacle> = []
@@ -44,6 +45,9 @@ final class GameLevel {
     var didAddObstacleCallbacks: [UnaryFunction<Obstacle>] = []
     var didUpdateObstacleCallbacks: [BinaryFunction<Obstacle>] = []
     var didRemoveObstacleCallbacks: [UnaryFunction<Obstacle>] = []
+    var didAddBucketCallbacks: [UnaryFunction<Bucket>] = []
+    var didUpdateBucketCallbacks: [BinaryFunction<Bucket>] = []
+    var didRemoveBucketCallbacks: [UnaryFunction<Bucket>] = []
     var gameDidEndCallbacks: [UnaryFunction<Bool>] = []
     var gameEvents: PassthroughSubject<GameEvent, Never> = PassthroughSubject()
 
@@ -59,13 +63,17 @@ final class GameLevel {
         self.pegs = PegContainer(pegs: emptyPegsContainer)
         let cannonPosition = CGPoint(x: playArea.boundingBox.center.x, y: 0)
         self.cannon = Cannon(position: cannonPosition)
+        self.bucket = Bucket(
+            position: CGPoint(x: playArea.boundingBox.center.x, y: playArea.boundingBox.maxY - Settings.Bucket.distanceFromBottomOfPlayArea)
+        )
         self.physicsEngine = PhysicsEngine(
             coordinateMapper: coordinateMapper,
-            rigidBodies: SetObject<RigidBodyObject>(),
+            rigidBodies: SetObject<RigidBody>(),
             neighborFinder: QuadTree(bounds: playArea.boundingBox),
             collisionResolver: Collision()
         )
         self.peggleMaster = peggleMaster
+        physicsEngine.delegate = self
         setupBindings()
         setupCallbacks()
     }

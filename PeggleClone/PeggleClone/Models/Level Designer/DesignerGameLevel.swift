@@ -14,9 +14,9 @@ struct HydrationIncompatibleError: Error {
 final class DesignerGameLevel {
     private var setLevelNameCallbacks = [UnaryFunction<String>]()
     private var isAcceptingOverlappingGameObjectsCallbacks = [UnaryFunction<Bool>]()
-    private var addGameObjectCallbacks = [UnaryFunction<GameObject>]()
-    private var updateGameObjectCallbacks = [BinaryFunction<GameObject>]()
-    private var removeGameObjectCallbacks = [UnaryFunction<GameObject>]()
+    private var addGameObjectCallbacks = [UnaryFunction<EditableGameObject>]()
+    private var updateGameObjectCallbacks = [BinaryFunction<EditableGameObject>]()
+    private var removeGameObjectCallbacks = [UnaryFunction<EditableGameObject>]()
     private var removeAllCallbacks = [Runnable]()
 
     var isAcceptingOverlappingGameObjects = false {
@@ -32,8 +32,8 @@ final class DesignerGameLevel {
     @Published var levelName: String? = "Default level name"
     @Published var coordinateMapper: CoordinateMapper
     var playArea: PlayArea
-    private var gameObjects: AnyContainer<GameObject>
-    private let neighborFinder: AnyNeighborFinder<GameObject>
+    private var gameObjects: AnyContainer<EditableGameObject>
+    private let neighborFinder: AnyNeighborFinder<EditableGameObject>
     private let collisionDetector: CollisionDetector
 
     /// - Remark: No game objects should be placed into a `DesignerGameLevel` at initialization.
@@ -44,7 +44,7 @@ final class DesignerGameLevel {
         neighborFinder: S,
         collisionDetector: CollisionDetector
     )
-    where T: Container, T.Element == GameObject, S: NeighborFinder, S.Element == GameObject {
+    where T: Container, T.Element == EditableGameObject, S: NeighborFinder, S.Element == EditableGameObject {
         self.coordinateMapper = coordinateMapper
         self.playArea = coordinateMapper.getPlayArea()
         assert(emptyContainer.isEmpty)
@@ -88,15 +88,15 @@ final class DesignerGameLevel {
         isAcceptingOverlappingGameObjectsCallbacks.append(callback)
     }
 
-    func registerGameObjectDidAddCallback(callback: @escaping UnaryFunction<GameObject>) {
+    func registerGameObjectDidAddCallback(callback: @escaping UnaryFunction<EditableGameObject>) {
         addGameObjectCallbacks.append(callback)
     }
 
-    func registerGameObjectDidUpdateCallback(callback: @escaping BinaryFunction<GameObject>) {
+    func registerGameObjectDidUpdateCallback(callback: @escaping BinaryFunction<EditableGameObject>) {
         updateGameObjectCallbacks.append(callback)
     }
 
-    func registerGameObjectDidRemoveCallback(callback: @escaping UnaryFunction<GameObject>) {
+    func registerGameObjectDidRemoveCallback(callback: @escaping UnaryFunction<EditableGameObject>) {
         removeGameObjectCallbacks.append(callback)
     }
 
@@ -106,7 +106,7 @@ final class DesignerGameLevel {
 
     /// Adds the given `gameObject` into the level and calls the registered callbacks
     /// - Parameter gameObject: GameObject to be added into the level.
-    func addGameObject(gameObject: GameObject) {
+    func addGameObject(gameObject: EditableGameObject) {
         addGameObject(gameObject: gameObject, withCallbacks: addGameObjectCallbacks)
     }
 
@@ -116,7 +116,7 @@ final class DesignerGameLevel {
     ///   - callbacks: Callbacks to be called on the added `gameObject`.
     ///
     /// - Warning: Only calls the callbacks in the parameter and does not call any registered callbacks.
-    func addGameObject(gameObject: GameObject, withCallbacks callbacks: [UnaryFunction<GameObject>]) {
+    func addGameObject(gameObject: EditableGameObject, withCallbacks callbacks: [UnaryFunction<EditableGameObject>]) {
         if gameObjects.contains(gameObject) {
             return
         }
@@ -137,7 +137,7 @@ final class DesignerGameLevel {
     /// - Parameters:
     ///   - oldGameObject: GameObject to be updated.
     ///   - updatedGameObject: Updated game object.
-    func updateGameObject(old oldGameObject: GameObject, with updatedGameObject: GameObject) {
+    func updateGameObject(old oldGameObject: EditableGameObject, with updatedGameObject: EditableGameObject) {
         updateGameObject(old: oldGameObject, with: updatedGameObject, withDidUpdateCallbacks: updateGameObjectCallbacks)
     }
 
@@ -149,9 +149,9 @@ final class DesignerGameLevel {
     ///
     /// - Warning: Only calls the callbacks in the parameter and does not call any registered callbacks.
     func updateGameObject(
-        old oldGameObject: GameObject,
-        with updatedGameObject: GameObject,
-        withDidUpdateCallbacks callbacks: [BinaryFunction<GameObject>]
+        old oldGameObject: EditableGameObject,
+        with updatedGameObject: EditableGameObject,
+        withDidUpdateCallbacks callbacks: [BinaryFunction<EditableGameObject>]
     ) {
         assert(oldGameObject.shape.sides == updatedGameObject.shape.sides)
         assert(oldGameObject !== updatedGameObject)
@@ -188,7 +188,7 @@ final class DesignerGameLevel {
     /// Removes `gameObject` from the level and calls registered callbacks on the removed peg.
     ///
     /// - Parameter gameObject: GameObject to be removed.
-    func removeGameObject(gameObject: GameObject) {
+    func removeGameObject(gameObject: EditableGameObject) {
         removeGameObject(
             gameObject: gameObject,
             withDidRemoveCallbacks: removeGameObjectCallbacks,
@@ -205,9 +205,9 @@ final class DesignerGameLevel {
     ///   - didUpdateCallbacks: Callbacks to be called on any other game object that is updated.
     /// - Warning: Only calls the callbacks in the parameter and does not call any registered callbacks.
     func removeGameObject(
-        gameObject: GameObject,
-        withDidRemoveCallbacks didRemoveCallbacks: [UnaryFunction<GameObject>],
-        withDidUpdateCallbacks didUpdateCallbacks: [BinaryFunction<GameObject>]
+        gameObject: EditableGameObject,
+        withDidRemoveCallbacks didRemoveCallbacks: [UnaryFunction<EditableGameObject>],
+        withDidUpdateCallbacks didUpdateCallbacks: [BinaryFunction<EditableGameObject>]
     ) {
         assert(gameObjects.contains(gameObject))
         let oldNeighbors = findNeighbors(gameObject: gameObject)
@@ -241,9 +241,9 @@ final class DesignerGameLevel {
     }
 
     /// Returns all game objects that collide with the given `gameObject`.
-    private func findNeighbors(gameObject: GameObject) -> [GameObject] {
+    private func findNeighbors(gameObject: EditableGameObject) -> [EditableGameObject] {
         let potentialNeighbors = neighborFinder.retrievePotentialNeighbors(for: gameObject)
-        var neighbors = [GameObject]()
+        var neighbors = [EditableGameObject]()
         for potentialNeighbor in potentialNeighbors {
             if isColliding(gameObject: gameObject, otherGameObject: potentialNeighbor) {
                 neighbors.append(potentialNeighbor)
@@ -252,7 +252,7 @@ final class DesignerGameLevel {
         return neighbors
     }
 
-    private func isColliding(gameObject: GameObject, otherGameObject: GameObject) -> Bool {
+    private func isColliding(gameObject: EditableGameObject, otherGameObject: EditableGameObject) -> Bool {
         switch (gameObject.shape, otherGameObject.shape) {
         case let (circle as Circle, otherCircle as Circle):
             return collisionDetector.isColliding(
@@ -277,7 +277,7 @@ final class DesignerGameLevel {
 
     /// Updates whether the game object is concrete depending on
     /// whether it overlaps with any other concrete game object.
-    @discardableResult private func updateConcreteStatus(gameObject: GameObject) -> [GameObject] {
+    @discardableResult private func updateConcreteStatus(gameObject: EditableGameObject) -> [EditableGameObject] {
         let isContainedInPlayArea = playArea.pegZoneContainsEntity(entity: gameObject)
         let neighbors = findNeighbors(gameObject: gameObject)
         let isOverlappingWithConcreteNeighbor = neighbors.contains(where: { $0.isConcrete })
@@ -313,8 +313,8 @@ extension DesignerGameLevel {
         let playArea = coordinateMapper.getPlayArea()
         return DesignerGameLevel(
             coordinateMapper: coordinateMapper,
-            emptyContainer: SetObject<GameObject>(),
-            neighborFinder: QuadTree<GameObject>(bounds: playArea.pegZoneBoundingBox),
+            emptyContainer: SetObject<EditableGameObject>(),
+            neighborFinder: QuadTree<EditableGameObject>(bounds: playArea.pegZoneBoundingBox),
             collisionDetector: Collision()
         )
     }
@@ -328,7 +328,7 @@ extension DesignerGameLevel {
 
     /// Removes all non concrete game objects from the level.
     func removeInconsistencies() {
-        var gameObjectsToBeRemoved = [GameObject]()
+        var gameObjectsToBeRemoved = [EditableGameObject]()
         for gameObject in gameObjects where !gameObject.isConcrete {
             gameObjectsToBeRemoved.append(gameObject)
         }

@@ -4,7 +4,7 @@ import CoreGraphics
 private let defaultBallRadius = 0.01
 
 final class Ball: GameEntity, Circle, Equatable, Hashable {
-    weak var rigidBody: RigidBodyObject?
+    weak var rigidBody: RigidBody?
 
     var radiusBeforeTransform: Double
 
