@@ -52,6 +52,8 @@ struct Settings {
             static let repulsionRadius: Double = 0.2
             static let repulsionDuration: Double = 0.25
             static let multiballEjectionVelocity: Double = 0.35
+            static let predictionStepsWithoutSuperDuperGuide: Int = 20
+            static let predictionStepsWithSuperDuperGuide: Int = 100
         }
 
         struct Color {
@@ -79,7 +81,7 @@ struct Settings {
         static let height: Double = 0.15
         static let thickness: Double = 0.05
         static let distanceFromBottomOfPlayArea = 0.20
-        static let xVelocity: Double = 0.01
+        static let xVelocity: Double = 0.20
     }
 
     enum Alpha: Double {

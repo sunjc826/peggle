@@ -31,7 +31,9 @@ class BucketView: UIImageView {
         guard let viewModel = viewModel else {
             return
         }
-        frame = viewModel.displayFrame
+        viewModel.displayFramePublisher
+            .assign(to: \.frame, on: self)
+            .store(in: &subscriptions)
         viewModel.displayCoordsPublisher
             .assign(to: \.center, on: self)
             .store(in: &subscriptions)

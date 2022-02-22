@@ -8,7 +8,7 @@ enum SpecialType {
     case iHatePeople
     case moonTourist
     case multiball
-    case author
+    case superDuperGuide(activeCount: Int = 0)
 }
 
 extension SpecialType {
@@ -28,7 +28,7 @@ extension SpecialType {
             return "Moon Tourist"
         case .multiball:
             return "Multiball"
-        case .author:
+        case .superDuperGuide:
             return "Author"
         }
     }
@@ -49,7 +49,7 @@ extension SpecialType {
             return "Reduced gravity"
         case .multiball:
             return "Spawn more balls"
-        case .author:
+        case .superDuperGuide:
             return "Hacks"
         }
     }

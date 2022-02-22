@@ -83,7 +83,7 @@ extension GameplayAreaViewModel {
     }
 
     func getBucketViewModel() -> BucketViewModel {
-        let vmBucket = BucketViewModel(bucket: gameLevel.bucket)
+        let vmBucket = BucketViewModel(bucketPublisher: gameLevel.$bucket.eraseToAnyPublisher())
         vmBucket.delegate = self
         return vmBucket
     }

@@ -6,6 +6,7 @@ protocol AbstractPhysicsEngine: AnyObject {
     var coordinateMapper: PhysicsCoordinateMapper { get set }
     func predict(for initialObject: RigidBody, intervalSize dt: Double, numberOfIntervals: Int) -> [CGPoint]
     func simulateAll(time dt: Double)
+    func recategorizeRigidBody(_ rigidBody: RigidBody)
     func remove(by predicate: Predicate<GameEntity>)
     func remove(by predicate: Predicate<RigidBody>)
     func add(rigidBody: RigidBody)

@@ -5,31 +5,60 @@ import Combine
 protocol BucketViewModelDelegate: AnyObject, CoordinateMappable {}
 
 class BucketViewModel {
-    weak var delegate: BucketViewModelDelegate?
-    var bucket: Bucket
-    var displayFrame: CGRect {
-        guard let delegate = delegate else {
-            fatalError("should not be nil")
+    weak var delegate: BucketViewModelDelegate? {
+        didSet {
+            setupBindings()
         }
-
-        return CGRect(
-            x: 0,
-            y: 0,
-            width: delegate.getDisplayLength(of: bucket.boundingBox.width),
-            height: delegate.getDisplayLength(of: bucket.boundingBox.height)
-        )
     }
+    private var subscriptions: Set<AnyCancellable> = []
+    var bucketPublisher: AnyPublisher<Bucket?, Never>
+    var displayFramePublisher: AnyPublisher<CGRect, Never> {
+        displayFrame.compactMap { $0 }.eraseToAnyPublisher()
+    }
+
+    private var displayFrame: CurrentValueSubject<CGRect?, Never> = CurrentValueSubject(nil)
     var displayCoordsPublisher: AnyPublisher<CGPoint, Never> {
-        bucket.$position.map { [weak self] logicalCoords in
-            guard let self = self, let delegate = self.delegate else {
+        displayCoords.eraseToAnyPublisher()
+    }
+    private var displayCoords: PassthroughSubject<CGPoint, Never> = PassthroughSubject()
+
+    init(bucketPublisher: AnyPublisher<Bucket?, Never>) {
+        self.bucketPublisher = bucketPublisher
+
+    }
+    func setupBindings() {
+        bucketPublisher
+            .compactMap { $0 }
+            .sink { [weak self] bucket in
+                guard let self = self else {
+                    return
+                }
+
+                guard let delegate = self.delegate else {
+                    fatalError("should not be nil")
+                }
+
+                self.displayFrame.send(CGRect(
+                    x: 0,
+                    y: 0,
+                    width: delegate.getDisplayLength(of: bucket.boundingBox.width),
+                    height: delegate.getDisplayLength(of: bucket.boundingBox.height)
+                ))
+                self.setupBindingsWithBucket(bucket)
+            }
+            .store(in: &subscriptions)
+    }
+
+    func setupBindingsWithBucket(_ bucket: Bucket) {
+        bucket.$position.sink { [weak self] logicalCoords in
+            guard let self = self else {
+                return
+            }
+            guard let delegate = self.delegate else {
                 fatalError("should not be nil")
             }
-
-            return delegate.getDisplayCoords(of: logicalCoords)
-        }.eraseToAnyPublisher()
-    }
-
-    init(bucket: Bucket) {
-        self.bucket = bucket
+            self.displayCoords.send(delegate.getDisplayCoords(of: logicalCoords))
+        }
+        .store(in: &subscriptions)
     }
 }

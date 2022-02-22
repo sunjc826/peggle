@@ -42,14 +42,11 @@ extension GameLevel {
             return
         }
 
-        switch special {
-        case .moonTourist:
-            setRegularGravity()
-        case .spooky(activeCount: _):
-            special = .spooky(activeCount: 0)
-        default:
-            break
+        if hasHitSpecialPegInLastRound {
+            cleanupSpecialPegEffects()
         }
+
+        hasHitSpecialPegInLastRound = false
 
         cleanupAfterBallDisappears()
 
@@ -92,10 +89,18 @@ extension GameLevel {
         )
         let gravity = Force(forceType: gravityType, forcePosition: .center)
         rigidBody.longTermDelta.persistentForces.append(gravity)
+
+        let numberOfTimeSteps: Int
+        if case .superDuperGuide(activeCount: let activeCount) = special, activeCount > 0 {
+            numberOfTimeSteps = Settings.Peg.Special.predictionStepsWithSuperDuperGuide
+        } else {
+            numberOfTimeSteps = Settings.Peg.Special.predictionStepsWithoutSuperDuperGuide
+        }
+
         let predictedPositions = physicsEngine.predict(
             for: rigidBody,
             intervalSize: GameLevel.predictionTimeIntervalInSeconds,
-            numberOfIntervals: 30
+            numberOfIntervals: numberOfTimeSteps
         )
 
         return predictedPositions
@@ -126,6 +131,28 @@ extension GameLevel {
                 return false
             }
             return peg.hasCollided
+        }
+    }
+
+    func cleanupSpecialPegEffects() {
+        switch special {
+        case .moonTourist:
+            setRegularGravity()
+        case .spooky(activeCount: _):
+            special = .spooky(activeCount: 0)
+        case .blackHole, .iHatePeople, .smallBombs:
+            for peg in pegs {
+                guard let rigidBody = peg.rigidBody else {
+                    continue
+                }
+
+                rigidBody.configuration.canTranslate = Settings.Peg.canTranslate
+                physicsEngine.recategorizeRigidBody(rigidBody)
+            }
+        case .superDuperGuide(activeCount: let activeCount):
+            special = .superDuperGuide(activeCount: max(activeCount - 1, 0))
+        default:
+            break
         }
     }
 

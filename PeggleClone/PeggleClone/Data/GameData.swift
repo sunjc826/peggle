@@ -48,8 +48,10 @@ struct GameData {
             description: """
                 An ancient witch who has reached the realm of Creator,
                 she has the free will to author her own tales, and rules.
+                Omniscience is but within reach, if only she wishes for it.
+                Warning: With great power comes great lag...
                 """,
-            special: .author
+            special: .superDuperGuide()
         ),
         "lambdadelta": PeggleMaster(
             id: "lambdadelta",

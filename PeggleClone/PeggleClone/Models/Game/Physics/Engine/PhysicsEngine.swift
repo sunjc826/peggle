@@ -58,6 +58,14 @@ class PhysicsEngine: AbstractPhysicsEngine {
         applyResults(time: dt)
         runCallbacksAfterAllUpdates()
     }
+
+    func recategorizeRigidBody(_ rigidBody: RigidBody) {
+        if rigidBody.configuration.canTranslate || rigidBody.configuration.canRotate {
+            changeableRigidBodies.insert(rigidBody)
+        } else {
+            changeableRigidBodies.remove(rigidBody)
+        }
+    }
 }
 
 // MARK: High level private functions

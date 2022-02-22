@@ -139,50 +139,49 @@ extension GameLevel {
 
     private func handleHitSpecialPeg(oldSpecialPeg: Peg, updatedSpecialPeg: Peg) {
         gameEvents.send(.specialPegHit)
-        guard let updatedPegRigidBody: RigidBody = updatedSpecialPeg.rigidBody else {
-            globalLogger.error("cannot find rigid body")
-            return
+        hasHitSpecialPegInLastRound = true
+
+        switch special {
+        case .smallBombs, .blackHole, .iHatePeople:
+            for peg in pegs {
+                guard let rigidBody = peg.rigidBody else {
+                    continue
+                }
+                rigidBody.configuration.canTranslate = true
+                physicsEngine.recategorizeRigidBody(rigidBody)
+            }
+        default:
+            break
         }
+
         switch special {
         case .normal:
             return
         case .spooky(activeCount: let activeCount):
-            assert(balls.count == 1)
-            let ball = balls.first
-            guard let rigidBody = ball?.rigidBody else {
-                fatalError("should not be nil")
-            }
-            rigidBody.configuration.bottomWallBehavior = .wrapAround
-            special = .spooky(activeCount: activeCount + 1)
+            addSpooky(previousActiveCount: activeCount)
         case .smallBombs:
-            updatedPegRigidBody.localizedForceEmitter = LocalizedRadialForceEmitter(
-                forceType: .explosion,
-                baseMagnitude: Settings.Peg.Special.explosionForceBaseMagnitude,
-                maximumRadius: Settings.Peg.Special.explosionRadius,
-                duration: GameLevel.targetSecondsPerFrame // Explosion lasts for single frame
-            )
+            startSmallBombs(updatedSpecialPeg: updatedSpecialPeg)
         case .moonTourist:
             setMoonGravity()
         case .blackHole:
-            updatedPegRigidBody.localizedForceEmitter = LocalizedRadialForceEmitter(
-                forceType: .attraction,
-                baseMagnitude: Settings.Peg.Special.attractionForceBaseMagnitude,
-                maximumRadius: Settings.Peg.Special.attractionRadius,
-                duration: Settings.Peg.Special.attractionDuration
-            )
+            startBlackHole(updatedSpecialPeg: updatedSpecialPeg)
         case .iHatePeople:
-            updatedPegRigidBody.localizedForceEmitter = LocalizedRadialForceEmitter(
-                forceType: .replusion,
-                baseMagnitude: Settings.Peg.Special.repulsionForceBaseMagnitude,
-                maximumRadius: Settings.Peg.Special.repulsionRadius,
-                duration: Settings.Peg.Special.repulsionDuration
-            )
+            startRepulsion(updatedSpecialPeg: updatedSpecialPeg)
         case .multiball:
             addMultiball(updatedSpecialPeg: updatedSpecialPeg)
-        case .author:
-            // TODO
-            return
+        case .superDuperGuide(activeCount: let activeCount):
+            special = .superDuperGuide(activeCount: activeCount + 2)
         }
+    }
+    
+    private func addSpooky(previousActiveCount: Int) {
+        assert(balls.count == 1)
+        let ball = balls.first
+        guard let rigidBody = ball?.rigidBody else {
+            fatalError("should not be nil")
+        }
+        rigidBody.configuration.bottomWallBehavior = .wrapAround
+        special = .spooky(activeCount: previousActiveCount + 1)
     }
 
     private func addMultiball(updatedSpecialPeg: Peg) {
@@ -211,6 +210,33 @@ extension GameLevel {
             ball: ball,
             ejectionVelocity:
                 directionVector.scaleBy(factor: Settings.Peg.Special.multiballEjectionVelocity)
+        )
+    }
+
+    private func startSmallBombs(updatedSpecialPeg: Peg) {
+        updatedSpecialPeg.rigidBody?.localizedForceEmitter = LocalizedRadialForceEmitter(
+            forceType: .explosion,
+            baseMagnitude: Settings.Peg.Special.explosionForceBaseMagnitude,
+            maximumRadius: Settings.Peg.Special.explosionRadius,
+            duration: GameLevel.targetSecondsPerFrame // Explosion lasts for single frame
+        )
+    }
+
+    private func startBlackHole(updatedSpecialPeg: Peg) {
+        updatedSpecialPeg.rigidBody?.localizedForceEmitter = LocalizedRadialForceEmitter(
+            forceType: .attraction,
+            baseMagnitude: Settings.Peg.Special.attractionForceBaseMagnitude,
+            maximumRadius: Settings.Peg.Special.attractionRadius,
+            duration: Settings.Peg.Special.attractionDuration
+        )
+    }
+
+    private func startRepulsion(updatedSpecialPeg: Peg) {
+        updatedSpecialPeg.rigidBody?.localizedForceEmitter = LocalizedRadialForceEmitter(
+            forceType: .replusion,
+            baseMagnitude: Settings.Peg.Special.repulsionForceBaseMagnitude,
+            maximumRadius: Settings.Peg.Special.repulsionRadius,
+            duration: Settings.Peg.Special.repulsionDuration
         )
     }
 

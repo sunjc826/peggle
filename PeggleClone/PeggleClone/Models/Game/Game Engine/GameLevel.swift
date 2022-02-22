@@ -17,7 +17,7 @@ final class GameLevel {
     @Published var coordinateMapper: PhysicsCoordinateMapper
     var playArea: PlayArea
     let cannon: Cannon
-    let bucket: Bucket
+    @Published var bucket: Bucket?
     var balls: [Ball] = []
     let pegs: PegContainer
     var obstacles: Set<Obstacle> = []
@@ -30,6 +30,7 @@ final class GameLevel {
             peggleMaster.special = newValue
         }
     }
+    var hasHitSpecialPegInLastRound = false
 
     @Published var numBalls: Int = GameLevel.startingBalls
     @Published var gamePhase: GamePhase = .disabled
@@ -63,12 +64,6 @@ final class GameLevel {
         self.pegs = PegContainer(pegs: emptyPegsContainer)
         let cannonPosition = CGPoint(x: playArea.boundingBox.center.x, y: 0)
         self.cannon = Cannon(position: cannonPosition)
-        self.bucket = Bucket(
-            position: CGPoint(
-                x: playArea.boundingBox.center.x,
-                y: playArea.boundingBox.maxY - Settings.Bucket.distanceFromBottomOfPlayArea
-            )
-        )
         self.physicsEngine = PhysicsEngine(
             coordinateMapper: coordinateMapper,
             rigidBodies: SetObject<RigidBody>(),
@@ -88,6 +83,17 @@ final class GameLevel {
         )
         playArea = coordinateMapper.getPlayArea()
         physicsEngine.coordinateMapper = coordinateMapper
+        bucket = Bucket(
+            position: CGPoint(
+                x: playArea.boundingBox.center.x,
+                y: playArea.boundingBox.maxY - Settings.Bucket.distanceFromBottomOfPlayArea
+            )
+        )
+
+        guard let bucket = bucket else {
+            fatalError("should not be nil")
+        }
+
         addBucket(bucket: bucket)
         for persistablePeg in incomingLevel.pegs {
             let peg = Peg.fromPersistable(persistablePeg: persistablePeg)
