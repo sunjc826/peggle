@@ -19,21 +19,35 @@ class RigidBodyTests: XCTestCase {
             radiusBeforeTransform: 3
         )
 
-        rigidBody = RigidBody(
+        let physicalProperties = PhysicalProperties(
             backingShape: circle,
-            associatedEntity: nil,
-            isAffectedByGlobalForces: true,
+            uniformDensity: 1.2,
+            elasticity: 0.3
+        )
+
+        let configuration = ConfigurationForPhysicsEngine(
             canTranslate: true,
             canRotate: true,
             leftWallBehavior: .collide,
             rightWallBehavior: .fallThrough,
             topWallBehavior: .wrapAround,
-            bottomWallBehavior: .fallThrough,
-            uniformDensity: 1.0,
-            elasticity: 1.0,
-            initialVelocity: CGVector.zero,
-            consecutiveCollisionCount: 0
+            bottomWallBehavior: .fallThrough
         )
+
+        let longTermDelta = LongTermDelta(
+            linearVelocity: CGVector(dx: 1, dy: 2),
+            angularVelocity: 0,
+            persistentForces: []
+        )
+
+        rigidBody = RigidBody(
+            physicalProperties: physicalProperties,
+            associatedEntity: nil,
+            configuration: configuration,
+            longTermDelta: longTermDelta
+        )
+
+        rigidBody.instantaneousDelta.force = CGVector(dx: 1, dy: 2)
     }
 
     override func tearDownWithError() throws {
@@ -45,41 +59,23 @@ class RigidBodyTests: XCTestCase {
     func testInitWithInstance_valuesCopied() {
         let copy = RigidBody(instance: rigidBody)
 
-        XCTAssert(copy.backingShape is Circle)
-        XCTAssertEqual(copy.center, rigidBody.center)
-        XCTAssertEqual(copy.linearVelocity, rigidBody.linearVelocity)
-        XCTAssertEqual(copy.angularVelocity, rigidBody.angularVelocity)
-        XCTAssertEqual(copy.canTranslate, rigidBody.canTranslate)
-        XCTAssertEqual(copy.canRotate, rigidBody.canRotate)
-        XCTAssertEqual(copy.leftWallBehavior, rigidBody.leftWallBehavior)
-        XCTAssertEqual(copy.rightWallBehavior, rigidBody.rightWallBehavior)
-        XCTAssertEqual(copy.topWallBehavior, rigidBody.topWallBehavior)
-        XCTAssertEqual(copy.bottomWallBehavior, rigidBody.bottomWallBehavior)
-        XCTAssertEqual(copy.uniformDensity, rigidBody.uniformDensity)
-        XCTAssertEqual(copy.elasticity, rigidBody.elasticity)
-        XCTAssertEqual(copy.consecutiveCollisionCount, rigidBody.consecutiveCollisionCount)
+        XCTAssertEqual(copy.physicalProperties.mass, rigidBody.physicalProperties.mass)
+        XCTAssertEqual(copy.physicalProperties.uniformDensity, rigidBody.physicalProperties.uniformDensity)
+        XCTAssertEqual(copy.physicalProperties.elasticity, rigidBody.physicalProperties.elasticity)
+        XCTAssertEqual(copy.configuration.canTranslate, rigidBody.configuration.canTranslate)
+        XCTAssertEqual(copy.configuration.canRotate, rigidBody.configuration.canRotate)
+        XCTAssertEqual(copy.configuration.leftWallBehavior, rigidBody.configuration.leftWallBehavior)
+        XCTAssertEqual(copy.configuration.rightWallBehavior, rigidBody.configuration.rightWallBehavior)
+        XCTAssertEqual(copy.configuration.topWallBehavior, rigidBody.configuration.topWallBehavior)
+        XCTAssertEqual(copy.configuration.bottomWallBehavior, rigidBody.configuration.bottomWallBehavior)
+        XCTAssertEqual(copy.longTermDelta.linearVelocity, rigidBody.longTermDelta.linearVelocity)
+        XCTAssertEqual(copy.longTermDelta.angularVelocity, rigidBody.longTermDelta.angularVelocity)
     }
 
-    func testWithPositionAndLinearVelocity_valuesChanged() {
-        let changedRigidBody = rigidBody.withPositionAndLinearVelocity(
-            position: CGPoint(x: 1, y: 2), linearVelocity: CGVector(dx: 0, dy: 2)
-        )
+    func testInitWithInstance_instantaneousValuesNotCopied() {
+        let copy = RigidBody(instance: rigidBody)
 
-        XCTAssertEqual(changedRigidBody.center, CGPoint(x: 1, y: 2))
-        XCTAssertEqual(changedRigidBody.linearVelocity, CGVector(dx: 0, dy: 2))
-    }
-
-    func testWithAngleAndAngularVelocity_valuesChanged() {
-        let changedRigidBody = rigidBody.withAngleAndAngularVelocity(angle: 1, angularVelocity: 0.2)
-
-        XCTAssertEqual(changedRigidBody.rotation, 1)
-        XCTAssertEqual(changedRigidBody.angularVelocity, 0.2)
-    }
-
-    func testWithConsecutiveCollisionCount_valuesChanged() {
-        let changedRigidBody = rigidBody.withConsecutiveCollisionCount(count: 5)
-
-        XCTAssertEqual(changedRigidBody.consecutiveCollisionCount, 5)
+        XCTAssertNotEqual(copy.instantaneousDelta.force, rigidBody.instantaneousDelta.force)
     }
 
 }

@@ -20,8 +20,8 @@ class PegTests: XCTestCase {
             ], sides: 4, scale: 1, rotation: 0
         )
 
-        circularPeg = Peg(shape: circle, isCompulsory: false, isConcrete: false)
-        squarePeg = Peg(shape: square, isCompulsory: true, isConcrete: true)
+        circularPeg = Peg(shape: circle, pegType: .optional, isConcrete: false)
+        squarePeg = Peg(shape: square, pegType: .compulsory, isConcrete: true)
     }
 
     override func tearDownWithError() throws {
@@ -38,13 +38,13 @@ class PegTests: XCTestCase {
         let squarePegCopy = Peg(instance: squarePeg)
 
         XCTAssertEqual(circularPegCopy.isConcrete, circularPeg.isConcrete)
-        XCTAssertEqual(circularPegCopy.isCompulsory, circularPeg.isCompulsory)
+        XCTAssertEqual(circularPegCopy.pegType, circularPeg.pegType)
         XCTAssertTrue(circularPegCopy.shape is Circle)
         XCTAssertEqual(circularPegCopy.shape.center, circularPeg.shape.center)
         XCTAssertEqual(circularPegCopy.hasCollided, circularPeg.hasCollided)
 
         XCTAssertEqual(squarePegCopy.isConcrete, squarePeg.isConcrete)
-        XCTAssertEqual(squarePegCopy.isCompulsory, squarePeg.isCompulsory)
+        XCTAssertEqual(squarePegCopy.pegType, squarePeg.pegType)
         XCTAssertTrue(squarePegCopy.shape is TransformablePolygonObject)
         XCTAssertEqual(squarePegCopy.shape.center, squarePeg.shape.center)
         XCTAssertEqual(squarePegCopy.shape.sides, squarePeg.shape.sides)
@@ -102,25 +102,25 @@ class PegTests: XCTestCase {
         let persistableCircularPeg = circularPeg.toPersistable()
 
         XCTAssert(persistableCircularPeg.shape is Circle)
-        XCTAssertEqual(persistableCircularPeg.isCompulsory, circularPeg.isCompulsory)
+        XCTAssertEqual(persistableCircularPeg.pegType, circularPeg.pegType)
 
         let persistableSquarePeg = squarePeg.toPersistable()
 
         XCTAssert(persistableSquarePeg.shape is TransformablePolygon)
         XCTAssertEqual(persistableSquarePeg.shape.sides, 4)
-        XCTAssertEqual(persistableSquarePeg.isCompulsory, squarePeg.isCompulsory)
+        XCTAssertEqual(persistableSquarePeg.pegType, squarePeg.pegType)
     }
 
     func testFromPersistable() {
         let recoveredCircularPeg = Peg.fromPersistable(persistablePeg: circularPeg.toPersistable())
 
         XCTAssert(recoveredCircularPeg.shape is Circle)
-        XCTAssertEqual(recoveredCircularPeg.isCompulsory, circularPeg.isCompulsory)
+        XCTAssertEqual(recoveredCircularPeg.pegType, circularPeg.pegType)
 
         let recoveredSquarePeg = Peg.fromPersistable(persistablePeg: squarePeg.toPersistable())
 
         XCTAssert(recoveredSquarePeg.shape is TransformablePolygon)
         XCTAssertEqual(recoveredSquarePeg.shape.sides, 4)
-        XCTAssertEqual(recoveredSquarePeg.isCompulsory, squarePeg.isCompulsory)
+        XCTAssertEqual(recoveredSquarePeg.pegType, squarePeg.pegType)
     }
 }

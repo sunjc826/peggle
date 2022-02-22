@@ -9,6 +9,7 @@ enum SpecialType {
     case moonTourist
     case multiball
     case superDuperGuide(activeCount: Int = 0)
+    case phaseThrough(activeCount: Int = 0)
 }
 
 extension SpecialType {
@@ -28,8 +29,10 @@ extension SpecialType {
             return "Moon Tourist"
         case .multiball:
             return "Multiball"
-        case .superDuperGuide:
-            return "Author"
+        case .superDuperGuide(activeCount: _):
+            return "Super Duper Guide"
+        case .phaseThrough(activeCount: _):
+            return "Phaser"
         }
     }
 
@@ -50,7 +53,9 @@ extension SpecialType {
         case .multiball:
             return "Spawn more balls"
         case .superDuperGuide:
-            return "Hacks"
+            return "See (more) of the future"
+        case .phaseThrough(activeCount: _):
+            return "Phase through walls"
         }
     }
 }

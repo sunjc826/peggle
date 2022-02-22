@@ -11,6 +11,7 @@
 		E50742AF27C1F5E30014E84F /* sound_effects in Resources */ = {isa = PBXBuildFile; fileRef = E50742AE27C1F5E30014E84F /* sound_effects */; };
 		E50742B127C1F63F0014E84F /* SoundEffect.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50742B027C1F63F0014E84F /* SoundEffect.swift */; };
 		E516823727C51262004686F0 /* BucketComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = E516823627C51262004686F0 /* BucketComponent.swift */; };
+		E516823927C54494004686F0 /* PersistableObstacleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E516823827C54494004686F0 /* PersistableObstacleTests.swift */; };
 		E519D56B2798009600BCE59D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E519D56A2798009600BCE59D /* AppDelegate.swift */; };
 		E519D56D2798009600BCE59D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E519D56C2798009600BCE59D /* SceneDelegate.swift */; };
 		E519D56F2798009600BCE59D /* DesignerMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E519D56E2798009600BCE59D /* DesignerMainViewController.swift */; };
@@ -106,7 +107,6 @@
 		E572B90727B76D91008E72A6 /* WallBehavior.swift in Sources */ = {isa = PBXBuildFile; fileRef = E572B90627B76D91008E72A6 /* WallBehavior.swift */; };
 		E572B90927B76DC4008E72A6 /* GamePhase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E572B90827B76DC4008E72A6 /* GamePhase.swift */; };
 		E572B90C27B76E66008E72A6 /* TransitionError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E572B90B27B76E66008E72A6 /* TransitionError.swift */; };
-		E572B90E27B76EB4008E72A6 /* PersistablePlayAreaTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E572B90D27B76EB4008E72A6 /* PersistablePlayAreaTests.swift */; };
 		E572B91227B789D6008E72A6 /* CoordinateMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E572B91127B789D6008E72A6 /* CoordinateMapper.swift */; };
 		E572B91427B7AFF2008E72A6 /* GameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E572B91327B7AFF2008E72A6 /* GameViewModel.swift */; };
 		E572B91627B7B9F2008E72A6 /* CoordinateMappable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E572B91527B7B9F2008E72A6 /* CoordinateMappable.swift */; };
@@ -252,6 +252,7 @@
 		E50742AE27C1F5E30014E84F /* sound_effects */ = {isa = PBXFileReference; lastKnownFileType = folder; name = sound_effects; path = ../../../../audio_assets/sound_effects; sourceTree = "<group>"; };
 		E50742B027C1F63F0014E84F /* SoundEffect.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundEffect.swift; sourceTree = "<group>"; };
 		E516823627C51262004686F0 /* BucketComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BucketComponent.swift; sourceTree = "<group>"; };
+		E516823827C54494004686F0 /* PersistableObstacleTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistableObstacleTests.swift; sourceTree = "<group>"; };
 		E519D5672798009600BCE59D /* PeggleClone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PeggleClone.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E519D56A2798009600BCE59D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E519D56C2798009600BCE59D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -351,7 +352,6 @@
 		E572B90627B76D91008E72A6 /* WallBehavior.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WallBehavior.swift; sourceTree = "<group>"; };
 		E572B90827B76DC4008E72A6 /* GamePhase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamePhase.swift; sourceTree = "<group>"; };
 		E572B90B27B76E66008E72A6 /* TransitionError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionError.swift; sourceTree = "<group>"; };
-		E572B90D27B76EB4008E72A6 /* PersistablePlayAreaTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistablePlayAreaTests.swift; sourceTree = "<group>"; };
 		E572B91127B789D6008E72A6 /* CoordinateMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinateMapper.swift; sourceTree = "<group>"; };
 		E572B91327B7AFF2008E72A6 /* GameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewModel.swift; sourceTree = "<group>"; };
 		E572B91527B7B9F2008E72A6 /* CoordinateMappable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinateMappable.swift; sourceTree = "<group>"; };
@@ -896,7 +896,7 @@
 			children = (
 				E572B8FA27B756C4008E72A6 /* PersistablePegTests.swift */,
 				E572B8FC27B756D8008E72A6 /* PersistableDesignerGameLevelTests.swift */,
-				E572B90D27B76EB4008E72A6 /* PersistablePlayAreaTests.swift */,
+				E516823827C54494004686F0 /* PersistableObstacleTests.swift */,
 			);
 			path = "Storage Classes";
 			sourceTree = "<group>";
@@ -1593,9 +1593,9 @@
 				E5713CA327B4229700593880 /* ClosedRangeTests.swift in Sources */,
 				E576BFCE27B88F890052A521 /* RigidBodyTests.swift in Sources */,
 				E5EBE2F027A05B18006E9D1E /* BoundingBoxTests.swift in Sources */,
+				E516823927C54494004686F0 /* PersistableObstacleTests.swift in Sources */,
 				E572B8FD27B756D8008E72A6 /* PersistableDesignerGameLevelTests.swift in Sources */,
 				E572B8F927B75693008E72A6 /* PolarCoordinateTests.swift in Sources */,
-				E572B90E27B76EB4008E72A6 /* PersistablePlayAreaTests.swift in Sources */,
 				E57F03F227A623A2002662DD /* StringTests.swift in Sources */,
 				E57ACFDE27A57C4300EDAE6B /* CGVectorTests.swift in Sources */,
 				E572B8FB27B756C4008E72A6 /* PersistablePegTests.swift in Sources */,

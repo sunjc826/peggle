@@ -30,7 +30,7 @@ extension PhysicsEngine {
             if rigidBody.boundingBox.maxX <= boundary.minX {
                 let teleport = Teleport(
                     teleportType: .wallWrapAround,
-                    teleportSetting: .to(point: CGPoint(x: boundary.maxX, y: rigidBody.center.x))
+                    teleportSetting: .to(point: CGPoint(x: boundary.maxX, y: rigidBody.center.y))
                 )
                 rigidBody.physicsEngineReports.teleports.append(teleport)
                 bodiesMarkedForNotification.insert(rigidBody)
@@ -56,7 +56,7 @@ extension PhysicsEngine {
             if rigidBody.boundingBox.minX >= boundary.maxX {
                 let teleport = Teleport(
                     teleportType: .wallWrapAround,
-                    teleportSetting: .to(point: CGPoint(x: boundary.minX, y: rigidBody.center.x))
+                    teleportSetting: .to(point: CGPoint(x: boundary.minX, y: rigidBody.center.y))
                 )
                 rigidBody.physicsEngineReports.teleports.append(teleport)
                 bodiesMarkedForNotification.insert(rigidBody)

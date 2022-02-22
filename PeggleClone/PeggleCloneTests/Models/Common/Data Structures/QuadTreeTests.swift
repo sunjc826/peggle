@@ -19,7 +19,7 @@ class QuadTreeTests: XCTestCase {
     func testInsert() {
         let anyPeg1 = Peg(
             shape: CircleObject(center: CGPoint(x: -49, y: -49), radiusBeforeTransform: 0.1),
-            isCompulsory: true,
+            pegType: .compulsory,
             isConcrete: true)
 
         for i in 0..<8 {
@@ -29,7 +29,7 @@ class QuadTreeTests: XCTestCase {
 
         let anyPeg2 = Peg(
             shape: CircleObject(center: CGPoint(x: 49, y: 49), radiusBeforeTransform: 0.1),
-            isCompulsory: true,
+            pegType: .compulsory,
             isConcrete: true
         )
 
@@ -40,21 +40,21 @@ class QuadTreeTests: XCTestCase {
     func testRetrieve() {
         let anyPeg1 = Peg(
             shape: CircleObject(center: CGPoint(x: -49, y: -49), radiusBeforeTransform: 0.1),
-            isCompulsory: true,
+            pegType: .compulsory,
             isConcrete: true)
         let anyPeg2 = Peg(
             shape: CircleObject(center: CGPoint(x: 49, y: 49), radiusBeforeTransform: 0.1),
-            isCompulsory: true,
+            pegType: .compulsory,
             isConcrete: true
         )
         let anyPeg3 = Peg(
             shape: CircleObject(center: CGPoint(x: 49, y: -49), radiusBeforeTransform: 0.1),
-            isCompulsory: true,
+            pegType: .compulsory,
             isConcrete: true
         )
         let anyPeg4 = Peg(
             shape: CircleObject(center: CGPoint(x: -49, y: 49), radiusBeforeTransform: 0.1),
-            isCompulsory: true,
+            pegType: .compulsory,
             isConcrete: true
         )
 

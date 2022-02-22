@@ -71,11 +71,22 @@ struct GameData {
                 Hates you, probably everyone else you know. Nipah.
                 """,
             special: .iHatePeople
+        ),
+        "gaap": PeggleMaster(
+            id: "gaap",
+            name: "Gaap",
+            title: "33rd ranked of the 72 Great Demons",
+            description: """
+                When things disappear, blame Gaap.
+                It is definitely not your carelessness or anything.
+                """,
+            special: .phaseThrough()
         )
     ]
     static let peggleMasters: [PeggleMaster] = [
         peggleMastersMap["beatrice"]!,
         peggleMastersMap["battler"]!,
+        peggleMastersMap["gaap"]!,
         peggleMastersMap["maria"]!,
         peggleMastersMap["krauss"]!,
         peggleMastersMap["featherine"]!,

@@ -17,9 +17,9 @@ class PersistablePegTests: XCTestCase {
 
         transformableShape = regularPolygon.getTransformablePolygon()
 
-        circularPeg = PersistablePeg(shape: circle, isCompulsory: false)
+        circularPeg = PersistablePeg(shape: circle, pegType: .compulsory)
 
-        transformablePeg = PersistablePeg(shape: transformableShape, isCompulsory: true)
+        transformablePeg = PersistablePeg(shape: transformableShape, pegType: .special)
     }
 
     override func tearDownWithError() throws {
@@ -39,11 +39,11 @@ class PersistablePegTests: XCTestCase {
         let transformablePegData = try jsonStorage.encode(object: transformablePeg)
         let decodedTransformablePeg: PersistablePeg = try jsonStorage.decode(data: transformablePegData)
 
-        XCTAssertFalse(decodedCircularPeg.isCompulsory)
+        XCTAssertEqual(decodedCircularPeg.pegType, circularPeg.pegType)
         XCTAssertEqual(decodedCircularPeg.shape.center, CGPoint(x: 1, y: 2))
         XCTAssert(decodedCircularPeg.shape is Circle)
 
-        XCTAssertTrue(decodedTransformablePeg.isCompulsory)
+        XCTAssertEqual(decodedTransformablePeg.pegType, transformablePeg.pegType)
         XCTAssertEqual(decodedTransformablePeg.shape.center, CGPoint(x: 1, y: -1))
         XCTAssert(decodedTransformablePeg.shape is TransformablePolygon)
     }
@@ -54,7 +54,7 @@ class PersistablePegTests: XCTestCase {
     }
 
     func testEquals_copyButNotIdentical_returnsFalse() {
-        let circularPegCopy = PersistablePeg(shape: circularPeg.shape, isCompulsory: circularPeg.isCompulsory)
+        let circularPegCopy = PersistablePeg(shape: circularPeg.shape, pegType: circularPeg.pegType)
 
         XCTAssertNotEqual(circularPeg, circularPegCopy)
     }

@@ -13,6 +13,12 @@ extension GameLevel {
                 ofPhysicalLength: Settings.Physics.signedMagnitudeOfAccelerationDueToGravity
             )
         )
+
+        if case .phaseThrough(activeCount: let activeCount) = special, activeCount > 0 {
+            rigidBody.configuration.leftWallBehavior = .wrapAround
+            rigidBody.configuration.rightWallBehavior = .wrapAround
+        }
+
         let gravity = Force(forceType: gravityType, forcePosition: .center)
         rigidBody.longTermDelta.persistentForces.append(gravity)
         physicsEngine.add(rigidBody: rigidBody)

@@ -32,17 +32,22 @@ class CollisionStubAlwaysReturnsFalse: CollisionDetector {
 class DesignerGameLevelTests: XCTestCase {
     var coordinateMapper: CoordinateMapper!
     var playArea: PlayArea!
-    var container: SetObject<Peg>!
-    var quadtree: QuadTree<Peg>!
+    var container: SetObject<EditableGameObject>!
+    var quadtree: QuadTree<EditableGameObject>!
     var collisionDetector: CollisionDetector!
     var designerGameLevel: DesignerGameLevel!
 
     override func setUpWithError() throws {
         try super.setUpWithError()
-        coordinateMapper = CoordinateMapper(targetDisplayWidth: 100, targetDisplayHeight: 100, onScreenDisplayWidth: 100, onScreenDisplayHeight: 100)
+        coordinateMapper = CoordinateMapper(
+            targetDisplayWidth: 100,
+            targetDisplayHeight: 100,
+            onScreenDisplayWidth: 100,
+            onScreenDisplayHeight: 100
+        )
         playArea = coordinateMapper.getPlayArea()
-        container = SetObject<Peg>()
-        quadtree = QuadTree<Peg>(bounds: playArea.boundingBox)
+        container = SetObject<EditableGameObject>()
+        quadtree = QuadTree<EditableGameObject>(bounds: playArea.boundingBox)
         collisionDetector = Collision()
     }
 
@@ -58,7 +63,7 @@ class DesignerGameLevelTests: XCTestCase {
     func testAddPeg_noCollision_successfullyAdded() {
         designerGameLevel = DesignerGameLevel(
             coordinateMapper: coordinateMapper,
-            container: container,
+            emptyContainer: container,
             neighborFinder: quadtree,
             collisionDetector: CollisionStubAlwaysReturnsFalse()
         )
@@ -73,7 +78,7 @@ class DesignerGameLevelTests: XCTestCase {
                 center: coordinateMapper.getLogicalCoords(ofDisplayCoords: CGPoint(x: 10, y: 20)),
                 radiusBeforeTransform: 0.001
             ),
-            isCompulsory: false,
+            pegType: .compulsory,
             isConcrete: true
         )
 
@@ -86,7 +91,7 @@ class DesignerGameLevelTests: XCTestCase {
                 center: coordinateMapper.getLogicalCoords(ofDisplayCoords: CGPoint(x: 30, y: 10)),
                 radiusBeforeTransform: 0.001
             ),
-            isCompulsory: true,
+            pegType: .optional,
             isConcrete: true
         )
 
@@ -98,7 +103,7 @@ class DesignerGameLevelTests: XCTestCase {
     func testAddPeg_collision_pegNotAdded() {
         designerGameLevel = DesignerGameLevel(
             coordinateMapper: coordinateMapper,
-            container: container,
+            emptyContainer: container,
             neighborFinder: quadtree,
             collisionDetector: CollisionStubAlwaysReturnsTrue()
         )
@@ -114,7 +119,7 @@ class DesignerGameLevelTests: XCTestCase {
                 center: coordinateMapper.getLogicalCoords(ofDisplayCoords: CGPoint(x: 10, y: 20)),
                 radiusBeforeTransform: 0.001
             ),
-            isCompulsory: false,
+            pegType: .optional,
             isConcrete: true
         )
 
@@ -127,7 +132,7 @@ class DesignerGameLevelTests: XCTestCase {
                 center: coordinateMapper.getLogicalCoords(ofDisplayCoords: CGPoint(x: 30, y: 10)),
                 radiusBeforeTransform: 0.001
             ),
-            isCompulsory: true,
+            pegType: .compulsory,
             isConcrete: true
         )
 
@@ -139,7 +144,7 @@ class DesignerGameLevelTests: XCTestCase {
     func testRemovePeg_pegExists_successfullyRemoved() {
         designerGameLevel = DesignerGameLevel(
             coordinateMapper: coordinateMapper,
-            container: container,
+            emptyContainer: container,
             neighborFinder: quadtree,
             collisionDetector: collisionDetector
         )
@@ -155,11 +160,11 @@ class DesignerGameLevelTests: XCTestCase {
                 center: coordinateMapper.getLogicalCoords(ofDisplayCoords: CGPoint(x: 10, y: 20)),
                 radiusBeforeTransform: 0.001
             ),
-            isCompulsory: false,
+            pegType: .optional,
             isConcrete: true
         )
         designerGameLevel.addGameObject(gameObject: anyPeg)
-        designerGameLevel.removePeg(peg: anyPeg)
+        designerGameLevel.removeGameObject(gameObject: anyPeg)
 
         XCTAssertEqual(pegRemoveCount, 1)
     }

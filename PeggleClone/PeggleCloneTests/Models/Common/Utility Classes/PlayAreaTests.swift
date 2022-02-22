@@ -32,20 +32,4 @@ class PlayAreaTests: XCTestCase {
 
         XCTAssertEqual(playArea, anySamePlayArea)
     }
-
-    func testToPersistable() {
-        let persistablePlayArea = playArea.toPersistable()
-
-        XCTAssertEqual(persistablePlayArea.height, playArea.height)
-        XCTAssertEqual(persistablePlayArea.width, playArea.width)
-        XCTAssertEqual(persistablePlayArea.cannonZoneHeight, playArea.cannonZoneHeight)
-    }
-
-    func testFromPersistable() {
-        let recoveredPlayArea = PlayArea.fromPersistable(persistableArea: playArea.toPersistable())
-
-        XCTAssertEqual(recoveredPlayArea.height, playArea.height)
-        XCTAssertEqual(recoveredPlayArea.width, playArea.width)
-        XCTAssertEqual(recoveredPlayArea.cannonZoneHeight, playArea.cannonZoneHeight)
-    }
 }

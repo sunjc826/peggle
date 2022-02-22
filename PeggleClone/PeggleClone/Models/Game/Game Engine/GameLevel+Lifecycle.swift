@@ -6,6 +6,7 @@ extension GameLevel {
         guard gamePhase == .beginning else {
             return
         }
+
         cannon.updateAngle(time: GameLevel.targetSecondsPerFrame)
     }
 
@@ -16,6 +17,7 @@ extension GameLevel {
 
         gamePhase = .ongoing
         shootBall()
+        deductActiveAbilities()
     }
 
     func doOngoing() {
@@ -134,6 +136,17 @@ extension GameLevel {
         }
     }
 
+    func deductActiveAbilities() {
+        switch special {
+        case .superDuperGuide(activeCount: let activeCount):
+            special = .superDuperGuide(activeCount: max(activeCount - 1, 0))
+        case .phaseThrough(activeCount: let activeCount):
+            special = .phaseThrough(activeCount: max(activeCount - 1, 0))
+        default:
+            break
+        }
+    }
+
     func cleanupSpecialPegEffects() {
         switch special {
         case .moonTourist:
@@ -149,8 +162,6 @@ extension GameLevel {
                 rigidBody.configuration.canTranslate = Settings.Peg.canTranslate
                 physicsEngine.recategorizeRigidBody(rigidBody)
             }
-        case .superDuperGuide(activeCount: let activeCount):
-            special = .superDuperGuide(activeCount: max(activeCount - 1, 0))
         default:
             break
         }

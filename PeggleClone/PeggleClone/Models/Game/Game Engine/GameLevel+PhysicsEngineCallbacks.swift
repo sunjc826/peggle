@@ -137,6 +137,10 @@ extension GameLevel {
         }
     }
 
+    // The reason for this warning is due to the large number of switch cases,
+    // which is acceptable since there is a large number of powerups.
+    // It is clear that the function is rather cohesive, the 2 switch statements are closely related.
+    // swiftlint:disable cyclomatic_complexity
     private func handleHitSpecialPeg(oldSpecialPeg: Peg, updatedSpecialPeg: Peg) {
         gameEvents.send(.specialPegHit)
         hasHitSpecialPegInLastRound = true
@@ -165,8 +169,11 @@ extension GameLevel {
             addMultiball(updatedSpecialPeg: updatedSpecialPeg)
         case .superDuperGuide(activeCount: let activeCount):
             special = .superDuperGuide(activeCount: activeCount + 2)
+        case .phaseThrough(activeCount: let activeCount):
+            special = .phaseThrough(activeCount: activeCount + 2)
         }
     }
+    // swiftlint:enable cyclomatic_complexity
 
     private func enablePegTranslation() {
         for peg in pegs {
