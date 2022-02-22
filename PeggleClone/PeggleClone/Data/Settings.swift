@@ -49,7 +49,7 @@ struct Settings {
         }
 
         struct RegularPolygonalOrCircular {
-            static let radius = 0.02
+            static let radius = 0.025
         }
 
         struct Special {
@@ -90,7 +90,7 @@ struct Settings {
         static let distanceApart: Double = 0.10
         static let height: Double = 0.15
         static let thickness: Double = 0.05
-        static let distanceFromBottomOfPlayArea = 0.20
+        static let distanceFromBottomOfPlayArea = 0.07
         static let xVelocity: Double = 0.20
     }
 

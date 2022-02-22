@@ -57,7 +57,9 @@ struct GameData {
             id: "lambdadelta",
             name: "Lambdadelta",
             title: "The Witch of Certainty",
-            description: "Certainly made of candy.",
+            description: """
+                Certainly made of candy.
+                """,
             special: .blackHole
         ),
         "bernkastel": PeggleMaster(
