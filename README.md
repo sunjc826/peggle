@@ -389,6 +389,12 @@ Adjust the scaling slider in the shape transform menu.
   - This button can be tapped to remove all ghost game objects. Alternatively, when transitioning from ghost mode to concrete mode, all ghost game objects are automatically removed. The same can be said for when saving the level.
 3. Selected game object indicator
   - When a game object is selected, a rectangular box is drawn around it. 
+4. Scroll-expansion lock
+  - A level is expanded if the view already shows the bottom of the level and the player continues to try to scroll. This behavior can be disabled using the scroll-expansion lock button which is located at the bottom of the designer view.
+  - When scroll-expansion is disabled, the player can still scroll within the bounds of the level itself. Only the expanding behavior is disabled.
+5. Cannon-zone and Bucket-zone
+  - In a designer view, there is a gray box at the top which represents the cannon-zone. The player is prevented from placing pegs in that zone so that no peg is placed too high up where the cannon cannot shoot. Note that using ghost mode, the player can still move pegs into the gray zone, however the peg will be marked as a ghost.
+  - There is a gray box at the bottom which represents the bucket zone, similar to the cannon zone. Pegs are prevented from being placed here to avoid collision with the moving bucket. The bucket zone automatically moves itself when the level is expanded by the player.
 ### Game enhancements
 1. Audio
   - Sounds
