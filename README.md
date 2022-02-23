@@ -690,3 +690,12 @@ Note that the *what changed* sections can be seen as technical debt, though pers
 
 #### What I would have done differently
 I think the MVVM-C (Model View View Model Coordinator) architecture is already quite good, and it is not so easy to think of an improvement on top of that. As for technical improvements, I would be interested in allowing for composite shapes, e.g. a super-shape comprised of multiple convex shapes, where the super shape itself doesn't need to convex; it doesn't even need to be connected. One reason for this is that this is essentially what my implementation of the `Bucket` is. It comprises of 3 rectangles, 1 on each side (left, right) to deflect balls, 1 in the middle that acts as a receiver for balls. (The receiver gives a free ball when the ball hit it, this represents the ball falling into the bucket.)
+
+
+## Credits
+This game is a tribute to one of the greatest visual novels of all time, Umineko When They Cry.
+- [Ryukishi07](https://07th-expansion.fandom.com/wiki/Ryukishi07) and [07th Expansion](https://07th-expansion.fandom.com/wiki/07th_Expansion) for allowing me, a Reader, to traverse the Sea of Fragments
+- [Youtube video](https://www.youtube.com/watch?v=k4T8HeK-ZIg) for Bernkastel's encouragement
+- [Youtube video](https://www.youtube.com/watch?v=Tu14bVETMLw) for the congratulations of various characters. The actual audio comes from the fighting game spin-off Golden Fantasia. It is not possible to directly extract the audio from the game files themselves as the game files use an unknown binary encoding.
+- [http://jwgrlrrajn.github.io/SFX/Umineko/index.html](http://jwgrlrrajn.github.io/SFX/Umineko/index.html) for some of the sound effects
+- Umineko visual novel files for some other sound effects
