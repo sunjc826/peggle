@@ -1,17 +1,17 @@
 import UIKit
 
-enum PegType {
+enum PegType: String {
     case compulsory
     case optional
     case special
-    case valuable(score: Int = 100)
+    case valuable
 }
 
 extension PegType: Codable {}
 
 extension PegType: CaseIterable {
     static var allCases: [PegType] {
-        [.compulsory, .optional, .special, .valuable(score: 100)]
+        [.compulsory, .optional, .special, .valuable]
     }
 }
 
@@ -26,8 +26,8 @@ extension PegType {
             return 10
         case .special:
             return 10
-        case .valuable(score: let score):
-            return score
+        case .valuable:
+            return 500
         }
     }
 }
@@ -42,7 +42,7 @@ extension PegType {
         case .special:
             return Settings.Peg.Color.special
         case .valuable:
-            return Settings.Peg.Color.scoreMultiplier
+            return Settings.Peg.Color.valuable
         }
     }
 }

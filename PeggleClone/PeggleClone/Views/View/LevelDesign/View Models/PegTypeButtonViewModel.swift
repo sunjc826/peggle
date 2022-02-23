@@ -16,7 +16,7 @@ class PegTypeButtonViewModel {
     init(pegType: PegType) {
         self.pegType = pegType
         self.color = pegType.color
-        self.text = String(describing: pegType)
+        self.text = pegType.rawValue.capitalized
     }
 
     func select() {

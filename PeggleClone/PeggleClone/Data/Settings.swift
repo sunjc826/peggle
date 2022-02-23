@@ -74,7 +74,7 @@ struct Settings {
             static let compulsory = UIColor.orange
             static let optional = UIColor.blue
             static let special = UIColor.green
-            static let scoreMultiplier = UIColor.purple
+            static let valuable = UIColor.purple
             static let pegBorder = UIColor.black
             private static let innerColor = UIColor.white.withAlphaComponent(0.9)
             private static let outerColor = UIColor.clear
