@@ -55,7 +55,6 @@ class Cannon {
         }
 
         let deltaAngle = rotationRate * dt
-        let angleLimit: ClosedRange<Double>
 
         let newAngle = angleRange.restrictToRange(
             angle + deltaAngle

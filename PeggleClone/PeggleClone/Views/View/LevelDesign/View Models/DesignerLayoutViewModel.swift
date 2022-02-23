@@ -13,13 +13,13 @@ class DesignerLayoutViewModel {
     }
     private var subscriptions: Set<AnyCancellable> = []
     var displayDimensionsPublisher: AnyPublisher<CGRect, Never> {
-        displayDimensions.eraseToAnyPublisher()
+        displayDimensions.compactMap { $0 }.eraseToAnyPublisher()
     }
-    var displayDimensions: PassthroughSubject<CGRect, Never> = PassthroughSubject()
+    var displayDimensions: CurrentValueSubject<CGRect?, Never> = CurrentValueSubject(nil)
     var pegZonePublisher: AnyPublisher<CGRect, Never> {
-        pegZone.eraseToAnyPublisher()
+        pegZone.compactMap { $0 }.eraseToAnyPublisher()
     }
-    var pegZone: PassthroughSubject<CGRect, Never> = PassthroughSubject()
+    var pegZone: CurrentValueSubject<CGRect?, Never> = CurrentValueSubject(nil)
 
     private func setupBindingsWithDelegate() {
         guard let delegate = delegate else {

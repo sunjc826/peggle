@@ -182,6 +182,7 @@
 		E586262527AD870D009964BF /* Collision+Detection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E586262427AD870D009964BF /* Collision+Detection.swift */; };
 		E586262727AD8719009964BF /* Collision+Resolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = E586262627AD8719009964BF /* Collision+Resolution.swift */; };
 		E5863D1A27C65AB200B7935E /* CollisionParticleData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5863D1927C65AB200B7935E /* CollisionParticleData.swift */; };
+		E5863D1D27C65D8F00B7935E /* preloaded_levels in Resources */ = {isa = PBXBuildFile; fileRef = E5863D1C27C65D8F00B7935E /* preloaded_levels */; };
 		E587678C27BFE26400E49356 /* OscillationLocalityButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E587678B27BFE26400E49356 /* OscillationLocalityButton.swift */; };
 		E588D23D27B813CF0009F1DA /* CoordinateMapperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E588D23C27B813CF0009F1DA /* CoordinateMapperTests.swift */; };
 		E59005CD27C149B800824F92 /* Audio.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59005CC27C149B800824F92 /* Audio.swift */; };
@@ -431,6 +432,7 @@
 		E586262427AD870D009964BF /* Collision+Detection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collision+Detection.swift"; sourceTree = "<group>"; };
 		E586262627AD8719009964BF /* Collision+Resolution.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collision+Resolution.swift"; sourceTree = "<group>"; };
 		E5863D1927C65AB200B7935E /* CollisionParticleData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollisionParticleData.swift; sourceTree = "<group>"; };
+		E5863D1C27C65D8F00B7935E /* preloaded_levels */ = {isa = PBXFileReference; lastKnownFileType = folder; name = preloaded_levels; path = ../../../../preloaded_levels; sourceTree = "<group>"; };
 		E587678B27BFE26400E49356 /* OscillationLocalityButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OscillationLocalityButton.swift; sourceTree = "<group>"; };
 		E588D23C27B813CF0009F1DA /* CoordinateMapperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinateMapperTests.swift; sourceTree = "<group>"; };
 		E59005CC27C149B800824F92 /* Audio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Audio.swift; path = "PeggleClone/General Utils/Audio.swift"; sourceTree = SOURCE_ROOT; };
@@ -1125,6 +1127,14 @@
 			path = Collision;
 			sourceTree = "<group>";
 		};
+		E5863D1B27C65BC000B7935E /* Levels */ = {
+			isa = PBXGroup;
+			children = (
+				E5863D1C27C65D8F00B7935E /* preloaded_levels */,
+			);
+			path = Levels;
+			sourceTree = "<group>";
+		};
 		E59005CE27C153DD00824F92 /* Audio */ = {
 			isa = PBXGroup;
 			children = (
@@ -1199,6 +1209,7 @@
 		E5DC46F627B7EC7000851C51 /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				E5863D1B27C65BC000B7935E /* Levels */,
 				E59005CE27C153DD00824F92 /* Audio */,
 				E5DC46F727B7EC8000851C51 /* Settings.swift */,
 				E5815F7D27BB8FA30041E5F8 /* GameData.swift */,
@@ -1346,6 +1357,7 @@
 			files = (
 				E50742AD27C1EB920014E84F /* congratulations in Resources */,
 				E519D5772798009700BCE59D /* LaunchScreen.storyboard in Resources */,
+				E5863D1D27C65D8F00B7935E /* preloaded_levels in Resources */,
 				E59094D627C6094C00EC454A /* encouragement in Resources */,
 				E519D5742798009700BCE59D /* Assets.xcassets in Resources */,
 				E50742AF27C1F5E30014E84F /* sound_effects in Resources */,

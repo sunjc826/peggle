@@ -40,11 +40,12 @@ class LevelSelectCollectionViewController: UICollectionViewController, Storyboar
     }
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        viewModel?.count ?? 0
+        viewModel?.countForSection(section: section) ?? 0
     }
 
     override func collectionView(_ collectionView: UICollectionView,
                                  cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+
         guard let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: reuseIdentifier,
             for: indexPath) as? LevelSelectCell else {
@@ -55,9 +56,7 @@ class LevelSelectCollectionViewController: UICollectionViewController, Storyboar
             fatalError("should not be nil")
         }
 
-        let index = indexPath.row
-        cell.viewModel = viewModel.getChildViewModel(for: index)
-        cell.setup()
+        cell.viewModel = viewModel.getChildViewModel(for: indexPath.section, at: indexPath.row)
         cell.delegate = self
         return cell
     }

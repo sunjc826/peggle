@@ -16,12 +16,24 @@ class LevelSelectCell: UICollectionViewCell {
     @IBOutlet private var ivLevelImage: UIImageView!
 
     weak var delegate: LevelSelectCellDelegate?
-    var viewModel: LevelSelectCellViewModel?
+    var viewModel: LevelSelectCellViewModel? {
+        didSet {
+            setupWithViewModel()
+        }
+    }
 
     private var subscriptions: Set<AnyCancellable> = []
 
-    func setup() {
-        btnDelete.setTitle("\u{1f5d1}", for: .normal)
+    func setupWithViewModel() {
+        guard let viewModel = viewModel else {
+            return
+        }
+        if viewModel.isPreloaded {
+            btnLoad.removeFromSuperview()
+            btnDelete.removeFromSuperview()
+        } else {
+            btnDelete.setTitle("\u{1f5d1}", for: .normal)
+        }
         setupBindings()
         registerEventHandlers()
     }
@@ -45,8 +57,15 @@ extension LevelSelectCell {
     }
 
     private func registerEventHandlers() {
-        btnLoad.addTarget(self, action: #selector(btnLoadOnTap), for: .touchUpInside)
+        guard let viewModel = viewModel else {
+            return
+        }
+
         btnStart.addTarget(self, action: #selector(btnStartOnTap), for: .touchUpInside)
+        guard !viewModel.isPreloaded else {
+            return
+        }
+        btnLoad.addTarget(self, action: #selector(btnLoadOnTap), for: .touchUpInside)
         btnDelete.addTarget(self, action: #selector(btnDeleteOnTap), for: .touchUpInside)
     }
 }

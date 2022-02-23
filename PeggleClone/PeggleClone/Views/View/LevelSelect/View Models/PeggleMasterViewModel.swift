@@ -5,15 +5,15 @@ class PeggleMasterViewModel: CollectionViewModel {
     let peggleMasters = GameData.peggleMasters
     let numberOfSections: Int = 1
 
-    var count: Int {
-        GameData.peggleMasters.count
-    }
-
     @Published var shouldReload = false
     @Published var selectedPeggleMaster: PeggleMaster?
 
     init(selectedPeggleMaster: PeggleMaster?) {
         self.selectedPeggleMaster = selectedPeggleMaster
+    }
+
+    func countForSection(section: Int) -> Int {
+        GameData.peggleMasters.count
     }
 
     func getChildViewModel(for index: Int) -> PeggleMasterCellViewModel {

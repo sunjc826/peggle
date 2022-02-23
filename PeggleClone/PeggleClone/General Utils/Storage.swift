@@ -117,5 +117,39 @@ extension JSONStorage {
     func loadAndDecode<T: Decodable>(filename: String) throws -> T {
         try loadAndDecode(from: getURL(filename: filename))
     }
+}
 
+struct PreloadedLevelFileData {
+    var jsonURL: URL
+    var jsonFilename: String
+    var imageURL: URL?
+}
+
+extension Storage {
+    func getPreloadedLevels() -> [PreloadedLevelFileData] {
+        let jsonURLs = Bundle.main.urls(
+            forResourcesWithExtension: "json",
+            subdirectory: "preloaded_levels"
+        )
+
+        guard let jsonURLs = jsonURLs else {
+            return []
+        }
+
+        var preloadedLevelFileData: [PreloadedLevelFileData] = []
+        for jsonURL in jsonURLs {
+            let filename = jsonURL.deletingPathExtension().lastPathComponent
+            let imageURL = Bundle.main.url(
+                forResource: filename,
+                withExtension: "png",
+                subdirectory: "preloaded_levels"
+            )
+            preloadedLevelFileData.append(PreloadedLevelFileData(
+                jsonURL: jsonURL,
+                jsonFilename: filename,
+                imageURL: imageURL
+            ))
+        }
+        return preloadedLevelFileData
+    }
 }

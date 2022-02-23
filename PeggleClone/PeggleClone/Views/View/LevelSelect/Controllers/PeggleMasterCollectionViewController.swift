@@ -32,7 +32,7 @@ class PeggleMasterCollectionViewController: UICollectionViewController, Storyboa
     }
 
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        viewModel?.count ?? 0
+        viewModel?.countForSection(section: section) ?? 0
     }
 
     override func collectionView(
@@ -51,8 +51,7 @@ class PeggleMasterCollectionViewController: UICollectionViewController, Storyboa
             fatalError("should not be nil")
         }
 
-        let index = indexPath.row
-        cell.viewModel = viewModel.getChildViewModel(for: index)
+        cell.viewModel = viewModel.getChildViewModel(for: indexPath.row)
         cell.setup()
         cell.delegate = self
 
