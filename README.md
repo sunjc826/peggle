@@ -395,7 +395,9 @@ Adjust the scaling slider in the shape transform menu.
     - Ball to regular peg collision (`boing.mp3`)
     - Ball to special peg collision (`whee.mp3`)
     - Ball doesn't hit anything, even if you get it into the bucket, out of pure luck presumably. (`ahaha.mp3`, i.e., The Golden Witch Beatrice laughs at ~~Battler's~~ your incompetence.)
-    - Game win. Your peggle master congratulates you for an outstanding performance.
+    - Game win. Your peggle master congratulates you for an outstanding performance. This changes depending on the peggle master you have selected.
+      - For Krauss, it is actually his daughter [Ushiromiya Jessia](https://07th-expansion.fandom.com/wiki/Jessica_Ushiromiya) that congratulates you since there is no corresponding congratulations audio available from him.
+      - For Featherine, no such audio is available, unfortunately.
   - Music
 2. (A lot of) Peggle masters, with lore accurate (99% guaranteed) powerups
   - Beatrice: Spookyball
