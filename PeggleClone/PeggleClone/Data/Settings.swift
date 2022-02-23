@@ -14,6 +14,10 @@ struct Settings {
 
     static let easeOfRotation: EaseOfRotation = .spinny
 
+    struct Game {
+        static let startingBalls = 10
+    }
+
     struct Ball {
         static let uniformDensity: Double = 1
         static let elasticity: Double = 0.7
@@ -84,13 +88,15 @@ struct Settings {
 
     struct Cannon {
         static let defaultEjectionSpeed: Double = 0.35
+        static let yDistanceFromTopOfPlayArea: Double = 0
+        static let height: Double = 0.05 // aka barrel length
     }
 
     struct Bucket {
         static let distanceApart: Double = 0.10
         static let height: Double = 0.15
         static let thickness: Double = 0.05
-        static let distanceFromBottomOfPlayArea = 0.07
+        static let ydistanceFromBottomOfPlayArea = 0.07
         static let xVelocity: Double = 0.20
     }
 

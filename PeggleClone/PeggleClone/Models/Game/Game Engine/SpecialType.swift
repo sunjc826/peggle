@@ -13,6 +13,19 @@ enum SpecialType {
 }
 
 extension SpecialType {
+    var activeCount: Int? {
+        switch self {
+        case .normal, .smallBombs, .blackHole, .iHatePeople, .multiball, .moonTourist:
+            return nil
+        case .spooky(let activeCount),
+            .superDuperGuide(let activeCount),
+            .phaseThrough(let activeCount):
+            return activeCount
+        }
+    }
+}
+
+extension SpecialType {
     var name: String {
         switch self {
         case .normal:

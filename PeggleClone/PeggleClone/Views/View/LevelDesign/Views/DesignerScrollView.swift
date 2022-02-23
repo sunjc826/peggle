@@ -7,10 +7,10 @@ protocol DesignerScrollViewDelegate: AnyObject {
 
 class DesignerScrollView: UIScrollView {
     weak var ownDelegate: DesignerScrollViewDelegate?
-    var vLayout: UIView
+    var vLayout: DesignerLayoutView
 
     override init(frame: CGRect) {
-        vLayout = UIView()
+        vLayout = DesignerLayoutView()
         super.init(frame: frame)
         isScrollEnabled = false
 

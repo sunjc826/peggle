@@ -65,11 +65,11 @@ class DesignerViewModel {
 
     @Published var canRemoveInconsistentPegs = false
 
-    var actualDisplayDimensionsPublisher: AnyPublisher<CGRect, Never> {
-        actualDisplayDimensions.eraseToAnyPublisher()
+    var onScreenDisplayDimensionsPublisher: AnyPublisher<CGRect, Never> {
+        onScreenDisplayDimensions.eraseToAnyPublisher()
     }
 
-    private let actualDisplayDimensions: PassthroughSubject<CGRect, Never> = PassthroughSubject()
+    private let onScreenDisplayDimensions: PassthroughSubject<CGRect, Never> = PassthroughSubject()
 
     var coordinateMapper: CoordinateMapper? {
         gameLevel?.coordinateMapper
@@ -144,7 +144,7 @@ class DesignerViewModel {
             onScreenDisplayHeight: designerHeight
         )
         gameLevel = DesignerGameLevel.withDefaultDependencies(coordinateMapper: coordinateMapper)
-        actualDisplayDimensions.send(
+        onScreenDisplayDimensions.send(
             CGRect(
                 x: 0,
                 y: 0,
@@ -366,5 +366,11 @@ extension DesignerViewModel {
         let vmDesignerObstacle = DesignerObstacleButtonViewModel(obstacle: obstacle)
         vmDesignerObstacle.delegate = self
         return vmDesignerObstacle
+    }
+
+    func getDesignerLayoutViewModel() -> DesignerLayoutViewModel {
+        let vmDesignerLayout = DesignerLayoutViewModel()
+        vmDesignerLayout.delegate = self
+        return vmDesignerLayout
     }
 }

@@ -7,15 +7,18 @@ public final class PlayArea: HasBoundingBox {
     let width: Double
     let height: Double
     let cannonZoneHeight: Double
+    let bucketZoneHeight: Double
 
     init(
         width: Double,
         height: Double,
-        cannonZoneHeight: Double
+        cannonZoneHeight: Double,
+        bucketZoneHeight: Double
     ) {
         self.width = width
         self.height = height
         self.cannonZoneHeight = cannonZoneHeight
+        self.bucketZoneHeight = bucketZoneHeight
     }
 
     var boundingBox: BoundingBox {
@@ -25,7 +28,7 @@ public final class PlayArea: HasBoundingBox {
     var pegZoneBoundingBox: BoundingBox {
         BoundingBox(topLeft: CGPoint(x: 0, y: cannonZoneHeight),
                     width: width,
-                    height: height - cannonZoneHeight)
+                    height: height - cannonZoneHeight - bucketZoneHeight)
     }
 
     /// Returns whether the given `entity` is non-strictly within the PlayArea.

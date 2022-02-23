@@ -51,6 +51,11 @@ class GameplayAreaStaticView: UIView {
 
         svInfo.addArrangedSubview(svBalls)
 
+        let vmActives = GenericStatViewModel(key: "Actives", value: viewModel.activeCountPublisher)
+        let svActives = GenericStatView(viewModel: vmActives)
+
+        svInfo.addArrangedSubview(svActives)
+
         let vmScore = GenericStatViewModel(key: "Score", value: viewModel.totalScorePublisher)
         let svScore = GenericStatView(viewModel: vmScore)
 

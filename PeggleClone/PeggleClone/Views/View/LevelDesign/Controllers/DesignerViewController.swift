@@ -15,7 +15,7 @@ class DesignerViewController: UIViewController {
     @IBOutlet private var aiLoading: UIActivityIndicatorView!
 
     var scrollvLayout: DesignerScrollView?
-    var vLayout: UIView? {
+    var vLayout: DesignerLayoutView? {
         scrollvLayout?.vLayout
     }
     var vLetterBoxes: [LetterBoxView] = []
@@ -77,7 +77,7 @@ extension DesignerViewController {
             fatalError("should not be nil")
         }
 
-        viewModel.actualDisplayDimensionsPublisher
+        viewModel.onScreenDisplayDimensionsPublisher
             .sink { [weak self] actualDisplayDimensions in
                 guard let self = self else {
                     return
@@ -207,12 +207,16 @@ extension DesignerViewController {
         guard let viewModel = viewModel, let parent = parent else {
             fatalError("should not be nil")
         }
+
         viewModel.setDimensions(
             designerWidth: view.frame.width,
             designerHeight: view.frame.height,
             gameWidth: parent.view.frame.width,
             gameHeight: parent.view.frame.height
         )
+
+        vLayout?.viewModel = viewModel.getDesignerLayoutViewModel()
+
         guard let gameLevel = viewModel.gameLevel else {
             fatalError("game level should be present")
         }

@@ -31,7 +31,7 @@ final class DesignerGameLevel {
 
     @Published var levelName: String? = "Default level name"
     @Published var coordinateMapper: CoordinateMapper
-    var playArea: PlayArea
+    @Published var playArea: PlayArea
     private var gameObjects: AnyContainer<EditableGameObject>
     private let neighborFinder: AnyNeighborFinder<EditableGameObject>
     private let collisionDetector: CollisionDetector
@@ -58,8 +58,6 @@ final class DesignerGameLevel {
     func hydrate(
         with incomingLevel: PersistableDesignerGameLevel
     ) {
-        isLoading.send(true)
-
         levelName = incomingLevel.levelName
         let incomingCoordinateMapper = CoordinateMapper.fromPersistable(
             persistableCoordinateMapper: incomingLevel.coordinateMapper,
@@ -67,6 +65,7 @@ final class DesignerGameLevel {
         )
         coordinateMapper = incomingCoordinateMapper
         playArea = coordinateMapper.getPlayArea()
+        commitResize()
         for persistablePeg in incomingLevel.pegs {
             let peg = Peg.fromPersistable(persistablePeg: persistablePeg)
             addGameObject(gameObject: peg)
@@ -76,8 +75,6 @@ final class DesignerGameLevel {
             let obstacle = Obstacle.fromPersistable(persistableObstacle: persistableObstacle)
             addGameObject(gameObject: obstacle)
         }
-
-        isLoading.send(false)
     }
 
     func registerOnLevelNameDidSetCallback(callback: @escaping UnaryFunction<String>) {

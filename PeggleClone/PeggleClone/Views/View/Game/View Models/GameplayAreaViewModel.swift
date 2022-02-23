@@ -30,6 +30,9 @@ class GameplayAreaViewModel {
         ballsLeft.prepend(gameLevel.numBalls).eraseToAnyPublisher()
     }
     var ballsLeft: PassthroughSubject<Int, Never> = PassthroughSubject()
+    var activeCountPublisher: AnyPublisher<Int, Never> {
+        gameLevel.activeCount.compactMap { $0 }.eraseToAnyPublisher()
+    }
     var totalScorePublisher: AnyPublisher<Int, Never> {
         totalScore.prepend(0).eraseToAnyPublisher()
     }

@@ -100,7 +100,12 @@ class CoordinateMapper {
 
 extension CoordinateMapper {
     func getPlayArea() -> PlayArea {
-        PlayArea(width: logicalWidth, height: logicalHeight, cannonZoneHeight: GameLevel.cannonZoneHeight)
+        PlayArea(
+            width: logicalWidth,
+            height: logicalHeight,
+            cannonZoneHeight: Settings.Cannon.yDistanceFromTopOfPlayArea + Settings.Cannon.height,
+            bucketZoneHeight: Settings.Bucket.ydistanceFromBottomOfPlayArea + Settings.Bucket.height
+        )
     }
 }
 

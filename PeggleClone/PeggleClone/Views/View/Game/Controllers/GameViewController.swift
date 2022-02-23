@@ -88,12 +88,12 @@ class GameViewController: UIViewController, Storyboardable {
             .store(in: &subscriptions)
 
         viewModel.onScreenDisplayDimensionsPublisher
-            .sink { [weak self] actualDisplayDimensions in
+            .sink { [weak self] onScreenDisplayDimensions in
                 guard let self = self else {
                     return
                 }
 
-                self.updateDimensions(actualDisplayDimensions: actualDisplayDimensions)
+                self.updateDimensions(onScreenDisplayDimensions: onScreenDisplayDimensions)
             }
             .store(in: &subscriptions)
 
@@ -111,13 +111,14 @@ class GameViewController: UIViewController, Storyboardable {
         }.store(in: &subscriptions)
     }
 
-    func updateDimensions(actualDisplayDimensions: CGRect) {
+    func updateDimensions(onScreenDisplayDimensions: CGRect) {
         if self.vStaticGame == nil && self.scrollvGame == nil {
-            self.vStaticGame = GameplayAreaStaticView(frame: actualDisplayDimensions)
-            self.scrollvGame = GameLevelScrollView(frame: actualDisplayDimensions)
+            self.vStaticGame = GameplayAreaStaticView(frame: onScreenDisplayDimensions)
+            self.scrollvGame = GameLevelScrollView(frame: onScreenDisplayDimensions)
         } else {
-            self.vStaticGame?.frame = actualDisplayDimensions
-            self.scrollvGame?.frame = actualDisplayDimensions
+            self.vStaticGame?.frame = onScreenDisplayDimensions
+
+            self.scrollvGame?.frame = onScreenDisplayDimensions
         }
 
         guard let vStaticGame = self.vStaticGame, let scrollvGame = self.scrollvGame else {

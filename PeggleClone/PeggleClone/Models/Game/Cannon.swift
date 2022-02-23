@@ -6,7 +6,7 @@ import CoreGraphics
 private let defaultAngleLimit = Double.pi / 2 - 0.1
 
 class Cannon {
-    var cannonBarrelLength: Double = 0.05
+    var cannonBarrelLength: Double = Settings.Cannon.height
     var angleRange: ClosedRange<Double>
     @Published var angle: Double = 0.0
     var ejectionSpeed: Double

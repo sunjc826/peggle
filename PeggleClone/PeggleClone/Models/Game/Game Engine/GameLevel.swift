@@ -7,9 +7,6 @@ final class GameLevel {
     static let targetSecondsPerFrame: Double = 1.0 / Double(targetFps)
     static let predictionTimeIntervalInSeconds: Double = targetSecondsPerFrame * 2
     static let consecutiveCollisionThreshold: Int = 20
-    static let cannonZoneHeight: Double = 0.0
-    static let pegCatcherZoneHeight: Double = 30.0
-    static let startingBalls: Int = 5
 
     var subscriptions: Set<AnyCancellable> = []
 
@@ -22,17 +19,19 @@ final class GameLevel {
     let pegs: PegContainer
     var obstacles: Set<Obstacle> = []
     var peggleMaster: PeggleMaster
+    var activeCount: PassthroughSubject<Int?, Never> = PassthroughSubject()
     var special: SpecialType {
         get {
             peggleMaster.special
         }
         set {
             peggleMaster.special = newValue
+            activeCount.send(newValue.activeCount)
         }
     }
     var hasHitSpecialPegInLastRound = false
 
-    @Published var numBalls: Int = GameLevel.startingBalls
+    @Published var numBalls: Int = Settings.Game.startingBalls
     @Published var gamePhase: GamePhase = .disabled
     var totalScore: PassthroughSubject<Int, Never> = PassthroughSubject()
     var didAnyBallHitAnyPegInLastRound = false
@@ -62,7 +61,7 @@ final class GameLevel {
         self.playArea = playArea
         assert(emptyPegsContainer.isEmpty)
         self.pegs = PegContainer(pegs: emptyPegsContainer)
-        let cannonPosition = CGPoint(x: playArea.boundingBox.center.x, y: 0)
+        let cannonPosition = CGPoint(x: playArea.boundingBox.center.x, y: Settings.Cannon.yDistanceFromTopOfPlayArea)
         self.cannon = Cannon(position: cannonPosition)
         self.physicsEngine = PhysicsEngine(
             coordinateMapper: coordinateMapper,
@@ -86,7 +85,7 @@ final class GameLevel {
         bucket = Bucket(
             position: CGPoint(
                 x: playArea.boundingBox.center.x,
-                y: playArea.boundingBox.maxY - Settings.Bucket.distanceFromBottomOfPlayArea
+                y: playArea.boundingBox.maxY - Settings.Bucket.ydistanceFromBottomOfPlayArea
             )
         )
 

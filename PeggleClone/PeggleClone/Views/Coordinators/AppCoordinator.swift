@@ -138,12 +138,15 @@ class AppCoordinator {
             guard let self = self else {
                 return
             }
-            let vcLevelSelect: LevelSelectCollectionViewController? = self.navigationController
+            // Remark: A better implementation would be to give a unique identifier to this tab
+            // bar controller. However, since there is only 1 tab bar controller in this
+            // app, this implementation will suffice.
+            let tabBarController: UITabBarController? = self.navigationController
                 .viewControllers
-                .first { $0 is LevelSelectCollectionViewController }
-                as? LevelSelectCollectionViewController
-            if let vcLevelSelect = vcLevelSelect {
-                self.navigationController.popToViewController(vcLevelSelect, animated: true)
+                .first { $0 is UITabBarController }
+                as? UITabBarController
+            if let tabBarController = tabBarController {
+                self.navigationController.popToViewController(tabBarController, animated: true)
             } else {
                 self.showLevelSelect()
             }

@@ -26,3 +26,5 @@ extension DesignerViewModel: CoordinateMappableViewModelDelegate {
         return coordinateMapper.getDisplayLength(ofLogicalLength: logicalLength)
     }
 }
+
+extension DesignerViewModel: DesignerLayoutViewModelDelegate {}
