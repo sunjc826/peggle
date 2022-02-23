@@ -4,6 +4,7 @@ import CoreGraphics
 class MiscProperties {
     var consecutiveCollisionCount: Int
     var wrapAroundCount: Int
+    var wrappedAroundInLastUpdate = false
     var collisionLocationInLastUpdate: CGPoint?
 
     init(consecutiveCollisionCount: Int = 0, wrapAroundCount: Int = 0) {

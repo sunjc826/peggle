@@ -116,6 +116,10 @@ extension PhysicsEngine {
                 counterChange: rigidBody.instantaneousDelta.changeToWrapAroundCount
             )
 
+            if rigidBody.instantaneousDelta.changeToWrapAroundCount == .increment {
+                updatedRigidBody.miscProperties.wrappedAroundInLastUpdate = true
+            }
+
             if let localizedForceEmitter = rigidBody.localizedForceEmitter {
                 if localizedForceEmitter.duration < dt {
                     updatedRigidBody.localizedForceEmitter = nil

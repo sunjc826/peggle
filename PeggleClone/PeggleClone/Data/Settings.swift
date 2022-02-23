@@ -59,7 +59,7 @@ struct Settings {
         struct Special {
             static let explosionForceBaseMagnitude: Double = 0.001
             static let explosionRadius: Double = 0.2
-            static let attractionForceBaseMagnitude = 0.002
+            static let attractionForceBaseMagnitude = 0.000_5
             static let attractionRadius: Double = 0.25
             static let attractionDuration: Double = 1
             static let repulsionForceBaseMagnitude: Double = 0.001

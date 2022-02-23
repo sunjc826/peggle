@@ -127,13 +127,12 @@ extension GameLevel {
         }
 
         guard activeCount > 0 else {
+            updatedRigidBody.configuration.bottomWallBehavior = .fallThrough
             return
         }
 
-        if activeCount <= updatedRigidBody.miscProperties.wrapAroundCount {
-            updatedRigidBody.configuration.bottomWallBehavior = .fallThrough
-            updatedRigidBody.miscProperties.wrapAroundCount = 0
-            special = .spooky(activeCount: 0)
+        if updatedRigidBody.miscProperties.wrappedAroundInLastUpdate {
+            special = .spooky(activeCount: activeCount - 1)
         }
     }
 
@@ -255,8 +254,8 @@ extension GameLevel {
     func setMoonGravity() {
         gameEvents.send(.gravityLowered)
         let moonGravityType: ForceType = .gravity(
-            gravitationalAcceleration: coordinateMapper.getPhysicalLength(
-                ofLogicalLength: Settings.Physics.signedMagnitudeOfAccelerationDueToGravity / 6
+            gravitationalAcceleration: coordinateMapper.getLogicalLength(
+                ofPhysicalLength: Settings.Physics.signedMagnitudeOfAccelerationDueToGravity / 6
             )
         )
 
@@ -278,8 +277,8 @@ extension GameLevel {
 
     func setRegularGravity() {
         let regularGravityType: ForceType = .gravity(
-            gravitationalAcceleration: coordinateMapper.getPhysicalLength(
-                ofLogicalLength: Settings.Physics.signedMagnitudeOfAccelerationDueToGravity
+            gravitationalAcceleration: coordinateMapper.getLogicalLength(
+                ofPhysicalLength: Settings.Physics.signedMagnitudeOfAccelerationDueToGravity
             )
         )
 

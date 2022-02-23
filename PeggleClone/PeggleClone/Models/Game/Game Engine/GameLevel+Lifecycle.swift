@@ -122,8 +122,10 @@ extension GameLevel {
 
     func removeStuckEntities() {
         physicsEngine.remove { (rigidBody: RigidBody) in
-            !(rigidBody.associatedEntity is Ball && rigidBody.associatedEntity is BucketComponent) &&
-            rigidBody.miscProperties.consecutiveCollisionCount > GameLevel.consecutiveCollisionThreshold
+            if rigidBody.associatedEntity is Ball || rigidBody.associatedEntity is BucketComponent {
+                return false
+            }
+            return rigidBody.miscProperties.consecutiveCollisionCount > GameLevel.consecutiveCollisionThreshold
         }
     }
 
