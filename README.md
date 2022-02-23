@@ -350,23 +350,78 @@ Alternatively, you can rewrite this section in your own style. You may also
 write this section in a new file entirely, if you wish.
 
 ### Cannon Direction
-Please explain how the player moves the cannon.
+To rotate the cannon, the player taps and holds at a point on the gameplay area. The cannon's line of fire rotates toward the place at which the player is holding.
 
+### Shoot Ball
+Tap on the screen to shoot.
 ### Win and Lose Conditions
-Please explain how the player wins/loses the game.
+The player wins if all orange pegs are hit.
+The player loses if not all orange pegs are hit, and the player runs out of balls.
 
 ## Level Designer Additional Features
 
+### Peg transformation
+To transform pegs, double tap on the peg and a shape transform menu appears for the selected peg. To deselect a peg, double tap on the same peg. To select a different peg, double tap on that peg.
 ### Peg Rotation
-Please explain how the player rotates the triangular pegs.
-
+Adjust the rotation slider in the shape transform menu. Since it does not make sense to rotate a circular peg, rotation slider does not appear when a circular peg is selected.
 ### Peg Resizing
-Please explain how the player resizes the pegs.
+Adjust the scaling slider in the shape transform menu.
 
 ## Bells and Whistles
-Please write all of the additional features that you have implemented so that
-your grader can award you credit.
 
+### General enhancements
+1. Performance enhancements
+  - This is not particularly visible, but the QuadTree datastructure employed in the broad phase collision detection brings the normal $O(n^2)$ collision detection to something like $O(n\log n)$, where $n$ is the number of game objects.
+2. More advanced collision detection and physics
+  - The physics engine can handle any convex shape, including non-regular ones. However, in the palette, only regular shapes are given since I do not feel like manually crafting shapes. I also don't really know what non-regular convex shapes are more interesting.
+  - Mass and moment of inertia: The physics engine takes into account how easy it is to accelerate a shape linearly (mass) and how easy it is to rotate a shape (moment of inertia). These quantities are themselves calculated based on the shape's vertices and area.
+  - Rotational dynamics: The collision resolution includes approximate data for the point of collision, so that the physics engine can calculate torque for shapes that can rotate.
+
+### Level Select enhancements
+1. Preview
+  - A preview image of the designed level is provided.
+### Level Designer enhancements
+1. Alternative edit mode: Ghost mode
+  - The ghost mode presents another way of editing, that does not stop game objects from overlapping. Additionally, it even allows game objects to move beyond the game boundaries. However, such objects violating the designer rules (no overlap, no extending beyond the gameplay area), will be marked as ghosts, i.e. they appear translucent.
+  - The purpose of the ghost mode is to give more freedom to the level designer, otherwise in concrete mode, the player might need to move some game objects away before the player can place the game object at the desired spot. The ghost mode would allow the player to place the game object in a violating spot, and move *other* overlapping objects away. (If this is confusing, see the next point.)
+  - Suppose a game object A is marked as a ghost because it overlaps with another concrete object B. Moving B away such that A no longer overlaps with anything, will cause A to be detected as legal, and A will become concrete automatically.
+2. Removal of inconsistent pegs
+  - This button can be tapped to remove all ghost game objects. Alternatively, when transitioning from ghost mode to concrete mode, all ghost game objects are automatically removed. The same can be said for when saving the level.
+3. Selected game object indicator
+  - When a game object is selected, a rectangular box is drawn around it. 
+### Game enhancements
+1. Audio
+  - Sounds
+    - Ball to regular peg collision (`boing.mp3`)
+    - Ball to special peg collision (`whee.mp3`)
+    - Ball doesn't hit anything, even if you get it into the bucket, out of pure luck presumably. (`ahaha.mp3`, i.e., The Golden Witch Beatrice laughs at ~~Battler's~~ your incompetence.)
+    - Game win. Your peggle master congratulates you for an outstanding performance.
+  - Music
+2. (A lot of) Peggle masters, with lore accurate (99% guaranteed) powerups
+  - Beatrice: Spookyball
+  - Battler: Small bombs aka explosion
+    - Explosion temporarily makes all pegs translatable regardless of their prior setting. This lasts for the remaining duration of the current ball.
+  - Maria: Multiball
+    - An additional ball will spawn at a random corner of the special peg if polygonal, and a random point on the circumference if circular.
+  - Krauss: Moon gravity
+    - For the remaining duration of the current ball, gravity is set to 1/6 of usual.
+  - Featherine: Super duper guide.
+    - Since the prediction line is already drawn for every other peggle master, this is technically already super guide. The super duper guide buffs this line to ludicrous amounts.
+  - Lambdadelta: Black hole aka attraction
+    - Attraction temporarily makes all pegs translatable regardless of their prior setting. This lasts for the remaining duration of the current ball.
+  - Bernkastel: Repulsion
+    - Repulsion temporarily makes all pegs translatable regardless of their prior setting. This lasts for the remaining duration of the current ball.
+    - The difference between explosion and repulsion is that
+      - Explosive force only lasts for 1 physics update whereas the repulsive force has a longer duration.
+      - The explosive force is usually stronger than the repulsive force, though this can be edited programmatically in game settings.
+      - All pegs directly impacted by explosive force are marked at hit, including special pegs, so explosive force can trigger a chain reaction. Pegs directly impacted by repulsive force are not marked at hit, they still require collision with balls. 
+  - Gaap: Phase through horizontal walls
+    - The ball's left and right wall behavior are set to `.wrapAround`, so the ball no longer bounces off the horizontal walls but phase right through them.
+3. Game stats
+  - The game stats displayed in the upper right corner of the game view include the following:
+    - Number of balls remaining
+    - Total score
+    - Number of pegs of each type remaining
 ## Tests
 ### Unit tests
 Many of the basic model classes have been unit tested.
