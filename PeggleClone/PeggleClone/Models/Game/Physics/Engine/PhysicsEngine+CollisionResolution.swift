@@ -66,12 +66,19 @@ extension PhysicsEngine {
 
         if let presentPenetrationPoint = penetrationPoint {
             impulse = Impulse(
-                impulseType: .collision(impulseVector: impulseVector, dueTo: otherRigidBody),
+                impulseType: .collision(
+                    impulseVector: impulseVector,
+                    pointOfCollision: collisionData.penetrationPoint,
+                    dueTo: otherRigidBody),
                 impulsePosition: .point(presentPenetrationPoint)
             )
         } else {
             impulse = Impulse(
-                impulseType: .collision(impulseVector: impulseVector, dueTo: otherRigidBody),
+                impulseType: .collision(
+                    impulseVector: impulseVector,
+                    pointOfCollision: nil,
+                    dueTo: otherRigidBody
+                ),
                 impulsePosition: .center
             )
         }

@@ -3,7 +3,7 @@ import CoreGraphics
 
 enum ImpulseType {
     case wallCollision(impulseVector: CGVector)
-    case collision(impulseVector: CGVector, dueTo: RigidBody)
+    case collision(impulseVector: CGVector, pointOfCollision: CGPoint?, dueTo: RigidBody)
 }
 
 class Impulse {
@@ -17,7 +17,7 @@ class Impulse {
     func getImpulseVector(rigidBody: RigidBody) -> CGVector {
         switch impulseType {
         case .wallCollision(impulseVector: let impulseVector),
-            .collision(impulseVector: let impulseVector, _):
+            .collision(impulseVector: let impulseVector, _, _):
             return impulseVector
         }
     }

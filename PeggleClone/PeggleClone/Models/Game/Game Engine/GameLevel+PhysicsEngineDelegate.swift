@@ -59,7 +59,11 @@ extension GameLevel: PhysicsEngineDelegate {
                 rigidBody.addImpulse(impulse)
             }
 
-        case .collision(impulseVector: _, dueTo: let otherRigidBody):
+        case let .collision(
+            impulseVector: _,
+            pointOfCollision: pointOfCollision,
+            dueTo: otherRigidBody
+        ):
             guard !(rigidBody.associatedEntity is BucketComponent) else {
                 return
             }
@@ -71,7 +75,9 @@ extension GameLevel: PhysicsEngineDelegate {
                 getFreeBall()
                 return
             }
-
+            if rigidBody.associatedEntity is Ball {
+                rigidBody.instantaneousDelta.lastCollisionPoint = pointOfCollision
+            }
             rigidBody.addImpulse(impulse)
         }
     }

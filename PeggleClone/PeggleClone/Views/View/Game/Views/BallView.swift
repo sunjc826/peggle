@@ -1,10 +1,19 @@
 import UIKit
 
+protocol BallViewDelegate: AnyObject {
+    func renderParticle(with data: CollisionParticleData)
+}
+
 class BallView: UIView {
+    weak var delegate: BallViewDelegate?
     var viewModel: BallViewModel {
         didSet {
             frame = viewModel.displayFrame
             center = viewModel.displayCoords
+
+            if let collisionParticleData = viewModel.collisionParticleData {
+                delegate?.renderParticle(with: collisionParticleData)
+            }
             setNeedsDisplay()
         }
     }
@@ -15,6 +24,7 @@ class BallView: UIView {
         center = viewModel.displayCoords
         translatesAutoresizingMaskIntoConstraints = false
         backgroundColor = UIColor.clear
+
     }
 
     @available(*, unavailable)

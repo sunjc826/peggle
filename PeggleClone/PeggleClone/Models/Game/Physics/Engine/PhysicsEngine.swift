@@ -106,6 +106,8 @@ extension PhysicsEngine {
             if rigidBody.instantaneousDelta.shouldRegisterCollision {
                 updatedRigidBody.miscProperties.consecutiveCollisionCount =
                     rigidBody.miscProperties.consecutiveCollisionCount + 1
+                updatedRigidBody.miscProperties.collisionLocationInLastUpdate =
+                    rigidBody.instantaneousDelta.lastCollisionPoint
             } else {
                 updatedRigidBody.miscProperties.consecutiveCollisionCount = 0
             }

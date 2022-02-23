@@ -246,6 +246,7 @@ extension GameViewController {
         }
         let vmBall = viewModel.getBallViewModel(ball: ball)
         let vBall = BallView(viewModel: vmBall)
+        vBall.delegate = vGame
         vBall.translatesAutoresizingMaskIntoConstraints = true
         vGame.addSubview(vBall)
         ballToViewMap[ball] = vBall

@@ -18,7 +18,7 @@ extension Collision: CollisionResolver {
             isColliding: true,
             normalizedNormalOfIntersection: normal,
             depthOfIntersectionAlongNormal: depth,
-            penetrationPoint: nil // not applicable to idealized circles as there would be no torque
+            penetrationPoint: circle.center.translate(offset: normal.scaleTo(length: circle.radius))
         )
     }
 

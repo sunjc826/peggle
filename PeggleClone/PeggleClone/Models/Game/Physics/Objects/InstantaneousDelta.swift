@@ -8,6 +8,7 @@ class InstantaneousDelta {
     var torque: Double = 0
     var angularImpulseIgnoringTorque: Double = 0
     var shouldRegisterCollision = false
+    var lastCollisionPoint: CGPoint?
     var changeToWrapAroundCount: CounterChange = .doNothing
     var shouldDelete = false
 }
