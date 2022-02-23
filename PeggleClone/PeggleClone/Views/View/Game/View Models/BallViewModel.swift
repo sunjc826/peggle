@@ -27,8 +27,10 @@ class BallViewModel: ShapeDrawable {
 
         let location = delegate.getDisplayCoords(of: collisionLocationInLastUpdate)
         let center = delegate.getDisplayCoords(of: ball.center)
-        return CollisionParticleData(collisionLocation: location,
-                                     collisionDirection: CGVector(from: location, to: center))
+        return CollisionParticleData(
+            collisionLocation: location,
+            collisionDirection: CGVector(from: location, to: center)
+        )
     }
 
     var displayCoords: CGPoint {

@@ -169,6 +169,7 @@ class GameViewModel {
         }
 
         cannon.rotationRate = 0.0
+        cannon.targetAngle = nil
     }
 
     func rotateCannon(to displayCoords: CGPoint) {
@@ -187,7 +188,9 @@ class GameViewModel {
         )
 
         let angleDifference = targetAngleOfCannon - cannon.angle
+
         cannon.rotationRate = angleDifference / rotationRateSecondsTillTarget
+        cannon.targetAngle = targetAngleOfCannon
     }
 }
 
