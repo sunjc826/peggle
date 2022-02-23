@@ -57,13 +57,17 @@ General utilities consist of 2 main classes, `LoggerWrapper` and `Storage`. Ther
 With the general utilities covered, we can move on to the core business logic of PeggleClone.
 
 
+#### Audio
+- `Audio` is responsible for setting up the audio session and creating instances of `AVAudioPlayer` using stored audio files in the bundle.
+- It also provides a global object `globalAudio` since the audio session should only be setup once, so multiple instantiations of `Audio` may cause issues.
+
 ### Coordinator
 
 <img src="./images/coordinator.png" />
 
 The diagrams shows the flow of views. The root view is a `NavigationViewController` and transitions to views take the form of pushing them onto the navigation stack by `AppCoordinator`. When views are dismissed, they are popped from the stack.
 
-The root view of the `NavigationalViewController` is the menu, where the player can choose between selecting a level to play, or going straight into the level designer.
+The root view of the `NavigationalViewController` is the menu, where the player can choose between selecting a level to play as well as a peggle master, or going straight into the level designer.
 
 ### Models
 We cover the revised shape hierarchy. The `XXXShape` and `XXXPolygon` protocol chain appears to be parallel, while in some environments it may be deemed as an anti-pattern, it does not cause any issues in this application, and in fact makes things more explicit.
@@ -82,12 +86,14 @@ $$
 in Cartesian coordinates.
 This is easily generalizable to $(r\cdot \cos(\frac{2\pi i}{n} + \theta),r\cdot \sin(\frac{2\pi i}{n} + \theta))$ for some $\theta$ by doing a rotation on the shape.
 
-`XXXObject` are class-implementations of the various protocols. For the game engine objects, only `CircleObject` and `TransformablePolygonObject` are used, since these cover all the shapes we need for Peggle. Of course, this excludes shapes like non-circular ellipses, but we will not cover those.
+`XXXObject` are class-implementations of the various protocols. For the game engine objects, only `CircleObject`, `TriangleObject` and `TransformablePolygonObject` are used, since these cover all the shapes we need for Peggle. Of course, this excludes shapes like non-circular ellipses, but we will not cover those.
+
+Note that `TriangleObject` is a subclass of `TransformablePolygonObject`. It is mainly used for `Obstacle`, which is restricted to triangular shape. The reason is that the vertices of an `Obstacle` can be freely moved around, and if a polygon has more than 3 sides, it is not trivial to ensure that the shape remains convex. A triangle, on the other hand, is always convex.
 
 ##### The coordinate system
 The coordinate system is a mixture of cartesian coordinates and polar coordinates.
 The position of a shape is given by its center, which uses cartesian coordinates.
-The vertices of a shape are relative to the shape's center, these use polar coordinates, with the origin being the center of the peg.
+The vertices of a shape are relative to the shape's center, these use polar coordinates, with the origin being the center of the peg. The pro of using polar coordinates is that they make certain transformations like rotation and scaling trivial to perform.
 
 Next, we examine the actual game objects. Note that the shape hierarchy provides the geometrical properties associated with each game object.
 
@@ -95,9 +101,12 @@ Next, we examine the actual game objects. Note that the shape hierarchy provides
 
 - `GameEntity` is the high level protocol that all game objects conform to.
 - `EditableGameEntity` are game entities that can be edited in the level designer. For example, the ball is not editable since it is not part of the level design.
+- `GameObject` is a pseudo-abstract class that abstracts out the main functionalities associated with peg, obstacle, etc.
+- `EditableGameObject` adds on the properties required by `EditableGameEntity` to `GameObject`
 - `Ball` is the ball that is shot from the cannon.
 - `Peg`s are any destructible objects (by the ball).
 - `Obstacle`s are indestructible objects. Obstacles can still be potentially forcibly removed if the ball gets stuck.
+- `Bucket` is not editable since it does not appear in the level designer. A bucket is a composite of 3 game objects, i.e. the left side, the right side, and the receiver that receives a ball to grant a free ball.
 
 The game level is split into 2 major models. The first is the `DesignerGameLevel`, which represents the state of the level being designed on the level designer. The second is `GameLevel`, which represents the state of the level when the game is actually being played.
 
@@ -116,11 +125,17 @@ There are 3 types of coordinates in this application. They are:
 The base `CoordinateMapper` class only handles conversion between logical and screen coordinates.
 Logical coordinates are of the following form. Upon creation of a level, $\text{aspect ratio} = \frac{\text{screen width}}{\text{screen height}}$. After this computation, the logical coordinate space is then described by
 $$
-[0, \text{aspect ratio}] \times [0, 1]
+[0, \text{aspect ratio}] \times [0, \text{logical height}]
 $$
-In other words, the y-component of the logical coordinate space is always in $[0, 1]$.
+where logical height is at least 1.
+In other words, the y-component of the logical coordinate space is always in $[0, \text{logical height}]\supseteq [0, 1]$.
 The actual display dimensions are then a scaled-up version of the logical coordinate space. The application scales this as large as possible without exceeding either screen width or screen height.
 
+With the addition of scrolling, there are 2 notions of display dimensions.
+1. Viewable display area **on screen**, i.e. the ScrollView
+2. Backing display area which is a child view of the ScrollView.
+$[0, \text{aspect ratio}] \times [0, 1]$ maps to the first in some sense. By this, I mean that the unit interval in logical coordinate space corresponds to the on screen view.
+$[0, \text{aspect ratio}] \times [0, \text{logical height}]$ maps to the second.
 ##### PlayArea
 The play area represents the big rectangular box that the game takes place in. Everything (pegs and obstacles) must be wholly contained within the play area.
 
@@ -153,8 +168,8 @@ Somewhat unlike `DesignerGameLevel`, `GameLevel` only one main dependency, the `
 The enumeration `GamePhase` models the state of the game is in. Read the in-code documentation for a summary of the game states.
 
 The `PhysicsEngine` has these dependencies:
-- `RigidBodyObject`, which is a concrete implementation of the `RigidBody` protocol. The `RigidBodyObject` contains an assortment of properties that are used to perform physics calculations.
-- The `RigidBodyObject` has a convenience reference back to the `GameEntity` it is associated with, allowing the physics engine to communicate with the game level, which can be interpreted as the game engine.  
+- `RigidBody` contains an assortment of properties that are used to perform physics calculations.
+- The `RigidBody` has a convenience reference back to the `GameEntity` it is associated with, allowing the physics engine to communicate with the game level, which can be interpreted as the game engine. 
 - `Boundary` represents the physical world of the game. It is rectangular, and each rigid object can have customized behavior when it collides with an edge of the boundary.
 
 The `WallBehavior` enumeration (See `Boundary.swift`)  dictates how a rigid body ought to behave upon colliding with an edge of the boundary.
@@ -162,18 +177,71 @@ The `WallBehavior` enumeration (See `Boundary.swift`)  dictates how a rigid body
 2. `collide`: Just as what you would expect, the body will bounce off the wall.
 3. `wrapAround`: The body "wraps around" to the opposite side of the boundary. For example, if the body moves completely outside the left wall, and its left wall behavior is marked as wrapAround, then the body will be teleported to the right wall, keeping its previous velocity.
 
+The rigid body has multiple sub-components. In a previous version of this project, many of these properties are flat, and not organized into these sub-objects.
+
+<img src="./images/model_rigid_body.png"/>
+
+- `PhysicsEngineReports` is used by the physics engine to suggest changes to the rigid body to the game engine, and it is up to the game engine to decide whether to commit or discard these changes to the rigid body. Additionally, the game engine may even conduct some other game specific logic when it examines these suggestions.
+- `PhysicalProperties` consist of the most essential properties of a physics object. Most notably, the position of the rigid body (i.e. `backingShape.center`) is stored here.
+- `LongTermDelta` consists of potentially long-lasting properties that can be used to effect change on the physical properties. By long-lasting, I mean that they can last longer than one physics update.
+- `InstantaneousDelta` consists of short-lasting properties that can effect change over 1 physics update. After the physics update, the instantaneous delta is reset, e.g. `nextTeleportLocation` is set to nil, `force` and other vector quantities are set to zero.
+- `ConfigurationForPhysicsEngine` are flags for the physics engine to narrow down what rigid bodies to update, and how to suggest updates for them. For example, without the `canTranslate` or `canRotate` tag, the physics engine would need to go over every single physics object to be safe. So these are mainly used for efficiency reasons.
+- `MiscProperties` are other properties less relevant to physics, but are still useful information for the game engine.
+
+
+We next examine the various properties on a `RigidBody` (and its subcomponents) and how they affect it. Not listed here are also some computed properties on `RigidBodyObject` that essentially come from the underlying `backingShape`.
+
+- `associatedEntity: GameEntity?`: Used to communicate with the game engine. When passing a rigidbody back to the game engine, this field allows the game engine to find out which game entity is associated with the rigid body, and apply the corresponding game logic.
+- `sides: Int`: The number of sides of the underlying shape. 0 if the shape is a circle.
+
+##### PhysicsEngineReports
+- `teleports: [Teleport]`: Teleports on the rigid body suggested by the physics engine.
+- `forces: [Force]`: Forces suggested.
+- `impulses: [Impulse]`: Impulses suggested.
+- `collisionDetected: Bool`: Whether a collision is detected by the physics engine. Whether this collision is to be registered is still up to the game engine's discretion.
+##### PhysicalProperties
+- `backingShape: TransformableShape`: The underlying geometrical shape of the rigidbody. Notice that the rigidbody does not care about what the game object is, be it a `Peg`, `Ball` etc. Only the shape can possibly affect its physical properties.
+- `uniformDensity: Double`: The density uniform across a rigidbody. Clearly, simulating varying density is far beyond a simple physics engine.
+- `mass: Double`: Physics concept. Defaults to the area of the underlying shape scaled by the uniform density.
+- `inverseMass: Double`: The reciprocal of mass.
+- `momentOfInertia: Double`: Physics concept. The rotational equivalent of mass. Defaults to the moment of area (see wikipedia) of the underlying shape scaled by the uniform density.
+  - **Remark**: In the implementation, this quantity is multipled by `Settings.easeOfRotation.rawValue` in order to possibly make pegs more easy to rotate. This is because the moment of inertia is dependent on shape area, and without this artificial scaling factor, the ball is too small to apply sufficient force on a large peg to make it spin. 
+- `inverseMomentOfInertia: Double`: The reciprocal of moment of inertia.
+- `elasticity: Double`: Determines how much energy is lost by a rigidbody upon collision.
+
+##### LongTermDelta
+- `linearVelocity: CGVector`: Physics concept.
+- `angularVelocity: Double`: Physics concept. The rotational equivalent of linear veloicty.
+- `persistentForces: [Force]`: Long lasting forces that act on the rigid body.
+##### InstantaneousDelta
+- `nextTeleportLocation: CGPoint?`: Allows the physics engine to teleport a rigidbody in an update.
+- `force: CGVector`: Physics concept.
+- `impulseIgnoringForce: CGVector`: Physics concept. Impulse is the change in momentum, and is the result of force applied over time. This particular quantity, however, acts as "instanteneous impulse", and ignores force. See "impulse-based physics engines" for more details.
+- `torque: Double`: Physics concept. The rotational equivalent of force.
+- `angularImpulseIgnoringTorque: Double`: Physics concept.
+- `changeToWrapAroundCount: CounterChange`: Whether to increment, reset or make no changes to the wrap around count.
+- `shouldDelete`: Whether the rigid body should be deleted.
+##### ConfigurationForPhysicsEngine
+- `canTranslate: Bool`: This property overrides mass. Determines whether an object can actually translate, regardless of its mass.
+- `canRotate: Bool`: This property overrides moment of inertia. Determines whether an object can actually rotate, regardless of its moment of inertia.
+- `leftWallBehavior, rightWallBehavior, topWallBehavior, bottomWallBehavior: WallBehavior`: This has been explained above.
+
+##### MiscProperties
+- `consecutiveCollisionCount: Int`: The number of consecutive physics engine updates for which a collision is detected. Used by the game engine to detect if objects are stuck.
+- `wrapAroundCount: Int`: The number of times for which a physics object has wrapped around the game boundary.
 
 #### Persistence
 Before moving on to more details about the game level, we first discuss the persistence models, since we have already covered the `DesignerGameLevel` and `GameLevel`.
 
 <img src="./images/model_persistence.png"/>
 
-Only 3 models are Codable, and persisted, `PersistablePlayArea`, `PersistableDesignerGameLevel` and `PersistablePeg`. They are stripped down versions of the `PlayArea`, `DesignerGameLevel` and `Peg`.
+Only 4 models are Codable, and persisted, `PersistableCoordinateMapper`, `PersistableObstacle`, `PersistablePeg` and `PersistableDesignerGameLevel`. They are stripped down versions of the regular models. Note that `PlayArea` does not need to be persisted, since the coordinate mapper has all the required information to produce the playarea when hydrating a game level.
 
 The most notable part is that both `DesignerGameLevel` and `GameLevel` are hydrated by the `PersistableDesignerGameLevel`. In other words,
 - When a designed game level is saved, it is converted to `PersistableDesignerGameLevel`
 - When transitioning into the designer view, the information available in `PersistableDesignerGameLevel` is injected into the `DesignerGameLevel`, and the view is then updated accordingly.
 - When transitioning into the game view, similarly the game view gets its information from `PersistableDesignerGameLevel`.
+- Hydration is the **only** way pegs, obstacles are added to a blank level. The constructor of `DesignerGameLevel` and `GameLevel` in fact do not allow filled peg containers to be provided. They only accept empty containers. The reason is that the process of adding new game objects needs to be reflected on screen, and at the initialization stage, the view controller callbacks have not been registered in the model.
 
 **Remark** Due to the nature of the hydration, which takes place after a controller's `viewDidAppear` lifecycle phase, the loading process can be quite obvious, especially on iOS simulators. i.e. You can see the pegs popping into view. There may be better ways to do this, like add in a loading spinner, but I think I may not do that due to time reasons.
 
@@ -192,9 +260,12 @@ This is a relatively high level overview of the game loop. To avoid seeing the f
 - Game phase: We assume that the game is currently in the `.ongoing` phase. The code itself has more documentation about the various game phases and what they mean. See `GamePhase.swift`.
 - Physics engine: Details about what the physics engine does are left out. Collision resolution is done in `calculateWithoutApplyingResults` and rigid body updates are done in `applyResults`
 
-Now, the call sequence of `applyResults` is actually quite detailed. The reason for this is to see the series of callbacks that result. In particular, `GameLevel` attaches game logic callbacks onto `PhysicsEngine`, and `GameViewController` attaches view logic callbacks onto `GameLevel`.
+There are 2 points in an update in which the physics engine communicates with the game engine.
+The first is when the physics engine notifies the game engine of which rigid bodies has their `physicsEngineReports` altered. Here, changes to the rigid bodies' `instantaneousDelta` has not been made, so it is up to the game engine to pick and choose which changes to persist.
 
-The `XXX` can be replaced by `Ball` or `Peg`.
+The second is the call sequence of `applyResults`. `GameLevel` attaches game logic callbacks onto `PhysicsEngine`, and `GameViewController` attaches view logic callbacks onto `GameLevel`.
+
+The `XXX` can be replaced by `Ball`, `Peg`, `Obstacle`.
 
 #### Physics Engine
 We examine a high level activity diagram of what the physics engine does.
@@ -203,43 +274,16 @@ We examine a high level activity diagram of what the physics engine does.
 For each physics update, the physics engine first calculates the physical properties (like position, velocity) for all objects based on the most recent state without applying these updates. This is so that the order of updates will not matter.
 
 When doing calculations, 2 things need to be resolved.
-1. The first is to resolve the case where an object collides with the game's boundaries, for example the left wall. Based on how the object is defined to behave at the wall, the physics engine calculates the next position/velocity accordingly.
-2. The second is to resolve the collisions between rigid bodies.
+1. The first is to resolve the case where an object collides with the game's boundaries, for example the left wall. Based on how the object is defined to behave at the wall, the physics engine suggests the next teleport position or impulses accordingly in `rigidBody.physicsEngineReports`
+2. The second is to resolve the collisions between rigid bodies, and the physics engine suggests collision impulses in `rigidBody.physicsEngineReports`.
 
-In the next step, objects outside the game boundaries are removed. For example, a ball that falls below the game screen.
+In the next step, the game engine is notified of these suggestions and decides what changes to persist.
+
+In the next step, objects registered for deletion, such as those outside the game boundaries, are removed. For example, a ball that falls below the game screen.
 
 Finally, the physics calculations are applied to each object. Here, a single physics update is considered done.
-
-
-
-#### RigidBodyObject
-We examine the various properties on a `RigidBodyObject` and how they affect it. Not listed here are also some computed properties on `RigidBodyObject` that essentially come from the underlying `backingShape`.
-- `backingShape: TransformableShape`: The underlying geometrical shape of the rigidbody. Notice that the rigidbody does not care about what the game object is, be it a `Peg`, `Ball` etc. Only the shape can possibly affect its physical properties.
-- `associatedEntity: GameEntity?`: Used to communicate with the game engine. When passing a rigidbody back to the game engine, this field allows the game engine to find out which game entity is associated with the rigid body, and apply the corresponding game logic.
-- `sides: Int`: The number of sides of the underlying shape. 0 if the shape is a circle.
-- `nextTeleportLocation: CGPoint?`: Allows the physics engine to teleport a rigidbody in an update.
-- `isAffectedByGlobalForces: Bool`: Whether the body is affected by global forces like gravity.
-- `canTranslate: Bool`: This property overrides mass. Determines whether an object can actually translate, regardless of its mass.
-- `canRotate: Bool`: This property overrides moment of inertia. Determines whether an object can actually rotate, regardless of its moment of inertia.
-- `uniformDensity: Double`: The density uniform across a rigidbody. Clearly, simulating varying density is far beyond a simple physics engine.
-- `mass: Double`: Physics concept. Defaults to the area of the underlying shape scaled by the uniform density.
-- `inverseMass: Double`: The reciprocal of mass. Used as a performance optimization.
-- `momentOfInertia: Double`: Physics concept. The rotational equivalent of mass. Defaults to the moment of area (see wikipedia) of the underlying shape scaled by the uniform density.
-  - **Remark**: In the implementation, this quantity is multipled by `Settings.easeOfRotation.rawValue` in order to possibly make pegs more easy to rotate. This is because the moment of inertia is dependent on shape area, and without this artificial scaling factor, the ball is too small to apply sufficient force on a large peg to make it spin. 
-- `inverseMomentOfInertia: Double`: The reciprocal of moment of inertia. Used as a performance optimization.
-- `linearVelocity: CGVector`: Physics concept.
-- `angularVelocity: Double`: Physics concept. The rotational equivalent of linear veloicty.
-- `force: CGVector`: Physics concept.
-- `impulseIgnoringForce: CGVector`: Physics concept. Impulse is the change in momentum, and is the result of force applied over time. This particular quantity, however, acts as "instanteneous impulse", and ignores force. See "impulse-based physics engines" for more details.
-- `torque: Double`: Physics concept. The rotational equivalent of force.
-- `angularImpulseIgnoringTorque: Double`: Physics concept.
-- `elasticity: Double`: Determines how much energy is lost by a rigidbody upon collision.
-- `leftWallBehavior, rightWallBehavior, topWallBehavior, bottomWallBehavior: WallBehavior`: This has been explained above.
-- `hasCollidedMostRecently: Bool`: Whether in the most recent physics update, the rigidbody has collided with something.
-- `consecutiveCollisionCount: Int`: The number of consecutive physics engine updates for which a collision is detected. Used by the game engine to detect if objects are stuck.
-
 ### View Models, Controllers, Views
-Since the view models, controllers and views are closely related, we will discuss them together.
+Since the view models, controllers and views are closely related, we will discuss them together. In a previous version of this developer guide, the view models were also included in the diagram. They have now been removed as they do not add much to the picture and only increase clutter.
 
 #### Level Designer
 <img src="./images/view_designer.png" />
@@ -264,6 +308,7 @@ The `StorageViewController` handles the bottom bar of the level designer and it 
 
 The `DesignerViewController` controls the bulk of the level designer. The concerns it handles include
 - Letterboxing
+- Scrolling
 - Choosing the level editor mode ("Concrete" vs "Ghost")
 - Adding, updating (moving), removing pegs
 - Removing inconsistent ("ghost") pegs
@@ -271,7 +316,7 @@ The `DesignerViewController` controls the bulk of the level designer. The concer
 
 **Remarks**
 - When a placed peg is selected in the level designer, a rectangular box will be drawn around it.
-- The letterboxing implementation is incomplete, as the game view itself does not have letterboxing logic. The designer view's implementation is also incomplete. For now, the letterboxing only works when creating a new level, or loading a level of the same size as the screen. The letterboxing comes in the form of translucent blue boxes.
+- The letterboxes are presented in the form of translucent blue boxes.
 
 #### Game
 
@@ -279,9 +324,13 @@ The `DesignerViewController` controls the bulk of the level designer. The concer
 
 The `GameViewModel` relies on the `GameLevel` for information on game objects, and renders them accordingly onto the view.
 
-Like `DesignerViewController`, the `GameViewController` maps pegs to views, and adds view relevant callbacks to the `GameLevel`. Indeed, one may question whether this coupling between controller and view is acceptable in MVVM. This is addressed in the section on *Design Tradeoffs*.
+Like `DesignerViewController`, the `GameViewController` maps pegs to views, and adds view relevant callbacks to the `GameLevel`.
 
-The `GameView` is responsible for rendering the cannon (in future) and the guiding line of fire.
+
+- The `GameplayAreaDynamicView` contains the content that is responsive to scrolling, i.e., such content has a specific position in the game logic, and as the level scrolls, their on-screen positions will update accordingly.
+- The `GameplayAreaStaticView` contains the content fixed to the screen, and does not respond to level scrolling
+- The `CannonLineView` is responsible for rendering the cannon (in future) and the guiding line of fire.
+- The `GameEndViewController` controls the popup container view when the game ends in a win or loss.
 
 #### Level Select
 
@@ -290,6 +339,8 @@ The `GameView` is responsible for rendering the cannon (in future) and the guidi
 The level select view is rather simple and serves to display the collection of stored levels along with their associated preview images.
 
 Upon loading a level, it transitions back to the level designer.
+
+The `PeggleMasterCollectionViewController` presents a grid of peggle masters to choose from. The default peggle master is Battler.
 
 ## Rules of the Game
 Please write the rules of your game here. This section should include the
@@ -327,15 +378,15 @@ As this class has been refactored to allow for dependency injection, it is possi
   - given level with different `playArea`, expect error to be thrown
   - given level with equally sized `playArea`, expect success. Furthermore, check that `self` has exactly the same pegs as `incomingPeg` by comparing their respective containers.
 
-- `addPeg`
+- `addGameObject`
   - Try adding the exact same peg (identical) twice. Check that callbacks are called the first time. Check that no callbacks are called the second time. (To do this, we can register a callback that updates a counter.)
   - Set `isAcceptingOverlappingPegs` to true. Try adding two equivalent, but not identical pegs. Expect both pegs to be added, so that add callbacks are triggered.
 
-- `removePeg`
+- `removeGameObject`
   - Deleting a peg that doesn't exist would cause an assertion failure.
   - Checking for successful deletion is similar as in `addPeg`, register a callback that updates a counter, and check the the parameter received by the callback is indeed the deleted peg.
 
-- `updatePeg`
+- `updateGameObject`
   - Again, checking for successful update amounts to adding a suitable callback.
   - Passing two identical pegs would cause assertion error.
 
