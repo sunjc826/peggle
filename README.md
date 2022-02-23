@@ -505,7 +505,9 @@ The initialization of controllers is unit tested, as seen in `StoryboardableTest
 - Tapping an opaque (i.e. selected) peg does not change anything. That is, the tapped peg remains opaque, all other pegs remain translucent, and the delete button background remains white.
 
 #### Test designer
-- The designer is letterboxed. The aspect ratio of the design area should match the aspect ratio of the iOS device. (As of now, letterboxing for game levels of arbitrary aspect ratios has not been implemented, though the core coordinate mapping logic is there.)
+- The designer is letterboxed. The aspect ratio of the design area should match the aspect ratio of the iOS device.
+- At the top of the designer view there is a gray area representing the cannon zone. Pegs will be considered out of bounds if the player attempts to drag a peg to the gray area.
+- At the bottom of the designer view there is a gray area representing the bucket zone. Similarly pegs will be considered out of bounds if the player attempts to drag a peg to the gray area.
 - On tap edit mode button, the following state transitions should occur.
   - If edit mode is previously "concrete", the label above the edit mode button should say "ghost" and a remove inconsistencies button should appear on the right of the screen.
   - If edit mode is previously "ghost", the label above edit button should say "concrete" and the remove inconsistencies button should disappear. Furthermore, any ghost pegs should be removed.
@@ -548,11 +550,32 @@ The initialization of controllers is unit tested, as seen in `StoryboardableTest
   - If the shape is concrete, and it moves to a location where it overlaps a concrete peg, it becomes a ghost.
   - If the shape is a concrete, and move away such that there are other ghost pegs that no longer overlap with concrete pegs. Then those other pegs become concrete.
 
+#### Test Peg type
+At the top of the palette there are 4 colored buttons representing the 4 types of pegs present in the game.
+- On tap any of the colored button, the palette peg buttons' color will change to match that color. Any selected peg in the palette will be deselected.
+- Placements of palette pegs in the designer will match the color of the selected palette peg.
+
 #### Test shape transform
 - On scale slider change, the peg's scale changes. e.g. if scale slider moves right, the peg grows in size.
 - On slider change
   - If edit mode concrete: the peg's transformation will only changes correspondingly if no overlaps are caused.
   - If edit mode ghost: the peg's transformation always changes, and the peg updates its concrete status correctly based on its current transformation.
+
+#### Test obstacle specific transformations
+Note that an obstacle (which has the shape of a triangle) is able to accept all the usual shape transformations, i.e. rotation and scaling.
+- After selecting an obstacle (by double tapping), three black buttons should appear on each one of its 3 vertices. A black ring should also appear centered around some point on the obstacle.
+- Dragging a black button would cause the corresponding vertex of the obstacle to move to the dragging location.
+  - Dragging a black button to a place that would cause the obstacle's orientation to be reversed is not allowed by the designer. To test this, try dragging one vertex toward the line formed by the other two vertices, i.e. try to make the 3 vertices collinear. Beyond a certain point, further dragging would be prevented by the designer.
+  - When moving a vertex, the center of the shape would automatically adjust, so the black ring (representing the springiness of the obstacle) would also appear to move. Note that the center of the shape equals to centroid of the triangle.
+  - The other 2 vertices should not move, i.e. only the dragged vertex would move.
+- Dragging the black ring would resize it.
+  - It should still be centered about the same point.
+
+#### Test scroll (Designer)
+The designer has a button at the bottom which allows the player to lock and unlock the "Scroll to Expand" functionality.
+- If "Scroll to Expand" is unlocked, the player can expand the level by scrolling down.
+  - The bucket zone (gray box) moves down automatically in response to the expanded level. 
+- If "Scroll to Expand" is locked, the player can still scroll, but the level cannot be expanded by scrolling. i.e. if the player hits the bottom limit of scrolling, the player cannot scroll any further.
 
 #### Test bottom menu bar
 - On tap reset button
@@ -584,7 +607,7 @@ The initialization of controllers is unit tested, as seen in `StoryboardableTest
 **Test Load level**
 - On tap Back
   - If we came from menu, transitions to menu.
-  - If we came from level designer, transitions to level designer
+  - If we came from level designer, transitions to level designer.
 - On tap Load for a particular cell
   - Transitions to level designer
   - The level should be loaded, assuming that the play area matches.
@@ -647,6 +670,8 @@ A black line should be drawn
 - Upon fallthrough, i.e. ball completely disappears from bottom of screen
   - Transition to `cleanup` phase.
 
+See below for testing of the bucket.
+
 **Note** When pegs are set to rotate-only, i.e. `canRotate == true` and `canTranslate == false`, and when rotating pegs collide with each other, they do not move and even their rotational velocities are unchanged. This is not a bug, and is a limitation of the physics engine. This is because the physics engine only takes translational velocities into account when calculating collisions. So the physics engine actually detects the rotating pegs as colliding, but since none of them are moving, they are viewed as colliding with zero velocity, so no impulse is applied on them.
 
 `stuck` phase
@@ -655,7 +680,71 @@ A black line should be drawn
 
 `cleanup` phase
 - All lit pegs fade out and disappear.
+- If all orange pegs are gone, transition to `gameEnd` phase, where the game is considered won.
+- If not all orange pegs are gone but all balls are gone, transition to `gameEnd` phase, where the game is considered lost.
+- Otherwise, transition to `waitingForNewRound` phase
+
+`waitingForNewRound` phase
+- Nothing happens, but physics objects can still move and rotate, i.e. update.
+- Cannon line does not appear, and user input into the game is not registered. E.g. The cannon does not rotate in response to user input.
 - After around 2 seconds, transition to `beginning` phase.
+
+`gameEnd` phase
+We will discuss this in the next section.
+
+
+#### Test Peg Type
+- When a ball collides with a peg, an audio clip "boing" will play. When pegs collide, no audio is played. Note that however, a peg is still considered as being hit even if it is another peg that collides with it.
+- When a ball collides with a green peg, another audio clip "whee" will also play. The relevant special power will take effect either for the current ball or for the next few balls (depending on what the special power is).
+
+#### Test Cannon
+- On long press at a point on the screen, the cannon will attempt to rotate toward the point that is pressed.
+- The speed of rotation depends on the angle the cannon needs to rotate through to aim at the pressed point. If the angle is larger, the speed of rotation is also greater.
+- When the cannon rotates until it points at the pressed position, the cannon stops rotating.
+- As mentioned above, the prediction line also updates with the angle of the cannon.
+
+#### Test Bucket
+- Movement: The bucket alternates between moving left and right about the bottommost region of the game area. The speed of the bucket remains constant, unaffected by collisions between the bucket and other game objects. For e.g. when the ball hits the bucket, the bucket's speed does not change even though the ball bounces off.
+- Collision:
+  - When the ball hits the side of the bucket, the ball bounces off.
+  - When the ball falls into the center of the bucket, the ball is destroyed, regardless of the type of special that is currently active. (This includes spooky ball.) The player gets a free ball. In particular, when multiball is active, if multiple balls fall into the bucket center, the player also gets multiple free balls.
+
+#### Game statistics
+Game statistics are displayed in the top right portion of the screen, with the following fields:
+- Balls left
+- Active count: Number of actives
+  - For spooky ball, it refers to the number of times the spooky ball can wrap around from the bottom to the top of the screen. Each time the ball wraps around, the number of actives will decrease by one. Note that the stats display will also update accordingly when this happens.
+  - For (1) super duper guide, (2) phase through, the number of actives refers to the number of future balls that are equipped with the corresponding ability. For e.g. in the case of super duper guide, if `activeCount == 2`, then the next 2 balls will have additional prediction. In the case of phase through, if `activeCount == 3`, then the next 3 balls will be able to phase through horizontally.
+  - For other special abilities, active count will be blank as it is not relevant.
+- Total score: Updates each time a game round finishes. It does not update when the ball is still in the air.
+- Number of pegs left of each type: Similar to score, this updates each time a game round finishes.
+
+#### Test Scroll (Game)
+The best way to test scroll would be to use the multiball powerup.
+For an arbitary number of balls, the scroll will behave in this manner.
+- Consider the ball with the largest Y position, e.g. the ball closest to the bottom of the play area. The camera's scroll position depends on this ball.
+- For this ball, the scroll level will always try to keep make sure that the ball's Y position is in the center of the screen. However, the screen will not overscroll. By this, I mean that the scroll view will not scroll higher than the top of the gameplay area, and it will not scroll lower than the bottom of the gameplay area.
+
+
+#### Test Special
+I will only discuss the special powers in the game requirements.
+- For spooky ball, as mentioned in game statistics, the number of times the current ball can wrap around is indicated by the active count field in the stats view. By default, a ball is not able to wrap around, however, each time it hits a green peg, the active count will increase. Each time the ball wraps around, the active count will decrease by 1.
+  - Furthermore, the wrap around behavior is such that the ball retains its previous velocity, and its x-position remains unchanged.
+- For explosive, upon hitting a green peg, all other pegs are allowed to translate for the remaining duration of the current ball. A radial explosive force is exerted in a certain radius of the hit green peg. Other pegs caught in the radius will be marked as hit. The explosive force can cause chain reactions if another green peg is hit. The ball is also impacted by the explosive force.
+
+
+#### Test GameEnd
+Regardless of the game status, i.e. win or lose, a popup will be produced on top of the game view. 
+- In the center there is a line of text.
+  - If the game is won, the line of text will congratulate the player. Congratulatory audio will play.
+  - If the game is lost, the line of text will tell the player to fight on. An "Fight on" audio clip will play.
+- There are 2 buttons near the bottom of the screen.
+- One button says Restart, on tap, the popup closes and the game reloads, i.e. the same level loads, the player can start to play the level again.
+- The other button says Back and on tap, the application transitions back to the Level Select screen.
+
+#### Test Win Lose conditions
+As mentioned before, the game is considered to end when there are no more orange pegs, or when there are no balls left. There is an edge case:
+- The player is allowed to create a level without any orange pegs. In fact, the player is allowed to create a level with no pegs at all. In this case, the game will not automatically win the moment it is loaded. The player can play for a single round, after which the game ends.
 
 ## Written Answers
 
