@@ -405,7 +405,7 @@ Adjust the scaling slider in the shape transform menu.
       - For Krauss, it is actually his daughter [Ushiromiya Jessia](https://07th-expansion.fandom.com/wiki/Jessica_Ushiromiya) that congratulates you since there is no corresponding congratulations audio available from him.
       - For Featherine, no such audio is available, unfortunately.
     - Game lose. Don't be sad. The Great Witch of the Senate, Lady Bernkastel recalls her alternate self as [Furude Rika](https://whentheycry.fandom.com/wiki/Furude_Rika) and gives you some much needed encouragement.
-  - Music
+  - No Music as I am strictly restricting myself to Umineko content and while the music is probably an undisputed No.1 amongst all visual novels, I do not wish to violate more copyright than I need to. :D
 2. (A lot of) Peggle masters, with lore accurate (99% guaranteed) powerups
   - Beatrice: Spookyball
   - Battler: Small bombs aka explosion
@@ -429,8 +429,13 @@ Adjust the scaling slider in the shape transform menu.
 3. Game stats
   - The game stats displayed in the upper right corner of the game view include the following:
     - Number of balls remaining
+    - Number of actives remaining
+      - For SuperDuperGuide, PhaseThrough, this refers to the number of balls remaining equipped with the special ability.
+      - For SpookyBall, this refers to the number of spooky wrap arounds of the current ball.
     - Total score
     - Number of pegs of each type remaining
+4. Particle effects
+  - When the ball hits something (except the wall), particles are produced at the point of collision. The direction of particles is not always accurate due to the approximate nature of collision detection's "penetration point", so it may sometimes go in the opposite direction of collision.
 ## Tests
 ### Unit tests
 Many of the basic model classes have been unit tested.
