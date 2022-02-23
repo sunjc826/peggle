@@ -98,6 +98,8 @@ struct GameData {
         static let boingEffect = globalAudio.getSoundEffect(for: .boing)
         static let thunkEffect = globalAudio.getSoundEffect(for: .thunk)
         static let wheeEffect = globalAudio.getSoundEffect(for: .whee)
+        static let teleportEffect = globalAudio.getSoundEffect(for: .teleport)
+        static let pinponEffect = globalAudio.getSoundEffect(for: .pinpon)
     }
 
     static func loadData() {

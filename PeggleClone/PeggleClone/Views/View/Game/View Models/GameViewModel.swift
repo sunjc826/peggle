@@ -89,11 +89,11 @@ class GameViewModel {
         case .ballFallthrough:
             break
         case .ballWrapAround:
-            break
+            audioEffect.send(GameData.AudioEffects.teleportEffect)
         case .ballMultiply:
             break
         case .ballIntoBucket:
-            audioEffect.send(GameData.AudioEffects.thunkEffect)
+            audioEffect.send(GameData.AudioEffects.pinponEffect)
         }
     }
 

@@ -21,6 +21,7 @@ extension GameLevel: PhysicsEngineDelegate {
         case .wallWrapAround:
             rigidBody.instantaneousDelta.changeToWrapAroundCount = .increment
             rigidBody.addTeleport(teleport)
+            gameEvents.send(.ballWrapAround)
         case .wallCollision:
             rigidBody.addTeleport(teleport)
         case .collision(dueTo: _):
@@ -66,6 +67,7 @@ extension GameLevel: PhysicsEngineDelegate {
             guard !(rigidBody.associatedEntity is Ball
                     && otherRigidBody.associatedEntity is BucketReceiver) else {
                 rigidBody.instantaneousDelta.shouldDelete = true
+                gameEvents.send(.ballIntoBucket)
                 getFreeBall()
                 return
             }

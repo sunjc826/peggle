@@ -5,4 +5,6 @@ enum SoundEffect: String {
     case whee
     case thunk
     case ahaha
+    case teleport
+    case pinpon
 }
