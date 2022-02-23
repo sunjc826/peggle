@@ -31,7 +31,7 @@ extension PeggleMasterCell {
             .assign(to: \.text, on: lblName)
             .store(in: &subscriptions)
 
-        viewModel.$title
+        viewModel.$titleAndPower
             .assign(to: \.text, on: lblTitle)
             .store(in: &subscriptions)
 

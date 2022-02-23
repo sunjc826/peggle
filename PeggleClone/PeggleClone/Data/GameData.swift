@@ -17,7 +17,10 @@ struct GameData {
             id: "battler",
             name: "Battler",
             title: "The Endless Sorcerer",
-            description: "",
+            description: """
+                He is pretty useless. But hey, he thought of small bombs, and they turned out \
+                to be much more powerful than one might think.
+                """,
             special: .smallBombs
         ),
         "maria": PeggleMaster(
@@ -46,7 +49,7 @@ struct GameData {
             name: "Featherine Augustus Aurora",
             title: "The Witch of Theatergoing",
             description: """
-                An ancient witch who has reached the realm of Creator,
+                An ancient witch who has reached the realm of Creator, \
                 she has the free will to author her own tales, and rules.
                 Omniscience is but within reach, if only she wishes for it.
                 Warning: With great power comes great lag...
