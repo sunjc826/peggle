@@ -32,8 +32,8 @@ class GameplayAreaStaticView: UIView {
         let constraints = [
             svInfo.topAnchor.constraint(equalTo: self.topAnchor, constant: 30.0),
             svInfo.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -100.0),
-            svInfo.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.1),
-            svInfo.widthAnchor.constraint(greaterThanOrEqualToConstant: 50),
+            svInfo.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.2),
+            svInfo.widthAnchor.constraint(greaterThanOrEqualToConstant: 100),
             svInfo.heightAnchor.constraint(lessThanOrEqualTo: superview!.heightAnchor, multiplier: 0.2)
         ]
         constraints.forEach { $0.isActive = true }

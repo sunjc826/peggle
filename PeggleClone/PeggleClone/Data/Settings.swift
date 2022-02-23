@@ -67,7 +67,7 @@ struct Settings {
             static let repulsionDuration: Double = 0.25
             static let multiballEjectionVelocity: Double = 0.35
             static let predictionStepsWithoutSuperDuperGuide: Int = 20
-            static let predictionStepsWithSuperDuperGuide: Int = 100
+            static let predictionStepsWithSuperDuperGuide: Int = 200
         }
 
         struct Color {
