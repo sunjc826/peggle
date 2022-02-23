@@ -398,6 +398,7 @@ Adjust the scaling slider in the shape transform menu.
     - Game win. Your peggle master congratulates you for an outstanding performance. This changes depending on the peggle master you have selected.
       - For Krauss, it is actually his daughter [Ushiromiya Jessia](https://07th-expansion.fandom.com/wiki/Jessica_Ushiromiya) that congratulates you since there is no corresponding congratulations audio available from him.
       - For Featherine, no such audio is available, unfortunately.
+    - Game lose. Don't be sad. The Great Witch of the Senate, Lady Bernkastel recalls her alternate self as [Furude Rika](https://whentheycry.fandom.com/wiki/Furude_Rika) and gives you some much needed encouragement.
   - Music
 2. (A lot of) Peggle masters, with lore accurate (99% guaranteed) powerups
   - Beatrice: Spookyball
@@ -656,4 +657,30 @@ A black line should be drawn
 > - if you were to redo the entire application, is there anything you would
 >   have done differently?
 
-Your answer here
+#### Problem Set 2 -> Problem Set 3
+What changed
+- The MVC pattern which worked quite well for PS2, was refactored to MVVM. This may not have been necessary, but it was definitely worth it as it greatly reduced the bulk of the controllers. Furthermore, I also applied the Combine framework, which turned out to be massively helpful for this reason: Without reactive programming, I will have to manually implement observer pattern, which causes a lot of boilerplate code. If I stick to imperative programming, then I will need to propagate changes by *push*ing them. By them I mean that if A needs to cause a change in B, then when I change A, I need to manually tell B to change. With reactive programming, I can instead *pull* changes, in the sense that A does not even need to know about B, it is B that listens to A, and changes accordingly when A does. TLDR: When things get more complicated, it is much more scalable to *pull* than to *push*.
+  - However, while this did take me one day, this wasn't as troublesome as it could potentially be as I was already delegating functionality to multiple container view controllers. This means that the view models that were produced were not too large, and could be mostly translated from controller code.
+- Segues which also generally worked well, were removed and transitions are implemented using the Coordinator pattern instead. The reason is that segues are not only troublesome to implement (I need to add them via interface builder, drag things around, then configure the `prepare(for segue:)` in each controller), they are also quite rigid in that a segue goes to a very specific controller. Needing to add a menu page, a level select page, a game view page, a designer page, and transitioning between them in a freeform manner means I need a more flexible solution than segues.
+- The shape hierarchy proved quite problematic for the physics engine as I had actually broken substitutability by make `Circle` a `RegularPolygon`. Since a `Circle` doesn't have sides or vertices, the physics engine had a lot of trouble differentiating between circular and non-circular objects. And so, quite some time was spent on restructuring the shape hierarchy.
+
+What did not change (for the most part)
+- The high level structure of `DesignerGameLevel` was already relatively well-done, as it had all the features of the most recent implementation like allowing for a large degree of dependency injection. The callback system, where the view controller registers callbacks/observers on the model and updates the view accordingly when models change (e.g. changes in position, transformation), is still very much being used in both the designer and the game itself.
+- The splitting of a single view controller to multiple child view controllers. E.g. The `DesignerMainViewController` has sub-view controllers which handle the palette, storage, level design respectively. This is still present and very much expanded upon in later iterations. This is useful regardless of whether MVC or MVVM is used as it helps to reduce the size of a single view controller. Furthermore, this is also good for interface builder (Storyboard) as container views are extracted out, so it makes interface design a lot less messy. If I mess up a constraint or two within a container view, I don't need to be afraid of deleting constraints as any changes are isolated to that container view only, and does not affect the parent view or sibling container views.
+
+In general, for an MVC application, PS2 was mostly well designed. The only major design issue was the shape hierarchy.
+
+#### Problem Set 3 -> Problem Set 4
+What changed
+- While almost all the algorithms are mature and did not necessitate any changes, I found difficulties in handling edge cases with the PS3 implementation of the physics engine. The reason is that the PS3 physics engine does a lot of decision making, e.g. when collisions are detected, the physics engine adds an impulse to the colliding objects without consulting the game engine. This gets less scalable when more and more rules are added in PS4, like the bucket, which bounces between walls, but does not react to the ball. As a result, I needed to add an additional layer of indirection, to let the physics engine *suggest* instead of *apply* changes and notify the game engine of these suggestions. The game engine is then responsible for the final say on what changes are applied. This results in a much more flexible physics engine.
+
+What did not change
+- By PS3, I had already incorporated the 3 key architectural pieces into the application: Coordinator, MVVM and reactive programming. These 3 help to make PS4 a lot easier to deal with, and I did not feel like I ever needed to write spaghetti to implement an edge case.
+- As a result, to incorporate the Peggle Master select screen, I could for the most part copy paste from Level Select and the additional transitions could be achieved by fewer than 10 LoC. All I needed to add was the `UITabBarController` and some simple push and pop logic on the `UINavigationController`.
+
+In general, PS4 is a natural extension of PS3, without major architectural changes other than the physics engine.
+
+Note that the *what changed* sections can be seen as technical debt, though personally, I feel that most of them are really just improvements to the system. The only real technical debt was probably the erroneous shape hierarchy in PS2 and many models like `Peg` were built around the erroneous hierarchy.
+
+#### What I would have done differently
+I think the MVVM-C (Model View View Model Coordinator) architecture is already quite good, and it is not so easy to think of an improvement on top of that. As for technical improvements, I would be interested in allowing for composite shapes, e.g. a super-shape comprised of multiple convex shapes, where the super shape itself doesn't need to convex; it doesn't even need to be connected. One reason for this is that this is essentially what my implementation of the `Bucket` is. It comprises of 3 rectangles, 1 on each side (left, right) to deflect balls, 1 in the middle that acts as a receiver for balls. (The receiver gives a free ball when the ball hit it, this represents the ball falling into the bucket.)
