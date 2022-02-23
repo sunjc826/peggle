@@ -83,17 +83,17 @@ class GameplayAreaDynamicView: UIView {
 
         emitterCell.contents = particle.cgImage
 
-        emitterCell.velocity = 50.0
+        emitterCell.velocity = 75.0
         emitterCell.velocityRange = 10.0
 
         emitterCell.color = UIColor.lightGray.cgColor
 
         emitterCell.emissionLatitude = 0
         emitterCell.emissionLongitude = 0
-        emitterCell.emissionRange = 0
+        emitterCell.emissionRange = Double.pi / 6
 
         emitterCell.lifetime = 1.0
-        emitterCell.birthRate = 2.0
+        emitterCell.birthRate = 2.5
     }
 }
 
@@ -146,10 +146,10 @@ extension GameplayAreaDynamicView {
 extension GameplayAreaDynamicView: BallViewDelegate {
     func renderParticle(with data: CollisionParticleData) {
         emitterLayer.emitterPosition = data.collisionLocation
-        emitterLayer.lifetime = 1.5
+        emitterLayer.lifetime = 1.0
         let vector = data.collisionDirection
         emitterCell.emissionLongitude = -atan2(vector.dy, vector.dx)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
             self.emitterLayer.lifetime = 0.0
         }
     }

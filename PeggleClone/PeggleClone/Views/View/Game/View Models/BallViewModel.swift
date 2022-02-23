@@ -5,11 +5,6 @@ private let ballBorderColor = UIColor.black
 
 protocol BallViewModelDelegate: AnyObject, CoordinateMappable {}
 
-struct CollisionParticleData {
-    var collisionLocation: CGPoint
-    var collisionDirection: CGVector
-}
-
 class BallViewModel: ShapeDrawable {
     weak var delegate: BallViewModelDelegate?
     var ball: Ball

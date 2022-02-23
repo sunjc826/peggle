@@ -181,6 +181,7 @@
 		E586262227AD85D8009964BF /* CollisionResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = E586262127AD85D8009964BF /* CollisionResolver.swift */; };
 		E586262527AD870D009964BF /* Collision+Detection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E586262427AD870D009964BF /* Collision+Detection.swift */; };
 		E586262727AD8719009964BF /* Collision+Resolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = E586262627AD8719009964BF /* Collision+Resolution.swift */; };
+		E5863D1A27C65AB200B7935E /* CollisionParticleData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5863D1927C65AB200B7935E /* CollisionParticleData.swift */; };
 		E587678C27BFE26400E49356 /* OscillationLocalityButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E587678B27BFE26400E49356 /* OscillationLocalityButton.swift */; };
 		E588D23D27B813CF0009F1DA /* CoordinateMapperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E588D23C27B813CF0009F1DA /* CoordinateMapperTests.swift */; };
 		E59005CD27C149B800824F92 /* Audio.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59005CC27C149B800824F92 /* Audio.swift */; };
@@ -429,6 +430,7 @@
 		E586262127AD85D8009964BF /* CollisionResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollisionResolver.swift; sourceTree = "<group>"; };
 		E586262427AD870D009964BF /* Collision+Detection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collision+Detection.swift"; sourceTree = "<group>"; };
 		E586262627AD8719009964BF /* Collision+Resolution.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collision+Resolution.swift"; sourceTree = "<group>"; };
+		E5863D1927C65AB200B7935E /* CollisionParticleData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollisionParticleData.swift; sourceTree = "<group>"; };
 		E587678B27BFE26400E49356 /* OscillationLocalityButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OscillationLocalityButton.swift; sourceTree = "<group>"; };
 		E588D23C27B813CF0009F1DA /* CoordinateMapperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinateMapperTests.swift; sourceTree = "<group>"; };
 		E59005CC27C149B800824F92 /* Audio.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Audio.swift; path = "PeggleClone/General Utils/Audio.swift"; sourceTree = SOURCE_ROOT; };
@@ -1232,6 +1234,7 @@
 				E571C08727AE752F009459CE /* Extensions */,
 				E5FB39C827AA16E4008CE4D2 /* UIViewController+Preview.swift */,
 				E5FB39CC27AA414A008CE4D2 /* UIView+Preview.swift */,
+				E5863D1927C65AB200B7935E /* CollisionParticleData.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -1526,6 +1529,7 @@
 				E5EDF38327C4E2A800434357 /* InstantaneousDelta.swift in Sources */,
 				E56958D027BF2E4100AF360B /* GameObstacleView.swift in Sources */,
 				E5EDF38727C4E31700434357 /* ConfigurationForPhysicsEngine.swift in Sources */,
+				E5863D1A27C65AB200B7935E /* CollisionParticleData.swift in Sources */,
 				E572B8EF27B749FF008E72A6 /* PersistablePeg.swift in Sources */,
 				E578D30C27BD49DD0080B2DA /* PaletteObstacleButtonViewModel.swift in Sources */,
 				E571C09627AEC7A7009459CE /* AbstractPegViewModel.swift in Sources */,
