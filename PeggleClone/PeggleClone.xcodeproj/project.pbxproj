@@ -187,6 +187,7 @@
 		E590099627A92E9200E764B5 /* EditableGameEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = E590099527A92E9200E764B5 /* EditableGameEntity.swift */; };
 		E59094D227C5F46600EC454A /* DesignerLayoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59094D127C5F46600EC454A /* DesignerLayoutView.swift */; };
 		E59094D427C5F7B200EC454A /* DesignerLayoutViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59094D327C5F7B200EC454A /* DesignerLayoutViewModel.swift */; };
+		E59094D627C6094C00EC454A /* encouragement in Resources */ = {isa = PBXBuildFile; fileRef = E59094D527C6094C00EC454A /* encouragement */; };
 		E5AAA5A9279989AC0092EE3D /* LinkedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5AAA5A8279989AC0092EE3D /* LinkedList.swift */; };
 		E5BA4E3127A9322B00C4A576 /* GameLevel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BA4E3027A9322B00C4A576 /* GameLevel.swift */; };
 		E5BA4E3327A9369700C4A576 /* PhysicsEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BA4E3227A9369700C4A576 /* PhysicsEngine.swift */; };
@@ -434,6 +435,7 @@
 		E590099527A92E9200E764B5 /* EditableGameEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditableGameEntity.swift; sourceTree = "<group>"; };
 		E59094D127C5F46600EC454A /* DesignerLayoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignerLayoutView.swift; sourceTree = "<group>"; };
 		E59094D327C5F7B200EC454A /* DesignerLayoutViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesignerLayoutViewModel.swift; sourceTree = "<group>"; };
+		E59094D527C6094C00EC454A /* encouragement */ = {isa = PBXFileReference; lastKnownFileType = folder; name = encouragement; path = ../../../../audio_assets/encouragement; sourceTree = "<group>"; };
 		E5AAA5A8279989AC0092EE3D /* LinkedList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkedList.swift; sourceTree = "<group>"; };
 		E5BA4E3027A9322B00C4A576 /* GameLevel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameLevel.swift; sourceTree = "<group>"; };
 		E5BA4E3227A9369700C4A576 /* PhysicsEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhysicsEngine.swift; sourceTree = "<group>"; };
@@ -1124,6 +1126,7 @@
 		E59005CE27C153DD00824F92 /* Audio */ = {
 			isa = PBXGroup;
 			children = (
+				E59094D527C6094C00EC454A /* encouragement */,
 				E50742AE27C1F5E30014E84F /* sound_effects */,
 				E50742AC27C1EB920014E84F /* congratulations */,
 			);
@@ -1340,6 +1343,7 @@
 			files = (
 				E50742AD27C1EB920014E84F /* congratulations in Resources */,
 				E519D5772798009700BCE59D /* LaunchScreen.storyboard in Resources */,
+				E59094D627C6094C00EC454A /* encouragement in Resources */,
 				E519D5742798009700BCE59D /* Assets.xcassets in Resources */,
 				E50742AF27C1F5E30014E84F /* sound_effects in Resources */,
 				E519D5722798009600BCE59D /* Main.storyboard in Resources */,

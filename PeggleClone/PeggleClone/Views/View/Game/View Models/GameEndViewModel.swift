@@ -6,14 +6,18 @@ class GameEndViewModel {
     let stats: GameRoundStats
 
     var gameStatusText: String {
-        stats.isWon ? "Congratulations! Nipahh" : "See you next time..."
+        stats.isWon ? """
+            Congratulations! You have beaten the Golden Witch's gameboard!
+            """ : """
+            Fight on! Nipahhh~\u{2606}
+            Lady Bernkastel cheers you on.
+            """
     }
 
     var audio: AVAudioPlayer?
 
     init(stats: GameRoundStats) {
         self.stats = stats
-        audio = globalAudio.getCongrats(for: stats.peggleMaster)
-        audio?.prepareToPlay()
+        audio = stats.isWon ? globalAudio.getCongrats(for: stats.peggleMaster) : globalAudio.getEncouragement()
     }
 }

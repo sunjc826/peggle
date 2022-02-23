@@ -4,6 +4,7 @@ import AVFoundation
 private let extensions = ["wav", "mp3"]
 private let congratulationsDirectory = "congratulations"
 private let soundEffectsDirectory = "sound_effects"
+private let encouragementDirectory = "encouragement"
 
 class Audio {
     init() {
@@ -18,6 +19,29 @@ class Audio {
 }
 
 extension Audio {
+    func getEncouragement() -> AVAudioPlayer? {
+        var url: URL?
+        for ext in extensions {
+            url = Bundle.main.url(
+                forResource: "nipah",
+                withExtension: ext,
+                subdirectory: encouragementDirectory
+            )
+
+            if url != nil {
+                break
+            }
+        }
+
+        guard let url = url else {
+            return nil
+        }
+
+        let audioPlayer = try? AVAudioPlayer(contentsOf: url)
+        audioPlayer?.prepareToPlay()
+        return audioPlayer
+    }
+
     func getCongrats(for peggleMaster: PeggleMaster) -> AVAudioPlayer? {
         var url: URL?
         for ext in extensions {

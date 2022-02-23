@@ -15,7 +15,7 @@ struct Settings {
     static let easeOfRotation: EaseOfRotation = .spinny
 
     struct Game {
-        static let startingBalls = 10
+        static let startingBalls = 5
     }
 
     struct Ball {
