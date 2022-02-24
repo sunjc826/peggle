@@ -96,19 +96,4 @@ struct GameData {
         peggleMastersMap["lambdadelta"]!,
         peggleMastersMap["bernkastel"]!
     ]
-    struct AudioEffects {
-        static let ahahaEffect = globalAudio.getSoundEffect(for: .ahaha)
-        static let boingEffect = globalAudio.getSoundEffect(for: .boing)
-        static let thunkEffect = globalAudio.getSoundEffect(for: .thunk)
-        static let wheeEffect = globalAudio.getSoundEffect(for: .whee)
-        static let teleportEffect = globalAudio.getSoundEffect(for: .teleport)
-        static let pinponEffect = globalAudio.getSoundEffect(for: .pinpon)
-    }
-
-    static func loadData() {
-        // Remark: This triggers loading of sounds.
-        // I believe audio is lazily loaded, without this, the game will freeze upon first load
-        // of sound effect.
-        _ = AudioEffects.ahahaEffect
-    }
 }

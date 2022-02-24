@@ -33,6 +33,10 @@ extension GameLevel: PhysicsEngineDelegate {
     }
 
     private func resolveForce(_ force: Force, for rigidBody: RigidBody) {
+        guard !(rigidBody.associatedEntity is BucketComponent) else {
+            return
+        }
+
         switch force.forceType {
         case .explosion(emitter: _, direction: _):
             switch rigidBody.associatedEntity {

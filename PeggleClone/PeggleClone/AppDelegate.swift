@@ -6,7 +6,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         globalLogger.logLevel = Settings.logLevel
-        GameData.loadData()
         return true
     }
 

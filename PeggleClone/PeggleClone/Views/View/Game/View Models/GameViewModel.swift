@@ -33,10 +33,10 @@ class GameViewModel {
         gameLevel?.cannon
     }
 
-    var audioEffectPublisher: AnyPublisher<AVAudioPlayer?, Never> {
-        audioEffect.eraseToAnyPublisher()
+    var soundEffectPublisher: AnyPublisher<SoundEffect, Never> {
+        soundEffect.eraseToAnyPublisher()
     }
-    private var audioEffect: PassthroughSubject<AVAudioPlayer?, Never> = PassthroughSubject()
+    private var soundEffect: PassthroughSubject<SoundEffect, Never> = PassthroughSubject()
 
     init(peggleMaster: PeggleMaster?) {
         self.peggleMaster = peggleMaster ?? GameData.defaultPeggleMaster
@@ -79,21 +79,21 @@ class GameViewModel {
     func addSoundEffect(dueTo gameEvent: GameEvent) {
         switch gameEvent {
         case .nothingHit:
-            audioEffect.send(GameData.AudioEffects.ahahaEffect)
+            soundEffect.send(.ahaha)
         case .gravityLowered:
             break
         case .specialPegHit:
-            audioEffect.send(GameData.AudioEffects.wheeEffect)
+            soundEffect.send(.whee)
         case .ballCollision:
-            audioEffect.send(GameData.AudioEffects.boingEffect)
+            soundEffect.send(.boing)
         case .ballFallthrough:
             break
         case .ballWrapAround:
-            audioEffect.send(GameData.AudioEffects.teleportEffect)
+            soundEffect.send(.teleport)
         case .ballMultiply:
             break
         case .ballIntoBucket:
-            audioEffect.send(GameData.AudioEffects.pinponEffect)
+            soundEffect.send(.pinpon)
         }
     }
 

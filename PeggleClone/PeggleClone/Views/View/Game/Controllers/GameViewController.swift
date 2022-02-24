@@ -1,12 +1,13 @@
 import UIKit
 import Combine
+import AVFAudio
 
 private let segueGameEnd = "segueGameEnd"
 
 class GameViewController: UIViewController, Storyboardable {
     @IBOutlet private var vWithinSafeArea: GameplayAreaView!
     @IBOutlet private var cvGameEnd: UIView!
-
+    var audioPlayer: AVAudioPlayer?
     var scrollvGame: GameLevelScrollView?
     var vStaticGame: GameplayAreaStaticView?
     var vGame: GameplayAreaDynamicView? {
@@ -36,6 +37,11 @@ class GameViewController: UIViewController, Storyboardable {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         setup()
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        displayLink?.invalidate()
     }
 
     private func setup() {
@@ -97,17 +103,18 @@ class GameViewController: UIViewController, Storyboardable {
             }
             .store(in: &subscriptions)
 
-        viewModel.audioEffectPublisher.sink { audioEffect in
-            guard let audioEffect = audioEffect else {
+        viewModel.soundEffectPublisher.sink { [weak self] soundEffect in
+            if let isPlaying = self?.audioPlayer?.isPlaying, isPlaying {
+                // Do not interrupt the currently played sound.
                 return
             }
-
-            if audioEffect.isPlaying {
-                audioEffect.pause()
+            DispatchQueue.global().async { [weak self] in
+                guard let self = self else {
+                    return
+                }
+                self.audioPlayer = globalAudio.getSoundEffect(for: soundEffect)
+                self.audioPlayer?.play()
             }
-            audioEffect.currentTime = 0
-            audioEffect.play()
-
         }.store(in: &subscriptions)
     }
 
