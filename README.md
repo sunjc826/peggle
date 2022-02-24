@@ -16,6 +16,21 @@
    In addition, keep in mind that, ultimately, this tool is only a guideline;
    some exceptions may be made as long as code quality is not compromised.
 3. Do not burn out. Have fun!
+
+
+## Important
+This git repository uses `git-lfs` for storing uncompressed `.wav` files. (Ideally I would use it to store mp3 and png files as well, but that requires a repo cleaner to remove these files from git. In view of the risks, I decided not to do it.)
+The installation is [here](https://git-lfs.github.com/).
+
+## Credits
+This game is a tribute to one of the greatest visual novels of all time, Umineko When They Cry.
+- [Ryukishi07](https://07th-expansion.fandom.com/wiki/Ryukishi07) and [07th Expansion](https://07th-expansion.fandom.com/wiki/07th_Expansion) for allowing me, a Reader, to traverse the Sea of Fragments
+- The [Fandom wiki](https://07th-expansion.fandom.com/wiki/07th_Expansion_Wiki) for character sprites. These sprites are also available from the novel files (the Steam version requires 07th mod for the Playstation 3 sprites).
+- [Youtube video](https://www.youtube.com/watch?v=k4T8HeK-ZIg) for Bernkastel's encouragement
+- [Youtube video](https://www.youtube.com/watch?v=Tu14bVETMLw) for the congratulations of various characters. The actual audio comes from the fighting game spin-off Golden Fantasia. It is not possible to directly extract the audio from the game files themselves as the game files use an unknown binary encoding.
+- [http://jwgrlrrajn.github.io/SFX/Umineko/index.html](http://jwgrlrrajn.github.io/SFX/Umineko/index.html) for some of the sound effects
+- Other sound effects come directly from Umineko files
+
 ## Dev Guide
 ### Overview
 This application uses a mix of MVVM and MVC, as well as the Coordinator pattern. For the most part, MVVM is used, other than relatively simple components that don't require a view model. 
@@ -401,6 +416,8 @@ Adjust the scaling slider in the shape transform menu.
     - Ball to regular peg collision (`boing.mp3`)
     - Ball to special peg collision (`whee.mp3`)
     - Ball doesn't hit anything, even if you get it into the bucket, out of pure luck presumably. (`ahaha.mp3`, i.e., The Golden Witch Beatrice laughs at ~~Battler's~~ your incompetence.)
+    - Ball phases through a wall (`teleport.wav`)
+    - Ball goes into the bucket (`pinpon.wav`)
     - Game win. Your peggle master congratulates you for an outstanding performance. This changes depending on the peggle master you have selected.
       - For Krauss, it is actually his daughter [Ushiromiya Jessia](https://07th-expansion.fandom.com/wiki/Jessica_Ushiromiya) that congratulates you since there is no corresponding congratulations audio available from him.
       - For Featherine, no such audio is available, unfortunately.
@@ -426,7 +443,8 @@ Adjust the scaling slider in the shape transform menu.
       - All pegs directly impacted by explosive force are marked at hit, including special pegs, so explosive force can trigger a chain reaction. Pegs directly impacted by repulsive force are not marked at hit, they still require collision with balls. 
   - Gaap: Phase through horizontal walls
     - The ball's left and right wall behavior are set to `.wrapAround`, so the ball no longer bounces off the horizontal walls but phase right through them.
-3. Game stats
+3. Dedicated peggle master select screen (Collection View)
+4. Game stats
   - The game stats displayed in the upper right corner of the game view include the following:
     - Number of balls remaining
     - Number of actives remaining
@@ -434,7 +452,7 @@ Adjust the scaling slider in the shape transform menu.
       - For SpookyBall, this refers to the number of spooky wrap arounds of the current ball.
     - Total score
     - Number of pegs of each type remaining
-4. Particle effects
+5. Particle effects
   - When the ball hits something (except the wall), particles are produced at the point of collision. The direction of particles is not always accurate due to the approximate nature of collision detection's "penetration point", so it may sometimes go in the opposite direction of collision.
 ## Tests
 ### Unit tests
@@ -469,8 +487,7 @@ As this class has been refactored to allow for dependency injection, it is possi
 
 `GameLevel.swift` The integration tests for game state are described in the later section.
 - `hydrate` (Same as `DesignerGameLevel`)
-  - given level with different `playArea`, expect error to be thrown
-  - given level with equally sized `playArea`, expect success. Furthermore, check that `self` has exactly the same pegs as `incomingPeg` by comparing their respective containers.
+  - check that `self` has exactly the same pegs as `incomingPeg` by comparing their respective containers.
 Hook into the lifecycle of `GameLevel` by registering callbacks. These callbacks can be used to check if adding, updating or removing is successful.
 - `update`
   - This is very hard to unit test. An integration test is preferred.
@@ -478,7 +495,7 @@ Hook into the lifecycle of `GameLevel` by registering callbacks. These callbacks
 `PhysicsEngine.swift` The idea of testing a physics engine is to inject in a certain pre-calculated initial state, where the initial state can be one of the following general cases.
 1. Bodies not capable of translating or rotating. Essentially the physics engine is expected to make no changes to their positions or velocities.
 2. Stationary bodies that neither collide with each other nor with the wall. If a body is unaffected by gravity, it stays still. If a body is affected by gravity, check that in a single update, its velocity increases by `dt * gravitationalAcceleration` where the gravitational acceleration is scaled due to the conversion between physical coordinates and logical coordinates.
-3. Stationary bodies that collide with each other. If the bodies partially overlap, they will be expected to be completely disjoint in the next update due to the teleportation mechanism of collision resolution. However, since the bodies are stationary, ignoring gravity, they should remain stationary. To ignore gravity, we can just set their property `isAffectedByGlobalForces` to false.
+3. Stationary bodies that collide with each other. If the bodies partially overlap, they will be expected to be completely disjoint in the next update due to the teleportation mechanism of collision resolution. However, since the bodies are stationary, ignoring gravity, they should remain stationary. To ignore gravity, we can ensure that in `rigidBody.longTermDelta.persistentForces`, there is no force with `forceTyp` equal to `.gravity`
 4. Stationary bodies colliding with wall, where their wall behavior is set to `WallBehavior.collide`. Unlike point 3, the bodies do not teleport.
 5. Moving bodies colliding with each other. The bodies should reflect against each other based on the Newtonian kinematics equations.
 6. Moving bodies colliding with wall. The body should bounce off the wall. More accurately, the component of the body's velocity  normal to the wall is reflected and the component parallel to the wall remains the same. There should also be energy loss based on the body's elasticity, which can be seen by a decrease in speed.
@@ -784,12 +801,3 @@ Note that the *what changed* sections can be seen as technical debt, though pers
 
 #### What I would have done differently
 I think the MVVM-C (Model View View Model Coordinator) architecture is already quite good, and it is not so easy to think of an improvement on top of that. As for technical improvements, I would be interested in allowing for composite shapes, e.g. a super-shape comprised of multiple convex shapes, where the super shape itself doesn't need to convex; it doesn't even need to be connected. One reason for this is that this is essentially what my implementation of the `Bucket` is. It comprises of 3 rectangles, 1 on each side (left, right) to deflect balls, 1 in the middle that acts as a receiver for balls. (The receiver gives a free ball when the ball hit it, this represents the ball falling into the bucket.)
-
-
-## Credits
-This game is a tribute to one of the greatest visual novels of all time, Umineko When They Cry.
-- [Ryukishi07](https://07th-expansion.fandom.com/wiki/Ryukishi07) and [07th Expansion](https://07th-expansion.fandom.com/wiki/07th_Expansion) for allowing me, a Reader, to traverse the Sea of Fragments
-- [Youtube video](https://www.youtube.com/watch?v=k4T8HeK-ZIg) for Bernkastel's encouragement
-- [Youtube video](https://www.youtube.com/watch?v=Tu14bVETMLw) for the congratulations of various characters. The actual audio comes from the fighting game spin-off Golden Fantasia. It is not possible to directly extract the audio from the game files themselves as the game files use an unknown binary encoding.
-- [http://jwgrlrrajn.github.io/SFX/Umineko/index.html](http://jwgrlrrajn.github.io/SFX/Umineko/index.html) for some of the sound effects
-- Umineko visual novel files for some other sound effects
