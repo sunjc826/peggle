@@ -7,7 +7,10 @@ private let segueGameEnd = "segueGameEnd"
 class GameViewController: UIViewController, Storyboardable {
     @IBOutlet private var vWithinSafeArea: GameplayAreaView!
     @IBOutlet private var cvGameEnd: UIView!
-    var audioPlayer: AVAudioPlayer?
+    var audioPlayers: [AVAudioPlayer?] = Array(
+        repeating: nil,
+        count: Settings.maximumConcurrentAudioEffects
+    )
     var scrollvGame: GameLevelScrollView?
     var vStaticGame: GameplayAreaStaticView?
     var vGame: GameplayAreaDynamicView? {
@@ -104,16 +107,24 @@ class GameViewController: UIViewController, Storyboardable {
             .store(in: &subscriptions)
 
         viewModel.soundEffectPublisher.sink { [weak self] soundEffect in
-            if let isPlaying = self?.audioPlayer?.isPlaying, isPlaying {
-                // Do not interrupt the currently played sound.
+            guard let self = self else {
                 return
             }
-            DispatchQueue.global().async { [weak self] in
-                guard let self = self else {
-                    return
+
+            for (index, audioPlayer) in self.audioPlayers.enumerated() {
+                if let isPlaying = audioPlayer?.isPlaying, isPlaying {
+                    // Do not interrupt the currently played sound.
+                    continue
                 }
-                self.audioPlayer = globalAudio.getSoundEffect(for: soundEffect)
-                self.audioPlayer?.play()
+
+                DispatchQueue.global().async { [weak self] in
+                    guard let self = self else {
+                        return
+                    }
+                    self.audioPlayers[index] = globalAudio.getSoundEffect(for: soundEffect)
+                    self.audioPlayers[index]?.play()
+                }
+                return
             }
         }.store(in: &subscriptions)
     }

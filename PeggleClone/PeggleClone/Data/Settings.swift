@@ -4,7 +4,7 @@ import UIKit
 // swiftlint:disable nesting
 struct Settings {
     static let logLevel: LoggerWrapper.LogLevel = .info
-
+    static let maximumConcurrentAudioEffects = 3
     enum EaseOfRotation: Double {
         case insanelyStiff = 0
         case stiff = 1.0
