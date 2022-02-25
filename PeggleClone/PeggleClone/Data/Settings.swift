@@ -4,7 +4,7 @@ import UIKit
 // swiftlint:disable nesting
 struct Settings {
     static let logLevel: LoggerWrapper.LogLevel = .info
-    static let maximumConcurrentAudioEffects = 3
+    static let maximumConcurrentAudioEffects = 5
     enum EaseOfRotation: Double {
         case insanelyStiff = 0
         case stiff = 1.0
@@ -66,8 +66,8 @@ struct Settings {
             static let repulsionRadius: Double = 0.2
             static let repulsionDuration: Double = 0.25
             static let multiballEjectionVelocity: Double = 0.35
-            static let predictionStepsWithoutSuperDuperGuide: Int = 20
-            static let predictionStepsWithSuperDuperGuide: Int = 200
+            static let predictionStepsWithoutSuperDuperGuide: Int = 40
+            static let predictionStepsWithSuperDuperGuide: Int = 400
         }
 
         struct Color {
@@ -109,7 +109,7 @@ struct Settings {
     }
 
     struct Physics {
-        static let physicalScale = 100.0
+        static let physicalScale = 50.0
         static let signedMagnitudeOfAccelerationDueToGravity = 10.0
     }
 }

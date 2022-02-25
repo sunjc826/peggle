@@ -5,7 +5,7 @@ import Combine
 final class GameLevel {
     static let targetFps = 60
     static let targetSecondsPerFrame: Double = 1.0 / Double(targetFps)
-    static let predictionTimeIntervalInSeconds: Double = targetSecondsPerFrame * 2
+    static let predictionTimeIntervalInSeconds: Double = targetSecondsPerFrame
     static let consecutiveCollisionThreshold: Int = 20
 
     var subscriptions: Set<AnyCancellable> = []
