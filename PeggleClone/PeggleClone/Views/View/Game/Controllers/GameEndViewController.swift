@@ -1,4 +1,5 @@
 import UIKit
+import Combine
 
 protocol GameEndViewControllerDelegate: AnyObject {
     func restartGame()
@@ -9,9 +10,10 @@ class GameEndViewController: UIViewController {
     @IBOutlet private var lblGameStatus: UILabel!
     @IBOutlet private var btnRestart: UIButton!
     @IBOutlet private var btnBack: UIButton!
+    @IBOutlet private var ivPeggleMaster: UIImageView!
 
     weak var delegate: GameEndViewControllerDelegate?
-
+    private var subscriptions: Set<AnyCancellable> = []
     var viewModel: GameEndViewModel? {
         didSet {
             guard let viewModel = viewModel else {
@@ -25,6 +27,10 @@ class GameEndViewController: UIViewController {
             }
 
             audio.play()
+
+            viewModel.gameImagePublisher
+                .assign(to: \.image, on: ivPeggleMaster)
+                .store(in: &subscriptions)
         }
     }
 

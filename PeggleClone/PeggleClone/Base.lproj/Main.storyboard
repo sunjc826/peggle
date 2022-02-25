@@ -647,8 +647,15 @@
                         <rect key="frame" x="0.0" y="0.0" width="730" height="860"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="mf7-xN-hoh">
+                                <rect key="frame" x="145.5" y="172" width="439" height="322"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="439" id="Gs3-dp-gIH"/>
+                                    <constraint firstAttribute="height" constant="322" id="SeB-3N-2AO"/>
+                                </constraints>
+                            </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l19-ru-fNr">
-                                <rect key="frame" x="365" y="430" width="0.0" height="0.0"/>
+                                <rect key="frame" x="365" y="638" width="0.0" height="0.0"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -667,17 +674,21 @@
                         <viewLayoutGuide key="safeArea" id="ljz-7N-Rft"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="l19-ru-fNr" firstAttribute="centerY" secondItem="GDy-7f-j4B" secondAttribute="centerY" id="7F4-NG-cHh"/>
                             <constraint firstAttribute="bottomMargin" secondItem="hrD-yj-o3m" secondAttribute="bottom" constant="100" id="ATe-SC-w8k"/>
                             <constraint firstItem="l19-ru-fNr" firstAttribute="centerX" secondItem="GDy-7f-j4B" secondAttribute="centerX" id="KHX-h5-d55"/>
+                            <constraint firstItem="l19-ru-fNr" firstAttribute="top" relation="greaterThanOrEqual" secondItem="mf7-xN-hoh" secondAttribute="bottom" constant="30" id="LNn-Jl-ych"/>
                             <constraint firstItem="hrD-yj-o3m" firstAttribute="centerX" secondItem="GDy-7f-j4B" secondAttribute="centerX" id="TGi-Og-TJu"/>
+                            <constraint firstItem="mf7-xN-hoh" firstAttribute="centerX" secondItem="GDy-7f-j4B" secondAttribute="centerX" id="XNR-f5-GDC"/>
                             <constraint firstItem="hrD-yj-o3m" firstAttribute="top" secondItem="dDC-zk-Gaf" secondAttribute="bottom" constant="30" id="gVr-b2-EUB"/>
                             <constraint firstItem="dDC-zk-Gaf" firstAttribute="centerX" secondItem="GDy-7f-j4B" secondAttribute="centerX" id="o3b-J5-uP6"/>
+                            <constraint firstItem="mf7-xN-hoh" firstAttribute="top" secondItem="ljz-7N-Rft" secondAttribute="bottom" multiplier="0.2" id="pb6-xl-Jyb"/>
+                            <constraint firstItem="dDC-zk-Gaf" firstAttribute="top" secondItem="l19-ru-fNr" secondAttribute="bottom" constant="30" id="rDr-Zi-ym4"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="btnBack" destination="hrD-yj-o3m" id="P9V-ai-ftd"/>
                         <outlet property="btnRestart" destination="dDC-zk-Gaf" id="8W6-PO-XLx"/>
+                        <outlet property="ivPeggleMaster" destination="mf7-xN-hoh" id="xS4-oP-ahb"/>
                         <outlet property="lblGameStatus" destination="l19-ru-fNr" id="bMx-rr-nnh"/>
                     </connections>
                 </viewController>

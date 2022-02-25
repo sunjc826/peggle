@@ -1,4 +1,4 @@
-import Foundation
+import UIKit
 import Combine
 import AVFoundation
 
@@ -14,10 +14,23 @@ class GameEndViewModel {
             """
     }
 
+    var gameImagePublisher: AnyPublisher<UIImage?, Never> {
+        gameImage.eraseToAnyPublisher()
+    }
+    private var gameImage: PassthroughSubject<UIImage?, Never> = PassthroughSubject()
+
     var audio: AVAudioPlayer?
 
     init(stats: GameRoundStats) {
         self.stats = stats
         audio = stats.isWon ? globalAudio.getCongrats(for: stats.peggleMaster) : globalAudio.getEncouragement()
+        DispatchQueue.global().async {
+            let trailing = stats.isWon ? "win" : "lose"
+            let image = UIImage(named: "\(stats.peggleMaster.id)_\(trailing)")
+
+            DispatchQueue.main.async {
+                self.gameImage.send(image)
+            }
+        }
     }
 }
