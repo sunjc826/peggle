@@ -8,5 +8,5 @@ enum GameEvent {
     case ballIntoBucket
     case specialPegHit
     case gravityLowered
-    case nothingHit // when the ball hits nothing and does not fall into the bucket, i.e. wasted
+    case nothingHit
 }

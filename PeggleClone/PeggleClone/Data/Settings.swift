@@ -20,7 +20,7 @@ struct Settings {
 
     struct Ball {
         static let uniformDensity: Double = 1
-        static let elasticity: Double = 0.7
+        static let elasticity: Double = 0.9
     }
 
     enum Springiness: Double {

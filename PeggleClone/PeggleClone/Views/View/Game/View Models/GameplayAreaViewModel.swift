@@ -21,11 +21,11 @@ class GameplayAreaViewModel {
     var cannonAnglePublisher: AnyPublisher<Double, Never> {
         cannonAngle.eraseToAnyPublisher()
     }
-    var cannonAngle: PassthroughSubject<Double, Never> = PassthroughSubject()
+    private var cannonAngle: PassthroughSubject<Double, Never> = PassthroughSubject()
     var cannonPositionPublisher: AnyPublisher<CGPoint, Never> {
-        cannonPosition.eraseToAnyPublisher()
+        cannonPosition.compactMap { $0 }.eraseToAnyPublisher()
     }
-    var cannonPosition: PassthroughSubject<CGPoint, Never> = PassthroughSubject()
+    private var cannonPosition: CurrentValueSubject<CGPoint?, Never> = CurrentValueSubject(nil)
     var ballsLeftPublisher: AnyPublisher<Int, Never> {
         ballsLeft.prepend(gameLevel.numBalls).eraseToAnyPublisher()
     }

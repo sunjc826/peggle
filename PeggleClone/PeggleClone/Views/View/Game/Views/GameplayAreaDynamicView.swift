@@ -113,7 +113,7 @@ extension GameplayAreaDynamicView {
             fatalError("should not be nil")
         }
 
-        viewModel.cannonAngle
+        viewModel.cannonAnglePublisher
             .removeDuplicates()
             .sink { [weak self] cannonAngle in
                 guard let self = self, let baseCannonTransform = self.baseCannonTransform else {
@@ -124,9 +124,9 @@ extension GameplayAreaDynamicView {
             }
             .store(in: &subscriptions)
 
-        viewModel.cannonPosition
+        viewModel.cannonPositionPublisher
             .removeDuplicates()
-            .assign(to: \.ivCannon.center, on: self)
+            .assign(to: \.center, on: ivCannon)
             .store(in: &subscriptions)
 
         viewModel.$displayDimensions
