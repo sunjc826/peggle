@@ -4,6 +4,7 @@ import Combine
 protocol LevelSelectCellDelegate: AnyObject {
     func onLoadLevel(levelURL: URL)
     func onStartLevel(levelURL: URL)
+    func confirmDelete(ifDeleteDo callback: @escaping Runnable)
 }
 
 /// Encapsulates a single cell displayed in the level select collection.
@@ -89,10 +90,12 @@ extension LevelSelectCell {
     }
 
     @IBAction private func btnDeleteOnTap() {
-        guard let viewModel = viewModel else {
+        guard let delegate = delegate else {
             fatalError("should not be nil")
         }
 
-        viewModel.delete()
+        delegate.confirmDelete { [weak self] in
+            self?.viewModel?.delete()
+        }
     }
 }

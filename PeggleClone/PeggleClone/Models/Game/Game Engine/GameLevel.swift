@@ -13,7 +13,7 @@ final class GameLevel {
     let physicsEngine: AbstractPhysicsEngine
     @Published var coordinateMapper: PhysicsCoordinateMapper
     var playArea: PlayArea
-    let cannon: Cannon
+    var cannon: Cannon
     @Published var bucket: Bucket?
     var balls: [Ball] = []
     let pegs: PegContainer
@@ -81,6 +81,8 @@ final class GameLevel {
             physicsCoordinateMapperConfigurable: coordinateMapper.getPhysicsConfigurable()
         )
         playArea = coordinateMapper.getPlayArea()
+        let cannonPosition = CGPoint(x: playArea.boundingBox.center.x, y: Settings.Cannon.yDistanceFromTopOfPlayArea)
+        cannon = Cannon(position: cannonPosition)
         physicsEngine.coordinateMapper = coordinateMapper
         bucket = Bucket(
             position: CGPoint(

@@ -144,6 +144,34 @@ extension LevelSelectCollectionViewController: LevelSelectCellDelegate {
     func onStartLevel(levelURL: URL) {
         didStartLevel?(levelURL)
     }
+
+    func confirmDelete(ifDeleteDo callback: @escaping Runnable) {
+        let alert = UIAlertController(
+            title: "Confirm Deletion",
+            message: nil,
+            preferredStyle: .alert
+        )
+
+        alert.addAction(
+            UIAlertAction(
+                title: "Confirm",
+                style: .destructive,
+                handler: { _ in
+                    callback()
+                }
+            )
+        )
+
+        alert.addAction(
+            UIAlertAction(
+                title: "Cancel",
+                style: .cancel,
+                handler: { _ in }
+            )
+        )
+
+        present(alert, animated: true, completion: nil)
+    }
 }
 
 // MARK: Setup

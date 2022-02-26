@@ -67,10 +67,11 @@ class DesignerMainViewModel {
         )
     }
 
-    func saveLevel(imageData: Data, updateDecodedLevel: Bool = false) throws {
+    @discardableResult
+    func saveLevel(imageData: Data, updateDecodedLevel: Bool = false) throws -> URL? {
         let levelName = try checkBeforeTransition()
         guard let gameLevel = gameLevel else {
-            return
+            return nil
         }
 
         do {
@@ -81,9 +82,11 @@ class DesignerMainViewModel {
                 decodedGameLevel = try jsonStorage.loadAndDecode(filename: levelName)
             }
 
+            return try jsonStorage.getURL(filename: levelName)
         } catch {
             globalLogger.error("\(error)")
         }
+        return nil
     }
 
     @discardableResult

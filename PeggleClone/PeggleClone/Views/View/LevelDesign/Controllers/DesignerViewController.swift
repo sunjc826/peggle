@@ -27,6 +27,11 @@ class DesignerViewController: UIViewController {
     var pegToButtonMap: [Peg: DesignerPegButton] = [:]
     var obstacleToButtonMap: [Obstacle: DesignerObstacleButton] = [:]
 
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        vShapeTransform.isHidden = true
+    }
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard segue.identifier == segueShapeTransform else {
             return

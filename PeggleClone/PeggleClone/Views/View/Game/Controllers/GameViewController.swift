@@ -1,6 +1,6 @@
 import UIKit
 import Combine
-import AVFAudio
+import AVFoundation
 
 private let segueGameEnd = "segueGameEnd"
 

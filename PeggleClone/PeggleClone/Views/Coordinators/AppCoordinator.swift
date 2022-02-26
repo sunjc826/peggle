@@ -52,7 +52,7 @@ class AppCoordinator {
             self.showLevelSelect()
         }
 
-        vcDesignerMain.didStartGame = { [weak self, vmDesignerMain] in
+        vcDesignerMain.didStartGame = { [weak self, vmDesignerMain] levelURL in
             guard let self = self else {
                 return
             }
@@ -62,6 +62,7 @@ class AppCoordinator {
             }
 
             vmDesignerMain.tearDownBeforeTransition()
+            self.loadLevelURL = levelURL
             self.showGame(with: persistableDesignerGameLevel)
         }
 

@@ -16,7 +16,7 @@ class DesignerMainViewController: UIViewController, Storyboardable {
     var decodedGameLevel: DesignerGameLevel?
 
     var didLevelSelect: (() -> Void)?
-    var didStartGame: (() -> Void)?
+    var didStartGame: ((URL?) -> Void)?
     var didStartOwnView: (() -> Void)?
 
     override func viewDidLoad() {
@@ -102,8 +102,9 @@ extension DesignerMainViewController: StorageViewControllerDelegate {
         }
 
         let imageData = captureImageOfLevel()
+        var levelURL: URL?
         do {
-            try viewModel.saveLevel(imageData: imageData, updateDecodedLevel: true)
+            levelURL = try viewModel.saveLevel(imageData: imageData, updateDecodedLevel: true)
         } catch TransitionError.nameBlank {
             showNameLengthWarning()
         } catch TransitionError.inconsistent {
@@ -113,7 +114,7 @@ extension DesignerMainViewController: StorageViewControllerDelegate {
             return
         }
 
-        didStartGame?()
+        didStartGame?(levelURL)
     }
 
     func resetLevel() {
