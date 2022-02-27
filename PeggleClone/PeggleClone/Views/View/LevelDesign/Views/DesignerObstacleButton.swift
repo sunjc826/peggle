@@ -82,6 +82,7 @@ extension DesignerObstacleButton {
 
     private func setupButtons() {
         setupOscillationLocalityButton()
+        superview?.bringSubviewToFront(self)
         setupVertexButtons()
     }
 
@@ -108,7 +109,6 @@ extension DesignerObstacleButton {
         btnOscillationLocality.delegate = self
         btnOscillationLocality.isHidden = true
         superview?.addSubview(btnOscillationLocality)
-        superview?.sendSubviewToBack(btnOscillationLocality)
     }
 
     private func updateButtons() {

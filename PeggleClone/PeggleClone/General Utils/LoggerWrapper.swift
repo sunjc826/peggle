@@ -28,7 +28,7 @@ class LoggerWrapper {
     private var logger = Logger()
 
     fileprivate init() {}
-    
+
     /// The current severity level of the logger.
     var logLevel: LogLevel = .debug
 
