@@ -2,6 +2,10 @@ import UIKit
 import Combine
 
 private let cannonImage = #imageLiteral(resourceName: "cannon")
+// XCode is bugging out, so I cannot even select the image literal for this image.
+// swiftlint:disable object_literal
+private let cannonShootingImage = UIImage(named: "cannon_shooting")
+// swiftlint:enable object_literal
 private let backgroundImage = #imageLiteral(resourceName: "background")
 private let bucketImage = #imageLiteral(resourceName: "bucket")
 
@@ -80,7 +84,6 @@ class GameplayAreaDynamicView: UIView {
     }
 
     func setupEmitterCell() {
-
         emitterCell.contents = particle.cgImage
 
         emitterCell.velocity = 75.0
@@ -127,6 +130,19 @@ extension GameplayAreaDynamicView {
         viewModel.cannonPositionPublisher
             .removeDuplicates()
             .assign(to: \.center, on: ivCannon)
+            .store(in: &subscriptions)
+
+        viewModel.cannonIsShootingPublisher
+            .removeDuplicates()
+            .sink { [weak self] isShooting in
+                guard isShooting else {
+                    return
+                }
+                self?.ivCannon.image = cannonShootingImage
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                    self?.ivCannon.image = cannonImage
+                }
+            }
             .store(in: &subscriptions)
 
         viewModel.$displayDimensions

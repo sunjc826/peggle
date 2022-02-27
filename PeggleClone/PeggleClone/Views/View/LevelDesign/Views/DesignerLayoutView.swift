@@ -1,7 +1,11 @@
 import UIKit
 import Combine
 
+private let backgroundImage = #imageLiteral(resourceName: "background")
+
 class DesignerLayoutView: UIView {
+
+    var ivBackground: UIImageView
     var viewModel: DesignerLayoutViewModel? {
         didSet {
             setupWithViewModel()
@@ -12,6 +16,7 @@ class DesignerLayoutView: UIView {
     var vBucketZone: UIView
 
     init() {
+        ivBackground = UIImageView(image: backgroundImage)
         vCannonZone = UIView()
         vCannonZone.backgroundColor = .gray
         vCannonZone.alpha = 0.7
@@ -21,6 +26,9 @@ class DesignerLayoutView: UIView {
         vBucketZone.alpha = 0.7
         vBucketZone.isHidden = true
         super.init(frame: CGRect.zero)
+        ivBackground.frame = bounds
+        ivBackground.contentMode = .scaleAspectFill
+        addSubview(ivBackground)
         addSubview(vCannonZone)
         addSubview(vBucketZone)
     }
@@ -36,7 +44,13 @@ class DesignerLayoutView: UIView {
         }
 
         viewModel.displayDimensionsPublisher
-            .assign(to: \.frame, on: self)
+            .sink { [weak self] displayDimensions in
+                guard let self = self else {
+                    return
+                }
+                self.frame = displayDimensions
+                self.ivBackground.frame = self.bounds
+            }
             .store(in: &subscriptions)
 
         viewModel.pegZonePublisher

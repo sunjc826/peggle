@@ -19,6 +19,10 @@ class Audio {
 }
 
 extension Audio {
+    func warmup() {
+        _ = getEncouragement()
+    }
+
     func getEncouragement() -> AVAudioPlayer? {
         var url: URL?
         for ext in extensions {

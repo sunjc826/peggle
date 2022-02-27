@@ -10,9 +10,7 @@ class DesignerViewController: UIViewController {
     @IBOutlet private var lblEditMode: UILabel!
     @IBOutlet private var btnChangeEditMode: UIButton!
     @IBOutlet private var vShapeTransform: UIView!
-    @IBOutlet private var ivBackground: UIImageView!
     @IBOutlet private var btnToggleAllowScrollResize: UIButton!
-    @IBOutlet private var aiLoading: UIActivityIndicatorView!
 
     var scrollvLayout: DesignerScrollView?
     var vLayout: DesignerLayoutView? {
@@ -55,26 +53,11 @@ extension DesignerViewController {
     }
 
     private func setupBindings() {
-        bindLoad()
         bindDimensions()
         bindGameObjects()
         bindShapeTransform()
         bindButtons()
         bindScroll()
-    }
-
-    private func bindLoad() {
-        viewModel?.isLoadingPublisher
-            .sink { [weak self] isLoading in
-                if isLoading {
-                    self?.aiLoading.isHidden = false
-                    self?.aiLoading.startAnimating()
-                } else {
-                    self?.aiLoading.stopAnimating()
-                    self?.aiLoading.isHidden = true
-                }
-            }
-            .store(in: &subscriptions)
     }
 
     func bindDimensions() {
@@ -108,7 +91,7 @@ extension DesignerViewController {
                 self.addLetterBoxes()
                 self.view.addSubview(scrollvLayout)
                 self.view.sendSubviewToBack(scrollvLayout)
-                self.view.sendSubviewToBack(self.ivBackground)
+//                self.view.sendSubviewToBack(self.ivBackground)
                 scrollvLayout.setNeedsLayout()
                 scrollvLayout.setNeedsDisplay()
                 self.viewModel?.contentOffsetYBottom = scrollvLayout.frame.height

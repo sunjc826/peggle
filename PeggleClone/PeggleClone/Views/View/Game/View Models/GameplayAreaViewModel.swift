@@ -19,13 +19,19 @@ class GameplayAreaViewModel {
     @Published var displayDimensions: CGRect?
 
     var cannonAnglePublisher: AnyPublisher<Double, Never> {
-        cannonAngle.eraseToAnyPublisher()
+        cannonAngle.compactMap { $0 }.eraseToAnyPublisher()
     }
-    private var cannonAngle: PassthroughSubject<Double, Never> = PassthroughSubject()
+    private var cannonAngle: CurrentValueSubject<Double?, Never> = CurrentValueSubject(nil)
     var cannonPositionPublisher: AnyPublisher<CGPoint, Never> {
         cannonPosition.compactMap { $0 }.eraseToAnyPublisher()
     }
     private var cannonPosition: CurrentValueSubject<CGPoint?, Never> = CurrentValueSubject(nil)
+
+    var cannonIsShootingPublisher: AnyPublisher<Bool, Never> {
+        cannonIsShooting.eraseToAnyPublisher()
+    }
+    private var cannonIsShooting: PassthroughSubject<Bool, Never> = PassthroughSubject()
+
     var ballsLeftPublisher: AnyPublisher<Int, Never> {
         ballsLeft.prepend(gameLevel.numBalls).eraseToAnyPublisher()
     }
@@ -73,6 +79,14 @@ class GameplayAreaViewModel {
                 width: coordinateMapper.displayWidth,
                 height: coordinateMapper.displayHeight
             )
+        }
+        .store(in: &subscriptions)
+        gameLevel.$gamePhase.sink { [weak self] gamePhase in
+            if gamePhase == .shootBallWhenReady {
+                self?.cannonIsShooting.send(true)
+            } else {
+                self?.cannonIsShooting.send(false)
+            }
         }
         .store(in: &subscriptions)
     }
