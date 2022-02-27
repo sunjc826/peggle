@@ -82,7 +82,7 @@ class GameViewModel {
             soundEffect.send(.ahaha)
         case .gravityLowered:
             break
-        case .specialPegHit:
+        case .specialPegHit(location: _):
             soundEffect.send(.whee)
         case .ballCollision:
             soundEffect.send(.boing)

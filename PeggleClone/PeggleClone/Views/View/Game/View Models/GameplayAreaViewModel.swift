@@ -43,6 +43,12 @@ class GameplayAreaViewModel {
         totalScore.prepend(0).eraseToAnyPublisher()
     }
     var totalScore: PassthroughSubject<Int, Never> = PassthroughSubject()
+
+    var explosionEffectAtLocationPublisher: AnyPublisher<ExplosionParticleData, Never> {
+        explosionEffectAtLocation.eraseToAnyPublisher()
+    }
+    private var explosionEffectAtLocation: PassthroughSubject<ExplosionParticleData, Never> = PassthroughSubject()
+
     var pegStatViewModels: [PegStatViewModel] = []
 
     init(gameLevel: GameLevel, delegate: GameplayAreaViewModelDelegate) {
@@ -86,6 +92,21 @@ class GameplayAreaViewModel {
                 self?.cannonIsShooting.send(true)
             } else {
                 self?.cannonIsShooting.send(false)
+            }
+        }
+        .store(in: &subscriptions)
+        gameLevel.gameEvents.sink { [weak self] gameEvent in
+            guard let self = self else {
+                return
+            }
+            switch gameEvent {
+            case .specialPegHit(location: let logicalLocation):
+                let displayLocation = self.getDisplayCoords(of: logicalLocation)
+                self.explosionEffectAtLocation.send(
+                    ExplosionParticleData(explosionPoint: displayLocation)
+                )
+            default:
+                break
             }
         }
         .store(in: &subscriptions)

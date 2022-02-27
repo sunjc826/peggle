@@ -9,8 +9,10 @@ private let cannonShootingImage = UIImage(named: "cannon_shooting")
 private let backgroundImage = #imageLiteral(resourceName: "background")
 private let bucketImage = #imageLiteral(resourceName: "bucket")
 
+private let explosionParticleDirectionCount: Int = 10
+
 // reference: https://stackoverflow.com/questions/28980146/caemittercell-without-using-an-image
-private func getShape() -> UIImage {
+private func getParticle() -> UIImage {
     let rect = CGRect(x: 0, y: 0, width: 5, height: 5)
 
     let path = CGPath(ellipseIn: rect, transform: nil)
@@ -28,9 +30,12 @@ class GameplayAreaDynamicView: UIView {
     var vCannonLine: CannonLineView
     var ivBucket: BucketView
 
-    var particle: UIImage
-    var emitterLayer = CAEmitterLayer()
-    var emitterCell = CAEmitterCell()
+    var collisionParticle: UIImage
+    var explosionParticle: UIImage
+    var elCollision = CAEmitterLayer()
+    var ecCollision = CAEmitterCell()
+    var elExplosion = CAEmitterLayer()
+    var ecExplosions: [CAEmitterCell] = []
 
     var viewModel: GameplayAreaViewModel? {
         didSet {
@@ -46,7 +51,8 @@ class GameplayAreaDynamicView: UIView {
         ivCannon = UIImageView(image: cannonImage)
         vCannonLine = CannonLineView()
         ivBucket = BucketView(image: bucketImage)
-        particle = getShape()
+        collisionParticle = getParticle()
+        explosionParticle = getParticle()
         super.init(frame: frame)
         addSubview(ivBackground)
         addSubview(ivCannon)
@@ -74,29 +80,53 @@ class GameplayAreaDynamicView: UIView {
 
     // reference: https://www.raywenderlich.com/10317653-calayer-tutorial-for-ios-getting-started
     func setupEmitterLayer() {
-        emitterLayer.frame = bounds
+        elCollision.frame = bounds
+        layer.addSublayer(elCollision)
+        elCollision.seed = UInt32(Date().timeIntervalSince1970)
+        elCollision.renderMode = .additive
+        elCollision.emitterCells = [ecCollision]
+        elCollision.lifetime = 0
 
-        layer.addSublayer(emitterLayer)
-        emitterLayer.seed = UInt32(Date().timeIntervalSince1970)
-        emitterLayer.renderMode = .additive
-        emitterLayer.emitterCells = [emitterCell]
-        emitterLayer.lifetime = 0
+        elExplosion.frame = bounds
+        layer.addSublayer(elExplosion)
+        elExplosion.seed = UInt32(Date().timeIntervalSince1970)
+        elExplosion.renderMode = .additive
+        elExplosion.emitterCells = ecExplosions
+        elExplosion.lifetime = 0
     }
 
     func setupEmitterCell() {
-        emitterCell.contents = particle.cgImage
+        ecCollision.contents = collisionParticle.cgImage
 
-        emitterCell.velocity = 75.0
-        emitterCell.velocityRange = 10.0
+        ecCollision.velocity = 75.0
+        ecCollision.velocityRange = 10.0
 
-        emitterCell.color = UIColor.lightGray.cgColor
+        ecCollision.color = UIColor.lightGray.cgColor
 
-        emitterCell.emissionLatitude = 0
-        emitterCell.emissionLongitude = 0
-        emitterCell.emissionRange = Double.pi / 6
+        ecCollision.emissionLatitude = 0
+        ecCollision.emissionLongitude = 0
+        ecCollision.emissionRange = Double.pi / 6
 
-        emitterCell.lifetime = 1.0
-        emitterCell.birthRate = 2.5
+        ecCollision.lifetime = 1.0
+        ecCollision.birthRate = 2.5
+
+        for i in 0..<explosionParticleDirectionCount {
+            let ecExplosion = CAEmitterCell()
+            ecExplosion.contents = explosionParticle.cgImage
+            ecExplosion.velocity = 250.0
+            ecExplosion.velocityRange = 0.0
+
+            ecExplosion.color = UIColor.green.cgColor
+
+            ecExplosion.emissionLatitude = 0
+            ecExplosion.emissionLongitude = 2 * Double.pi /
+                Double(explosionParticleDirectionCount) *
+                Double(i)
+            ecExplosion.emissionRange = 0
+            ecExplosion.lifetime = 1.5
+            ecExplosion.birthRate = 1.0
+            ecExplosions.append(ecExplosion)
+        }
     }
 }
 
@@ -154,19 +184,35 @@ extension GameplayAreaDynamicView {
                 self.frame = displayDimensions
                 self.center.x = superview.bounds.midX
                 self.ivBackground.frame = self.bounds
+                self.elCollision.frame = self.bounds
+                self.elExplosion.frame = self.bounds
             }
             .store(in: &subscriptions)
+
+        viewModel.explosionEffectAtLocationPublisher
+            .sink { [weak self] explosionData in
+                self?.renderExplosion(with: explosionData)
+            }
+            .store(in: &subscriptions)
+    }
+
+    func renderExplosion(with data: ExplosionParticleData) {
+        elExplosion.emitterPosition = data.explosionPoint
+        elExplosion.lifetime = 1.0
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+            self.elExplosion.lifetime = 0.0
+        }
     }
 }
 
 extension GameplayAreaDynamicView: BallViewDelegate {
     func renderParticle(with data: CollisionParticleData) {
-        emitterLayer.emitterPosition = data.collisionLocation
-        emitterLayer.lifetime = 1.0
+        elCollision.emitterPosition = data.collisionLocation
+        elCollision.lifetime = 1.0
         let vector = data.collisionDirection
-        emitterCell.emissionLongitude = -atan2(vector.dy, vector.dx)
+        ecCollision.emissionLongitude = -atan2(vector.dy, vector.dx)
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-            self.emitterLayer.lifetime = 0.0
+            self.elCollision.lifetime = 0.0
         }
     }
 }

@@ -171,6 +171,7 @@
 		E57E832127AFCC02006C3401 /* UIView+Animate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57E832027AFCC02006C3401 /* UIView+Animate.swift */; };
 		E57F03F027A62332002662DD /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57F03EF27A62332002662DD /* String.swift */; };
 		E57F03F227A623A2002662DD /* StringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57F03F127A623A2002662DD /* StringTests.swift */; };
+		E580397A27CB3D0600C07C4D /* ExplosionParticleData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E580397927CB3D0600C07C4D /* ExplosionParticleData.swift */; };
 		E580667C27A7D64E00F73DAA /* RigidBody+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E580667B27A7D64E00F73DAA /* RigidBody+Helpers.swift */; };
 		E5815F7C27BB8C6C0041E5F8 /* PeggleMaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5815F7B27BB8C6C0041E5F8 /* PeggleMaster.swift */; };
 		E5815F7E27BB8FA30041E5F8 /* GameData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5815F7D27BB8FA30041E5F8 /* GameData.swift */; };
@@ -421,6 +422,7 @@
 		E57E832027AFCC02006C3401 /* UIView+Animate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Animate.swift"; sourceTree = "<group>"; };
 		E57F03EF27A62332002662DD /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		E57F03F127A623A2002662DD /* StringTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringTests.swift; sourceTree = "<group>"; };
+		E580397927CB3D0600C07C4D /* ExplosionParticleData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExplosionParticleData.swift; sourceTree = "<group>"; };
 		E580667B27A7D64E00F73DAA /* RigidBody+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RigidBody+Helpers.swift"; sourceTree = "<group>"; };
 		E5815F7B27BB8C6C0041E5F8 /* PeggleMaster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeggleMaster.swift; sourceTree = "<group>"; };
 		E5815F7D27BB8FA30041E5F8 /* GameData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameData.swift; sourceTree = "<group>"; };
@@ -1246,6 +1248,7 @@
 				E5FB39C827AA16E4008CE4D2 /* UIViewController+Preview.swift */,
 				E5FB39CC27AA414A008CE4D2 /* UIView+Preview.swift */,
 				E5863D1927C65AB200B7935E /* CollisionParticleData.swift */,
+				E580397927CB3D0600C07C4D /* ExplosionParticleData.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -1507,6 +1510,7 @@
 				E56E5A2527BB5C0B00723D6F /* CollectionViewModel.swift in Sources */,
 				E590099627A92E9200E764B5 /* EditableGameEntity.swift in Sources */,
 				E579A28F27B6BDF100D1C805 /* MenuViewController.swift in Sources */,
+				E580397A27CB3D0600C07C4D /* ExplosionParticleData.swift in Sources */,
 				E545750B27A97F1100F11F43 /* GameViewController.swift in Sources */,
 				E516823727C51262004686F0 /* BucketComponent.swift in Sources */,
 				E573EDA427B5703300C3BACC /* AppCoordinator.swift in Sources */,

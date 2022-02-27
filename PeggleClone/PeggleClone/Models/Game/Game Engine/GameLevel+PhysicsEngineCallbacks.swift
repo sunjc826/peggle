@@ -141,7 +141,7 @@ extension GameLevel {
     // It is clear that the function is rather cohesive, the 2 switch statements are closely related.
     // swiftlint:disable cyclomatic_complexity
     private func handleHitSpecialPeg(oldSpecialPeg: Peg, updatedSpecialPeg: Peg) {
-        gameEvents.send(.specialPegHit)
+        gameEvents.send(.specialPegHit(location: updatedSpecialPeg.shape.center))
         hasHitSpecialPegInLastRound = true
 
         switch special {

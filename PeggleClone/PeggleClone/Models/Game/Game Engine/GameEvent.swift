@@ -1,4 +1,5 @@
 import Foundation
+import CoreGraphics
 
 enum GameEvent {
     case ballCollision
@@ -6,7 +7,7 @@ enum GameEvent {
     case ballWrapAround
     case ballMultiply
     case ballIntoBucket
-    case specialPegHit
+    case specialPegHit(location: CGPoint)
     case gravityLowered
     case nothingHit
 }
