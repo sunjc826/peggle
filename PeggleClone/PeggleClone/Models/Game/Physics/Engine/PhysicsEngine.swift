@@ -68,7 +68,7 @@ class PhysicsEngine: AbstractPhysicsEngine {
     }
 }
 
-// MARK: High level private functions
+// MARK: High level functions
 extension PhysicsEngine {
     func calculateWithoutApplyingResults() {
         for rigidBody in changeableRigidBodies {

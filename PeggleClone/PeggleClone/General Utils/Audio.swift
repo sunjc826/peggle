@@ -18,7 +18,7 @@ extension AVAudioPlayer {
 }
 
 class Audio {
-    init() {
+    fileprivate init() {
         do {
             try AVAudioSession.sharedInstance().setCategory(.ambient, mode: .default)
             try AVAudioSession.sharedInstance().setActive(true, options: .notifyOthersOnDeactivation)
