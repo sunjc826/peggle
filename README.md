@@ -365,7 +365,8 @@ Alternatively, you can rewrite this section in your own style. You may also
 write this section in a new file entirely, if you wish.
 
 ### Cannon Direction
-To rotate the cannon, the player taps and holds at a point on the gameplay area. The cannon's line of fire rotates toward the place at which the player is holding.
+To rotate the cannon, the player pans on the gameplay area.
+The cannon points toward the place at which the player is holding.
 
 ### Shoot Ball
 Tap on the screen to shoot.
@@ -381,6 +382,12 @@ To transform pegs, double tap on the peg and a shape transform menu appears for 
 Adjust the rotation slider in the shape transform menu. Since it does not make sense to rotate a circular peg, rotation slider does not appear when a circular peg is selected.
 ### Peg Resizing
 Adjust the scaling slider in the shape transform menu.
+
+### Peg deselection
+There are a few ways to deselect a peg/obstacle.
+- The main way is to double tap on the currently selected peg/obstacle.
+- To change the selected peg, double tap on a different peg, the selected peg would then change to that other peg.
+- Deletion, placing down new pegs are also ways of indirectly deselection the selected peg.
 
 ## Bells and Whistles
 
@@ -444,7 +451,8 @@ Adjust the scaling slider in the shape transform menu.
   - Gaap: Phase through horizontal walls
     - The ball's left and right wall behavior are set to `.wrapAround`, so the ball no longer bounces off the horizontal walls but phase right through them.
 3. Dedicated peggle master select screen (Collection View)
-4. Game stats
+4. Depending on the peggle master, the game over screen image also changes.
+5. Game stats
   - The game stats displayed in the upper right corner of the game view include the following:
     - Number of balls remaining
     - Number of actives remaining
@@ -452,7 +460,7 @@ Adjust the scaling slider in the shape transform menu.
       - For SpookyBall, this refers to the number of spooky wrap arounds of the current ball.
     - Total score
     - Number of pegs of each type remaining
-5. Particle effects
+6. Particle effects
   - When the ball hits something (except the wall), particles are produced at the point of collision. The direction of particles is not always accurate due to the approximate nature of collision detection's "penetration point", so it may sometimes go in the opposite direction of collision.
 ## Tests
 ### Unit tests
@@ -544,7 +552,7 @@ The initialization of controllers is unit tested, as seen in `StoryboardableTest
     - If the shape is a polygon, the transform menu should have scale label and slider, as well as rotation label and slider.
   - A rectangular box is drawn around the shape. No other shape has a rectangular box around it.
 - On double tapping a shape when there is a transform menu
-  - If the shape is the same shape the transform menu is associated with, the menu should disappear. Additionally, the rectangular box around the shape should disappear. There should be no rectangular box around any shape in the designer.
+  - If the shape is the same shape the transform menu is associated with, the menu should disappear. Additionally, the rectangular box around the shape should disappear. There should be no rectangular box around any shape in the designer. In other words, this **deselects** the selected peg.
   - Otherwise, the menu remains, and the slider values change to reflect the scale and/or rotation of the newly tapped shape. Furthermore, a rectangular box forms around the newly selected shape. The rectangular box around the previously selected shape disappears.
 - On tap anywhere in the designer with transform menu open
   - The aforementioned behavior in $(1)$ still holds
@@ -658,14 +666,16 @@ The bulk of the game will be tested based on the current phase of the game.
 
 `beginning` phase
 A black line should be drawn
-- On long press on the gameplay area
-  - The starting angle of the black dashed line moves toward the pressed position.
+- On pan on the gameplay area
+  - The black dashed line points toward the panned location.
   - The black line reacts to any objects it "collides" upon, and appears to predict a realistic physics path.
+  - The cannon image also rotates to point at the panned location.
 - On tap on the gameplay area
   - Transition to `shootBallWhenReady` phase.
 
 `shootBallWhenReady` phase
 - A black line should be drawn.
+- The cannon image changes to a fatter "about to shoot" image.
 - No reponse to user input in the gameplay area. The same applies for the below phases, and will not be mentioned in the tests below.
 - A ball should be shot in the direction of the cannon, indicated by the guiding black dashed line. 
   - Transition to `ongoing` phase.
@@ -757,6 +767,7 @@ Regardless of the game status, i.e. win or lose, a popup will be produced on top
   - If the game is lost, the line of text will tell the player to fight on. An "Fight on" audio clip will play.
 - There are 2 buttons near the bottom of the screen.
 - One button says Restart, on tap, the popup closes and the game reloads, i.e. the same level loads, the player can start to play the level again.
+  - Furthermore, the cannon's angle to reset.
 - The other button says Back and on tap, the application transitions back to the Level Select screen.
 
 #### Test Win Lose conditions
