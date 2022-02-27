@@ -9,8 +9,7 @@ class GameEndViewModel {
         stats.isWon ? """
             Congratulations! You have beaten the Golden Witch's gameboard!
             """ : """
-            Fight on! Nipahhh~\u{2606}
-            Lady Bernkastel cheers you on.
+            ...
             """
     }
 
@@ -23,7 +22,12 @@ class GameEndViewModel {
 
     init(stats: GameRoundStats) {
         self.stats = stats
-        audio = stats.isWon ? globalAudio.getCongrats(for: stats.peggleMaster) : globalAudio.getEncouragement()
+        if stats.isWon {
+            audio = globalAudio.getCongrats(for: stats.peggleMaster)
+        } else {
+            audio = globalAudio.getBoo(for: stats.peggleMaster) ?? globalAudio.getEncouragement()
+        }
+
         DispatchQueue.global().async {
             let trailing = stats.isWon ? "win" : "lose"
             let image = UIImage(named: "\(stats.peggleMaster.id)_\(trailing)")

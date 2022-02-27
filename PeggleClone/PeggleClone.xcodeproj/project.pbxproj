@@ -172,6 +172,7 @@
 		E57F03F027A62332002662DD /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57F03EF27A62332002662DD /* String.swift */; };
 		E57F03F227A623A2002662DD /* StringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57F03F127A623A2002662DD /* StringTests.swift */; };
 		E580397A27CB3D0600C07C4D /* ExplosionParticleData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E580397927CB3D0600C07C4D /* ExplosionParticleData.swift */; };
+		E580397C27CB4F5A00C07C4D /* you_suck in Resources */ = {isa = PBXBuildFile; fileRef = E580397B27CB4F5A00C07C4D /* you_suck */; };
 		E580667C27A7D64E00F73DAA /* RigidBody+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E580667B27A7D64E00F73DAA /* RigidBody+Helpers.swift */; };
 		E5815F7C27BB8C6C0041E5F8 /* PeggleMaster.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5815F7B27BB8C6C0041E5F8 /* PeggleMaster.swift */; };
 		E5815F7E27BB8FA30041E5F8 /* GameData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5815F7D27BB8FA30041E5F8 /* GameData.swift */; };
@@ -423,6 +424,7 @@
 		E57F03EF27A62332002662DD /* String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
 		E57F03F127A623A2002662DD /* StringTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringTests.swift; sourceTree = "<group>"; };
 		E580397927CB3D0600C07C4D /* ExplosionParticleData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExplosionParticleData.swift; sourceTree = "<group>"; };
+		E580397B27CB4F5A00C07C4D /* you_suck */ = {isa = PBXFileReference; lastKnownFileType = folder; name = you_suck; path = ../../../../audio_assets/you_suck; sourceTree = "<group>"; };
 		E580667B27A7D64E00F73DAA /* RigidBody+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RigidBody+Helpers.swift"; sourceTree = "<group>"; };
 		E5815F7B27BB8C6C0041E5F8 /* PeggleMaster.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeggleMaster.swift; sourceTree = "<group>"; };
 		E5815F7D27BB8FA30041E5F8 /* GameData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameData.swift; sourceTree = "<group>"; };
@@ -1140,6 +1142,7 @@
 		E59005CE27C153DD00824F92 /* Audio */ = {
 			isa = PBXGroup;
 			children = (
+				E580397B27CB4F5A00C07C4D /* you_suck */,
 				E59094D527C6094C00EC454A /* encouragement */,
 				E50742AE27C1F5E30014E84F /* sound_effects */,
 				E50742AC27C1EB920014E84F /* congratulations */,
@@ -1360,6 +1363,7 @@
 			files = (
 				E50742AD27C1EB920014E84F /* congratulations in Resources */,
 				E519D5772798009700BCE59D /* LaunchScreen.storyboard in Resources */,
+				E580397C27CB4F5A00C07C4D /* you_suck in Resources */,
 				E5863D1D27C65D8F00B7935E /* preloaded_levels in Resources */,
 				E59094D627C6094C00EC454A /* encouragement in Resources */,
 				E519D5742798009700BCE59D /* Assets.xcassets in Resources */,
