@@ -7,6 +7,16 @@ private let booDirectory = "you_suck"
 private let soundEffectsDirectory = "sound_effects"
 private let encouragementDirectory = "encouragement"
 
+// https://stackoverflow.com/questions/900461/slow-start-for-avaudioplayer-the-first-time-a-sound-is-played
+extension AVAudioPlayer {
+    func warmup() {
+        volume = 0
+        play()
+        stop()
+        volume = 1
+    }
+}
+
 class Audio {
     init() {
         do {
@@ -21,7 +31,12 @@ class Audio {
 
 extension Audio {
     func warmup() {
-        _ = getEncouragement()
+        let anySound = getSoundEffect(for: .boing)
+        guard let anySound = anySound else {
+            return
+        }
+
+        anySound.warmup()
     }
 
     func getEncouragement() -> AVAudioPlayer? {
