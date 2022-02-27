@@ -26,8 +26,11 @@ The installation is [here](https://git-lfs.github.com/).
 This game is a tribute to one of the greatest visual novels of all time, Umineko When They Cry.
 - [Ryukishi07](https://07th-expansion.fandom.com/wiki/Ryukishi07) and [07th Expansion](https://07th-expansion.fandom.com/wiki/07th_Expansion) for allowing me, a Reader, to traverse the Sea of Fragments
 - The [Fandom wiki](https://07th-expansion.fandom.com/wiki/07th_Expansion_Wiki) for character sprites. These sprites are also available from the novel files (the Steam version requires 07th mod for the Playstation 3 sprites).
-- [Youtube video](https://www.youtube.com/watch?v=k4T8HeK-ZIg) for Bernkastel's encouragement
 - [Youtube video](https://www.youtube.com/watch?v=Tu14bVETMLw) for the congratulations of various characters. The actual audio comes from the fighting game spin-off Golden Fantasia. It is not possible to directly extract the audio from the game files themselves as the game files use an unknown binary encoding.
+- [Youtube video](https://www.youtube.com/watch?v=TE_F40JIxMU) for Battler's scream
+- [Youtube video](https://www.youtube.com/watch?v=toeFCPwa1HI&t=8s) for Bernkastel's laugh
+- [Youtube video](https://www.youtube.com/watch?v=id5aV9dGslY) for Maria's laugh
+- [Youtube video](https://www.youtube.com/watch?v=k4T8HeK-ZIg) for Bernkastel's encouragement
 - [http://jwgrlrrajn.github.io/SFX/Umineko/index.html](http://jwgrlrrajn.github.io/SFX/Umineko/index.html) for some of the sound effects
 - Other sound effects come directly from Umineko files
 
@@ -435,7 +438,9 @@ There are a few ways to deselect a peg/obstacle.
     - Game win. Your peggle master congratulates you for an outstanding performance. This changes depending on the peggle master you have selected.
       - For Krauss, it is actually his daughter [Ushiromiya Jessia](https://07th-expansion.fandom.com/wiki/Jessica_Ushiromiya) that congratulates you since there is no corresponding congratulations audio available from him.
       - For Featherine, no such audio is available, unfortunately.
-    - Game lose. Don't be sad. The Great Witch of the Senate, Lady Bernkastel recalls her alternate self as [Furude Rika](https://whentheycry.fandom.com/wiki/Furude_Rika) and gives you some much needed encouragement.
+    - Game lose.
+      - You pegglemaster isn't very happy with you... Disppointment ensues.
+      - Sometimes, the pegglemaster's "disappointment" audio isn't available. In this event, the Great Witch of the Senate, Lady Bernkastel recalls her alternate self as [Furude Rika](https://whentheycry.fandom.com/wiki/Furude_Rika) and gives you some much needed encouragement.
   - No Music as I am strictly restricting myself to Umineko content and while the music is probably an undisputed No.1 amongst all visual novels, I do not wish to violate more copyright than I need to. :D
 2. (A lot of) Peggle masters, with lore accurate (99% guaranteed) powerups
   - Beatrice: Spookyball
@@ -469,6 +474,7 @@ There are a few ways to deselect a peg/obstacle.
     - Number of pegs of each type remaining
 6. Particle effects
   - When the ball hits something (except the wall), particles are produced at the point of collision. The direction of particles is not always accurate due to the approximate nature of collision detection's "penetration point", so it may sometimes go in the opposite direction of collision.
+  - When a special peg is hit, a green explosion particle emanates from the center of the peg.
 ## Tests
 ### Unit tests
 Many of the basic model classes have been unit tested.
@@ -771,7 +777,7 @@ I will only discuss the special powers in the game requirements.
 Regardless of the game status, i.e. win or lose, a popup will be produced on top of the game view. 
 - In the center there is a line of text.
   - If the game is won, the line of text will congratulate the player. Congratulatory audio will play.
-  - If the game is lost, the line of text will tell the player to fight on. An "Fight on" audio clip will play.
+  - If the game is lost, the line of text will tell the player "...". A disappointed audio clip will play for certain characters. Otherwise, it defaults to a "Fight on... Nipahh" audio clip if the disappointed audio clip is not available.
 - There are 2 buttons near the bottom of the screen.
 - One button says Restart, on tap, the popup closes and the game reloads, i.e. the same level loads, the player can start to play the level again.
   - Furthermore, the cannon's angle to reset.
