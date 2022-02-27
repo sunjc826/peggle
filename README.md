@@ -389,6 +389,8 @@ There are a few ways to deselect a peg/obstacle.
 - To change the selected peg, double tap on a different peg, the selected peg would then change to that other peg.
 - Deletion, placing down new pegs are also ways of indirectly deselection the selected peg.
 
+
+
 ## Bells and Whistles
 
 ### General enhancements
@@ -409,6 +411,7 @@ There are a few ways to deselect a peg/obstacle.
   - Suppose a game object A is marked as a ghost because it overlaps with another concrete object B. Moving B away such that A no longer overlaps with anything, will cause A to be detected as legal, and A will become concrete automatically.
 2. Removal of inconsistent pegs
   - This button can be tapped to remove all ghost game objects. Alternatively, when transitioning from ghost mode to concrete mode, all ghost game objects are automatically removed. The same can be said for when saving the level.
+  - Remark: In the end, I couldn't think of a good name for this button, maybe it could be "Remove ghosts" or "Remove translucent objects". So I'm sticking with "Remove inconsistencies".
 3. Selected game object indicator
   - When a game object is selected, a rectangular box is drawn around it. 
 4. Scroll-expansion lock
@@ -417,6 +420,10 @@ There are a few ways to deselect a peg/obstacle.
 5. Cannon-zone and Bucket-zone
   - In a designer view, there is a gray box at the top which represents the cannon-zone. The player is prevented from placing pegs in that zone so that no peg is placed too high up where the cannon cannot shoot. Note that using ghost mode, the player can still move pegs into the gray zone, however the peg will be marked as a ghost.
   - There is a gray box at the bottom which represents the bucket zone, similar to the cannon zone. Pegs are prevented from being placed here to avoid collision with the moving bucket. The bucket zone automatically moves itself when the level is expanded by the player.
+6. Automatically resizing background
+  - The background resizes itself when the user expands the level. There should be some sort of a "zoom-in" effect that does not break the aspect ratio when the user expands the level by scrolling down.
+  - The background will be captured in the saved level image to better reflect the size of the level.
+  - Remark: In the pre-loaded levels, this background image was not captured in the saved image. No real reason for this, as this enhancement was not included when I added the pre-loaded levels.
 ### Game enhancements
 1. Audio
   - Sounds
