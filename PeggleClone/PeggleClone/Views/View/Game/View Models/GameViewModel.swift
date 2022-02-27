@@ -163,15 +163,6 @@ class GameViewModel {
         gameLevel.wantToShoot()
     }
 
-    func stopRotatingCannon() {
-        guard let cannon = cannon else {
-            fatalError("should not be nil")
-        }
-
-        cannon.rotationRate = 0.0
-        cannon.targetAngle = nil
-    }
-
     func rotateCannon(to displayCoords: CGPoint) {
         guard let cannon = cannon, let coordinateMapper = coordinateMapper else {
             fatalError("should not be nil")
@@ -187,9 +178,6 @@ class GameViewModel {
             -targetDirectionOfCannon.dx, targetDirectionOfCannon.dy
         )
 
-        let angleDifference = targetAngleOfCannon - cannon.angle
-
-        cannon.rotationRate = angleDifference / rotationRateSecondsTillTarget
         cannon.targetAngle = targetAngleOfCannon
     }
 }

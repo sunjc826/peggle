@@ -12,21 +12,8 @@ class Cannon {
     @Published var angle: Double = 0.0
     var ejectionSpeed: Double
     @Published var position: CGPoint
-    var rotationRate: Double = 0.0
-    var targetAngle: Double? {
-        didSet {
-            guard let targetAngle = targetAngle else {
-                angleRange = -angleLimit...angleLimit
-                return
-            }
+    var targetAngle: Double?
 
-            if rotationRate > 0 {
-                angleRange = -angleLimit...targetAngle
-            } else {
-                angleRange = targetAngle...angleLimit
-            }
-        }
-    }
     var headPosition: CGPoint {
         position.translate(
             dx: cannonBarrelLength * sin(-angle),
@@ -49,18 +36,17 @@ class Cannon {
         self.ejectionSpeed = ejectionSpeed
     }
 
-    func updateAngle(time dt: Double) {
-        guard rotationRate != 0 else {
+    func updateAngle() {
+        guard let targetAngle = targetAngle else {
             return
         }
 
-        let deltaAngle = rotationRate * dt
-
         let newAngle = angleRange.restrictToRange(
-            angle + deltaAngle
+            targetAngle
         )
 
         angle = newAngle
+        self.targetAngle = nil
     }
 
     func shootBall() -> (ball: Ball, initialVelocity: CGVector) {

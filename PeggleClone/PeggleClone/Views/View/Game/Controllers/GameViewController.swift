@@ -203,16 +203,16 @@ class GameViewController: UIViewController, Storyboardable {
         guard let vGame = vGame else {
             return
         }
-        let longPressGestureRecognizer = UILongPressGestureRecognizer(
+        let grPan = UIPanGestureRecognizer(
             target: self,
-            action: #selector(self.onLongPress(_:))
+            action: #selector(self.onPan(_:))
         )
-        vGame.addGestureRecognizer(longPressGestureRecognizer)
+        vGame.addGestureRecognizer(grPan)
         let tapGestureRecognizer = UITapGestureRecognizer(
             target: self,
             action: #selector(self.onTap(_:))
         )
-        tapGestureRecognizer.shouldRequireFailure(of: longPressGestureRecognizer)
+        tapGestureRecognizer.shouldRequireFailure(of: grPan)
         vGame.addGestureRecognizer(tapGestureRecognizer)
     }
 
@@ -228,22 +228,13 @@ class GameViewController: UIViewController, Storyboardable {
         viewModel.shootBall()
     }
 
-    @objc func onLongPress(_ sender: UILongPressGestureRecognizer) {
+    @objc func onPan(_ sender: UILongPressGestureRecognizer) {
         guard let viewModel = viewModel else {
             fatalError("should not be nil")
         }
 
         let touchedCoords = sender.location(in: vGame)
-        switch sender.state {
-        case .began:
-            viewModel.rotateCannon(to: touchedCoords)
-        case .changed:
-            viewModel.rotateCannon(to: touchedCoords)
-        case .ended:
-            viewModel.stopRotatingCannon()
-        default:
-            break
-        }
+        viewModel.rotateCannon(to: touchedCoords)
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

@@ -7,7 +7,7 @@ extension GameLevel {
             return
         }
 
-        cannon.updateAngle(time: GameLevel.targetSecondsPerFrame)
+        cannon.updateAngle()
     }
 
     func doShootBallWhenReady() {
